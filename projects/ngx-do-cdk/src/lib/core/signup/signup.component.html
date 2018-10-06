@@ -1,0 +1,59 @@
+<div fxLayout="column" fxFlexFill fxLayoutAlign="center center"  class="custom custom-background signup-container">
+    <div fxLayout="column" >
+   
+        <div class=" mat-elevation-z4">
+            <mat-card [ngClass]="{'shake-rotate' : shake}">
+                <mat-card-title>User Signup
+                    <a class="redirect" routerLink="/login">Login </a>
+                </mat-card-title>
+                <mat-card-content [ngSwitch]="coreConfig.authModel" >
+                    <mat-form-field *ngIf="coreConfig.backendList.length>0" class="full-width">
+                      <mat-select  id="backend" [(ngModel)]="coreConfig.backend" placeholder="Backend" >
+                        <mat-option *ngFor="let item of coreConfig.backendList | callback: backendAllowed" [value]="item.id" >{{item.title}}</mat-option>
+                      </mat-select>  
+                   </mat-form-field> 
+
+                    <form *ngSwitchCase="'password'" fxLayout="column" fxLayoutAlign="start stretch" [formGroup]="userForm" (ngSubmit)="signup()">
+                        <mat-form-field class="full-width">
+                          <input type="email" id="email" class="input" placeholder="Please enter your email"
+                                 formControlName="email" required matInput>
+                        </mat-form-field>
+                        <div *ngIf="formErrors.email" class="help is-danger">
+                            {{ formErrors.email }}
+                        </div>
+                        <mat-form-field class="full-width">
+                            <input type="password" id="password" class="input" placeholder="Enter your password"
+                            formControlName="password" required matInput>
+                        </mat-form-field>
+                        <div *ngIf="formErrors.password" class="help is-danger">
+                            {{ formErrors.password }}
+                        </div>
+                        <mat-form-field class="full-width">
+                            <input type="password" id="password2" class="input" placeholder="Re-enter your password"
+                            formControlName="password2" required matInput>
+                        </mat-form-field>
+                        <div *ngIf="formErrors.password2" class="help is-danger">
+                            {{ formErrors.password2 }}
+                        </div>
+                      
+                          <mat-checkbox color="primary" formControlName="remember">Remember me</mat-checkbox>
+                      
+                        <button mat-raised-button color="primary" type="submit" [disabled]="!userForm.valid" >signup</button>
+                    </form>
+                  
+                    <form *ngSwitchCase="'redirect'" fxLayout="column"  >
+                     <button mat-raised-button color="primary" type="submit" (click)="signup()">
+                          Sign In
+                     </button>
+                    </form>   
+
+                   <!-- The Customer Login Container -->  
+                   <ng-template *ngSwitchDefault >
+                    Unknown Layout Switch {{coreConfig.authModel}}
+                   </ng-template>
+                  
+                </mat-card-content>
+            </mat-card>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,11 @@
+
+<perfect-scrollbar style="height: calc(100% - 33px);">
+    <div fxLayout="column" *ngIf="profileRoute" >
+        <div class="profile" *ngIf="!iconOnly" fxLayoutAlign="space-around center" [style.margin]="'10px 0px'"   >
+          <img width="100" [style.borderRadius]="'50%'" [src]="currentUser?.avatar_url || 'assets/avatars/noavatar.png'" [routerLink]="[profileRoute]">
+        </div>
+        <cdk-sidemenu-item *ngIf="iconOnly && profileRoute" [menu]="profileMenu" [iconOnly]="iconOnly"> </cdk-sidemenu-item>
+        <cdk-sidemenu-item *ngFor="let menu of menus" [menu]="menu" [iconOnly]="iconOnly"> </cdk-sidemenu-item>
+    </div>
+    
+</perfect-scrollbar>

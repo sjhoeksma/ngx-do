@@ -1,0 +1,61 @@
+{
+  "$schema": "./node_modules/@angular/cli/lib/config/schema.json",
+  "version": 1,
+  "newProjectRoot": "projects",
+  "projects": {
+    "ngx-do-cdk": {
+      "root": "projects/ngx-do-cdk",
+      "sourceRoot": "projects/ngx-do-cdk/src",
+      "projectType": "library",
+      "prefix": "lib",
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-ng-packagr:build",
+          "options": {
+            "tsConfig": "projects/ngx-do-cdk/tsconfig.lib.json",
+            "project": "projects/ngx-do-cdk/ng-package.json"
+          },
+          "configurations": {
+            "production": {
+              "project": "projects/ngx-do-cdk/ng-package.prod.json"
+            }
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/ngx-do-cdk/src/test.ts",
+            "tsConfig": "projects/ngx-do-cdk/tsconfig.spec.json",
+            "karmaConfig": "projects/ngx-do-cdk/karma.conf.js",
+            "styles": [
+              "node_modules/amcharts3/amcharts/plugins/export/export.css",
+              "node_modules/ammap3/ammap/ammap.css",
+            ],
+            "scripts": [
+              "node_modules/d3/dist/d3.min.js",
+              "node_modules/amcharts3/amcharts/amcharts.js",
+              "node_modules/amcharts3/amcharts/themes/light.js",
+              "node_modules/amcharts3/amcharts/plugins/export/export.min.js",
+              "node_modules/ammap3/ammap/ammap.js",
+              "node_modules/ammap3/ammap/maps/js/worldLow.js",
+              "node_modules/ammap3/ammap/themes/light.js"
+            ]
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/ngx-do-cdk/tsconfig.lib.json",
+              "projects/ngx-do-cdk/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    }
+  },
+  "defaultProject": "ngx-do-cdk"
+}

@@ -1,0 +1,10 @@
+<perfect-scrollbar class="ai-chatbot-container">
+    <ng-container *ngFor="let message of messages | async | reverse ">
+      <div class="chat" fxLayout="row" fxLayoutAlign="start center" mat-ripple>
+        <div class="message" [ngClass]="{ 'from': message.sentBy === 'bot',
+                                          'to':   message.sentBy === 'user' }">
+          {{ message.content }}
+        </div>
+      </div>     
+    </ng-container>
+</perfect-scrollbar>
