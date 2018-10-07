@@ -9,7 +9,7 @@
     "lint": "ng lint",
     "inc_version": "cd projects/ngx-do-cdk && npm version prerelease -f && cd ..",
     "build": "ng build --prod ngx-do-cdk && cd projects/ngx-do-cdk && npm run scss_bundle",
-    "pack": "npm run inc_version && npm run build_lib && cd dist/ngx-do-cdk && npm pack",
+    "pack": "npm run inc_version && npm run build && cd dist/ngx-do-cdk && npm pack",
     "publish": "npm run pack && npm publish"
   },
   "private": false,

@@ -39,6 +39,10 @@ export class AiChatbotService {
     return cl;
   }
   
+  hasClient(token:string):boolean {
+    return this.clients[token]!=null;
+  }
+  
   conversation(token:string): BehaviorSubject<Message[]>{
     return this.client(token).conversation;
   }
@@ -66,7 +70,9 @@ export class AiChatbotService {
   }
   
   remove(token:string){
+    if (this.hasClient(token)) {
       this.client(token).conversation.complete();
       delete this.clients[token];
+    }
   }
 }

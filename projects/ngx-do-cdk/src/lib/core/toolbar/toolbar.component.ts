@@ -12,8 +12,8 @@ export class ToolbarComponent implements OnInit {
 	@Input() sidebar;
 	@Input() drawer;
 	@Input() matDrawerShow;
-  @Input() searchShow;
-  @Input() aiChatbotShow;
+  @Input() searchShow = true;
+  @Input() aiChatbotShow = false;
   @Input() aiToken;
   @Input() settingsRoute;
   @Input() profileRoute;
@@ -26,9 +26,6 @@ export class ToolbarComponent implements OnInit {
   }
 
   ngOnInit() {
-   if (this.aiToken==null) this.aiToken = this.coreConfig.backendValue('aiChatbotToken');
-   if (this.searchShow==null) this.searchShow = this.aiToken==null;
-   if (this.aiToken && this.aiChatbotShow==null) this.aiChatbotShow = !this.searchShow;
   }
 
 }

@@ -17,16 +17,13 @@ export class AiChatbotComponent implements OnInit {
    constructor(public aiChatbot: AiChatbotService) {}
  
   ngOnInit() {
-    try {
-    // appends to array after each new message is added to feedSource
-    this.messages = this.aiChatbot.conversation(this.token).asObservable()
-        .scan((acc, val) => acc.concat(val) );
-    } catch (ex){
-      console.error(ex);
-    }
   }
 
   sendMessage(message:string) {
+    if (!this.aiChatbot.hasClient(this.token)){
+      this.messages = this.aiChatbot.conversation(this.token).asObservable()
+        .scan((acc, val) => acc.concat(val) );
+    }
     var msg = message || this.question;
     if (msg) this.aiChatbot.converse(msg,this.token);
   }

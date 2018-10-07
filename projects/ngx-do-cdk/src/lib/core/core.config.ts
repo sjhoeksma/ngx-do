@@ -276,11 +276,13 @@ export class CoreConfig {
   static readonly staticID = "000-000-000";
   public getItem(key:string,defaultValue:any = null):any {
     try {
-     let v = this._remember ? localStorage.getItem(key)||  sessionStorage.getItem(key) :
-      sessionStorage.getItem(key) || localStorage.getItem(key);
+     let v = this._remember ? 
+      localStorage.getItem(key)||  sessionStorage.getItem(key) :
+      sessionStorage.getItem(key);
      v = JSON.parse(CryptoJS.AES.decrypt(v|| defaultValue,
-           key==CoreConfig.backendKey ? (this.environment['appID'] ||  CoreConfig.staticID) 
-                              :  this.backendValue('appID',CoreConfig.staticID)
+           key==CoreConfig.backendKey ? 
+                (this.environment['appID'] ||  CoreConfig.staticID) :  
+                this.backendValue('appID',CoreConfig.staticID)
           ).toString(CryptoJS.enc.Utf8));
      if (v=="null") v=null; 
      return v;
