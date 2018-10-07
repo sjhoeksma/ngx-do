@@ -49,3 +49,6 @@ node_modules
 /DoProxy/do-proxy.proxy.json
 /src/TESTS-Chrome_69.0.3497_(Mac_OS_X_10.13.6).xml
 /reports
+/projects/ngx-do-proxy/ngx-do-proxy.db.json
+/projects/ngx-do-proxy/ngx-do-proxy.proxy.json
+/projects/ngx-do-proxy/ngx-do-proxy.rule.json
