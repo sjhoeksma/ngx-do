@@ -541,5 +541,9 @@ gaze(myOptions.watchedDir + '/**/*.json', (err, watcher) => {
 
 });
 
-
-start(false)
+module.exports = {
+  start : function(options){
+    myOptions = Object.assign(myOptions,options);
+    start(false);
+  }
+}
