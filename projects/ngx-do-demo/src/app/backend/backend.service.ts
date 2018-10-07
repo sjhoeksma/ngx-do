@@ -1,7 +1,7 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
-import { Observable, Subject, empty } from 'rxjs';
-import { Subscription } from 'rxjs';
+import { Observable, Subject,Subscription } from 'rxjs';
+import 'rxjs/add/observable/of';
 import {Restangular } from 'ngx-restangular';
 import { CoreEvent,CoreAuth,CoreConfig } from 'ngx-do-cdk';
 import * as uuidv4 from 'uuid/v4';
@@ -31,11 +31,13 @@ export class BackendService implements OnDestroy {
       
     }
   
-    public getList(name:string,options:object={}):Observable<object>{
+    public getList(name:string,options:object={},   loggedIn:boolean=true):Observable<any>{
+      if (loggedIn && !this.coreAuth.loggedIn) return Observable.of([]);
       return this.rest.all(name).getList(options);
     }
   
-    public getOne(name:string,id:string,options:object={}):Observable<object>{
+    public getOne(name:string,id:string,options:object={}, loggedIn:boolean=true):Observable<any>{
+      if (loggedIn && !this.coreAuth.loggedIn) return Observable.of([]);
       return this.rest.one(name,id).get(options);
     }
   
