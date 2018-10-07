@@ -7,6 +7,7 @@ My work list on activities to work on.
 1. Split widgets and core+do
 1. Fix style sheet of Survey
 1. Types in stead of []
+1. Make module from ngx-do-proxy, so it can be extended
 
 ## Widgets
 * BoxCard - add options for zoom and close

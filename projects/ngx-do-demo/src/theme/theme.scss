@@ -1,0 +1,220 @@
+@import url('https://fonts.googleapis.com/icon?family=Material+Icons');
+@import '~@angular/material/theming';
+@import 'dist/ngx-do-cdk/_theming.scss';
+//@import '~ngx-do-cdk/_theming';
+@import '../app/app.component.scss';
+
+$mat-custom-green: (
+  50: #e8f5e9,
+  100: #c8e6c9,
+  200: #a5d6a7,
+  300: #81c784,
+  400: #66bb6a,
+  500: #4caf50,
+  600: #43a047,
+  700: #388e3c,
+  800: #2e7d32,
+  900: #1b5e20,
+  A100: #b9f6ca,
+  A200: #69f0ae,
+  A400: #00e676,
+  A700: #00c853,
+  contrast: (
+    50: $dark-primary-text,
+    100: $dark-primary-text,
+    200: $dark-primary-text,
+    300: $dark-primary-text,
+    400: $dark-primary-text,
+    500: $dark-primary-text,
+    600: $light-primary-text,
+    700: $light-primary-text,
+    800: $light-primary-text,
+    900: $light-primary-text,
+    A100: $dark-primary-text,
+    A200: $dark-primary-text,
+    A400: $dark-primary-text,
+    A700: $dark-primary-text,
+  )
+);
+
+@include mat-core();
+
+$primary : $mat-custom-green; // $mat-indigo;
+$accent  : $mat-orange;
+$warn    : $mat-red;
+
+$primary-app-primary: mat-palette($primary , 400);
+$primary-app-accent:  mat-palette($accent , 900);
+$primary-app-warn:    mat-palette($warn );
+$cdk-theme:   mat-light-theme($primary-app-primary, $primary-app-accent,$primary-app-warn);
+$color__primary : $primary;
+
+cdk-sidemenu{
+    $sidemenu-app-primary: mat-palette($primary , 400);
+    $sidemenu-app-accent:  mat-palette($accent , 900);
+    $sidemenu-app-warn:    mat-palette($warn );
+    $cdk-sidemenu-theme:   mat-dark-theme($sidemenu-app-primary, $sidemenu-app-accent,$sidemenu-app-warn);
+    @include mat-list-theme($cdk-sidemenu-theme);
+  
+}
+
+
+cdk-sidemenu-item{
+    @include sidemenu-item($cdk-theme,26px)
+}
+
+
+cdk-dashcard {
+    $dashcard-primary: mat-palette($primary);
+    $dashcard-accent:  mat-palette($accent);
+    $dashcard-warn:    mat-palette($warn);
+    $dashcard-theme:   mat-dark-theme($dashcard-primary, $dashcard-accent,$dashcard-warn);
+    @include dashcard($dashcard-theme);
+}
+
+cdk-profile-card{
+  $dashboard-profile-primary: mat-palette($primary , 400);
+    $dashboard-profile-accent:  mat-palette($accent , 900);
+    $dashboard-profile-warn:    mat-palette($warn );
+    $cdk-dashboard-profile-theme:   mat-dark-theme($dashboard-profile-primary, $dashboard-profile-accent,$dashboard-profile-warn);
+    @include dashboard-profile($cdk-dashboard-profile-theme);
+    @include mat-tabs-theme($cdk-dashboard-profile-theme);
+}
+
+@include angular-material-theme($cdk-theme);
+@include app($cdk-theme);
+@include round-progressbar($cdk-theme);
+@include sales-list($cdk-theme);
+.shake-rotate { @include do-shake('shake-rotate', 0, 0, 15); }
+
+html {
+  height:100%;
+}
+body{
+  padding: 0px !important;
+  margin: 0px !important;
+  height:100%;
+}
+.components-container-gt-xs {
+    padding: 20px;
+    // background-color: #fdfdfd;
+}
+.components-container-xs {
+    padding: 5px !important;
+    // background-color: #fdfdfd;
+}
+.component-preview {
+    padding: 20px;
+}
+.ps-content {
+  height: 100%;
+}
+
+.custom-background {
+    background-image:url('../assets/login11.jpg');  
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+}
+
+
+.loader-container {
+    background-color: white;
+    width: 100vw;
+    height: 100vh;
+    z-index: -1;
+    position: absolute;
+
+    -moz-animation: cssAnimation 1s ease-in 5s forwards;
+    // Firefox 
+    animation: cssAnimation 1s ease-in 5s forwards;
+    // Safari and Chrome 
+    -o-animation: cssAnimation 1s ease-in 5s forwards;
+    // Opera
+    animation: cssAnimation 1s ease-in 5s forwards;
+    animation-fill-mode: forwards;  
+}
+
+
+
+@keyframes cssAnimation {
+    to {
+        opacity:0;
+        visibility:hidden;
+        height: 0;
+        overflow: hidden;
+        display: none;
+    }
+}
+
+.spinner {
+    margin: 50vh auto 0;
+    width: 70px;
+    text-align: center;
+}
+
+.spinner > div {
+  width: 18px;
+  height: 18px;
+
+  border-radius: 100%;
+  display: inline-block;
+  animation: sk-bouncedelay 1.4s infinite ease-in-out both;
+}
+
+.bounce3 {
+  background-color: #02cc02;//orange;
+}
+
+.spinner .bounce1 {
+  background-color: #417041;//blue;
+  animation-delay: -0.32s;
+  animation-delay: -0.32s;
+}
+
+.spinner .bounce2 {
+  background-color: #40ad40;//red;
+  animation-delay: -0.16s;
+  animation-delay: -0.16s;
+}
+
+
+
+@keyframes sk-bouncedelay {
+  0%, 80%, 100% { transform: scale(0) }
+  40% { transform: scale(1.0) }
+}
+
+@keyframes sk-bouncedelay {
+  0%, 80%, 100% {
+    transform: scale(0);
+    transform: scale(0);
+  } 40% {
+    transform: scale(1.0);
+    transform: scale(1.0);
+  }
+}
+
+.hidden {
+  display: none !important;
+}
+.visible {
+  display: block !important;  
+}
+
+.locked {
+    display: none;
+    background-color:#EFEFEF;
+    background-image:url('../assets/locked.jpg');  
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    position: fixed;
+    width: 100%;
+    height: 100%;
+    z-index: 1000;
+    top: 0px;
+    left: 0px;
+    opacity: 1; // in FireFox 
+    filter: alpha(opacity=100); // in IE 
+}

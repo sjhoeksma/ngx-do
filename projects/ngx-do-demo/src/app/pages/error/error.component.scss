@@ -1,0 +1,22 @@
+ //@import url(https://fonts.googleapis.com/css?family=Roboto);
+div.error{  
+  height:100%;
+  width:100%;
+  text-align:center;
+	font-family: 'Roboto', sans-serif;
+  .material-icons {
+      font-size: 16em;
+      color: crimson;
+  }
+  h1{
+    font-size: 14em;
+    margin: 0;
+    color: black;
+    margin-bottom:0px;
+  }
+  h2{
+    font-size: 1.7em;
+    margin: .2em .5em;
+    color: black; 
+  }
+}

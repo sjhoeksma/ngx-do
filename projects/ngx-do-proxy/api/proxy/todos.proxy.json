@@ -1,0 +1,13 @@
+{
+  "todos" : {
+    public : true,
+    host: "https://jsonplaceholder.typicode.com",
+    path: "/todos",
+    _override: "{ 
+        userResDecorator: function(proxyRes, proxyResData, userReq, userRes) {
+           console.log(proxyResData);
+           return proxyResData ;
+         }
+    }"
+  }
+}

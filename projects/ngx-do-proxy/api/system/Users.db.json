@@ -1,0 +1,31 @@
+
+{
+  "users" : [
+      { 
+       "id": 0,   
+       "name": "Do-Proxy Backend",
+       "createdAt": 1347185460001,
+    },
+     { 
+       "id": 1,   
+       "email": "demo@demo.com",
+       "name": "Mister Demo",
+       "company": "Demo Corp.",
+       "department": "IT",
+       "orgGroup": "it",
+       "role" : "Developer",
+       "education": "B.S. in Computer Science from the University of Amsterdam",
+       "skills": "Java,PHP",
+       "note": null,
+       "location": "Amsterdam, Netherlands",
+       "html_url": null,
+       "createdAt": 1347185460001,
+       "avatar_url": "assets/avatars/user1-128x128.jpg",
+    },
+    {
+     "id": 2,   
+     "email " : "sjhoeksma@gmail.com",
+     "avatar_url": "assets/avatars/user7-128x128.jpg"
+    }  
+  ]
+}

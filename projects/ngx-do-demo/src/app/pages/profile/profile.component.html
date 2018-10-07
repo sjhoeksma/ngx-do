@@ -1,0 +1,40 @@
+<div fxLayout="row" fxLayoutAlign="center" class="profile-container">
+    <cdk-profile-card clickLabel="Edit" [onClick]="editProfile" [profile]="coreConfig?.currentUser" fxFlex="40" fxFlex.lt-sm="100" fxFlex.sm="80" fxFlex.md="40"></cdk-profile-card>
+  
+    <div *ngIf="edit" fxFlex="35" fxLayout="column" class="mat-elevation-z2 contact-add" >
+
+			<div  fxLayoutGap="10px" fxLayout="row" fxLayout.lt-lg="column" fxLayoutAlign="center start" >
+				<div fxFlex="50" fxLayout.lt-lg="100">
+					<mat-form-field >
+					<input  matInput placeholder="phone">
+				</mat-form-field>
+				</div>
+				<div fxFlex="50" fxLayout.lt-lg="100">
+					<mat-form-field >
+					<input  matInput placeholder="Office">
+				</mat-form-field>
+				</div>
+				
+			</div>
+
+			<div  fxLayoutGap="10px" fxLayout="row" fxLayout.lt-lg="column"  fxLayoutAlign="center start"  >
+				<div fxFlex="50" fxLayout.lt-lg="100">
+					<mat-form-field >
+	            		<input  matInput placeholder="skype">
+					</mat-form-field>
+				</div>
+				<div fxFlex="50" fxLayout.lt-lg="100">
+					<mat-form-field >
+				        <input  matInput placeholder="Email">
+				    </mat-form-field>
+				</div>
+			</div>
+
+			<div fxFlex fxLayout="column" fxLayoutAlign="end stretch" >
+				<div fxLayout="row" fxLayoutAlign="space-between stretch" >
+	           <button mat-raised-button >CANCEL</button>
+			       <button mat-raised-button color="primary">SAVE</button>
+			     </div>
+			</div>
+		</div>
+</div>

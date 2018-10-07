@@ -1,6 +1,8 @@
-# DoLibary - An ADMIN PANEL for deploying cloud services.
+# ngx-do - An ADMIN PANEL for deploying cloud services.
 
 Based on [CK-Admin](https://github.com/codetok/cdk-admin)
+
+This project contains the library and demo, make sure you build library before you run ng serve 
 
 
 ## Development server

@@ -29,7 +29,7 @@
             "karmaConfig": "projects/ngx-do-cdk/karma.conf.js",
             "styles": [
               "node_modules/amcharts3/amcharts/plugins/export/export.css",
-              "node_modules/ammap3/ammap/ammap.css",
+              "node_modules/ammap3/ammap/ammap.css"
             ],
             "scripts": [
               "node_modules/d3/dist/d3.min.js",
@@ -48,6 +48,122 @@
             "tsConfig": [
               "projects/ngx-do-cdk/tsconfig.lib.json",
               "projects/ngx-do-cdk/tsconfig.spec.json"
+            ],
+            "exclude": [
+              "**/node_modules/**"
+            ]
+          }
+        }
+      }
+    },
+    "ngx-do-demo": {
+      "root": "projects/ngx-do-demo/",
+      "sourceRoot": "projects/ngx-do-demo/src",
+      "projectType": "application",
+      "prefix": "app",
+      "schematics": {},
+      "architect": {
+        "build": {
+          "builder": "@angular-devkit/build-angular:browser",
+          "options": {
+            "outputPath": "dist/ngx-do-demo",
+            "index": "projects/ngx-do-demo/src/index.html",
+            "main": "projects/ngx-do-demo/src/main.ts",
+            "polyfills": "projects/ngx-do-demo/src/polyfills.ts",
+            "tsConfig": "projects/ngx-do-demo/tsconfig.app.json",
+            "assets": [
+              "projects/ngx-do-demo/src/favicon.ico",
+              "projects/ngx-do-demo/src/assets"
+            ],
+            "styles": [
+              "node_modules/amcharts3/amcharts/plugins/export/export.css",
+              "node_modules/ammap3/ammap/ammap.css",
+              "projects/ngx-do-demo/src/theme/theme.scss",
+              "projects/ngx-do-demo/src/theme/typography.scss",
+              "projects/ngx-do-demo/src/styles.css"
+            ],
+            "scripts": [
+              "node_modules/d3/dist/d3.min.js",
+              "node_modules/amcharts3/amcharts/amcharts.js",
+              "node_modules/amcharts3/amcharts/themes/light.js",
+              "node_modules/amcharts3/amcharts/plugins/export/export.min.js",
+              "node_modules/ammap3/ammap/ammap.js",
+              "node_modules/ammap3/ammap/maps/js/worldLow.js",
+              "node_modules/ammap3/ammap/themes/light.js"
+            ]
+          },
+          "configurations": {
+            "production": {
+              "fileReplacements": [
+                {
+                  "replace": "projects/ngx-do-demo/src/environments/environment.ts",
+                  "with": "projects/ngx-do-demo/src/environments/environment.prod.ts"
+                }
+              ],
+              "optimization": true,
+              "outputHashing": "all",
+              "sourceMap": false,
+              "extractCss": true,
+              "namedChunks": false,
+              "aot": true,
+              "extractLicenses": true,
+              "vendorChunk": false,
+              "buildOptimizer": true
+            }
+          }
+        },
+        "serve": {
+          "builder": "@angular-devkit/build-angular:dev-server",
+          "options": {
+            "browserTarget": "ngx-do-demo:build"
+          },
+          "configurations": {
+            "production": {
+              "browserTarget": "ngx-do-demo:build:production"
+            }
+          }
+        },
+        "extract-i18n": {
+          "builder": "@angular-devkit/build-angular:extract-i18n",
+          "options": {
+            "browserTarget": "ngx-do-demo:build"
+          }
+        },
+        "test": {
+          "builder": "@angular-devkit/build-angular:karma",
+          "options": {
+            "main": "projects/ngx-do-demo/src/test.ts",
+            "polyfills": "projects/ngx-do-demo/src/polyfills.ts",
+            "tsConfig": "projects/ngx-do-demo/tsconfig.spec.json",
+            "karmaConfig": "projects/ngx-do-demo/karma.conf.js",
+             "assets": [
+              "projects/ngx-do-demo/src/favicon.ico",
+              "projects/ngx-do-demo/src/assets"
+            ],
+            "styles": [
+              "node_modules/amcharts3/amcharts/plugins/export/export.css",
+              "node_modules/ammap3/ammap/ammap.css",
+              "projects/ngx-do-demo/src/theme/theme.scss",
+              "projects/ngx-do-demo/src/theme/typography.scss",
+              "projects/ngx-do-demo/src/styles.css"
+            ],
+            "scripts": [
+              "node_modules/d3/dist/d3.min.js",
+              "node_modules/amcharts3/amcharts/amcharts.js",
+              "node_modules/amcharts3/amcharts/themes/light.js",
+              "node_modules/amcharts3/amcharts/plugins/export/export.min.js",
+              "node_modules/ammap3/ammap/ammap.js",
+              "node_modules/ammap3/ammap/maps/js/worldLow.js",
+              "node_modules/ammap3/ammap/themes/light.js"
+            ]
+          }
+        },
+        "lint": {
+          "builder": "@angular-devkit/build-angular:tslint",
+          "options": {
+            "tsConfig": [
+              "projects/ngx-do-demo/tsconfig.app.json",
+              "projects/ngx-do-demo/tsconfig.spec.json"
             ],
             "exclude": [
               "**/node_modules/**"

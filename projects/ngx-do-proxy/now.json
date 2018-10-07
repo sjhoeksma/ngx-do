@@ -1,0 +1,6 @@
+{
+  "alias": ["do-proxy.now.sh"], 
+  "github": {
+    "autoAlias": true
+  }
+}
