@@ -1,6 +1,11 @@
 {
   "name": "ngx-do-proxy",
-  "version": "0.1.0",
+  "version": "0.1.1-8",
+  "main": "ngx-do-proxy.js",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/sjhoeksma/ngx-do.git"
+  },
   "watch": {
     "concat:mocks": {
       "patterns": [
@@ -10,9 +15,10 @@
     }
   },
   "scripts": {
-    "start": "node ngx-do-proxy.js"
+    "start": "node index.js",
+    "build": "rm -rf ../../dist/ngx-do-proxy && mkdir -p ../../dist/ngx-do-proxy && cp ./{package.json,package-lock.json,index.js,ngx-do-proxy.js,ngx-do-proxy-routes.json,README.md} ../../dist/ngx-do-proxy "
   },
-  "private": "true",
+  "private": false,
   "dependencies": {
     "azure-ad-jwt": "^1.1.0",
     "core-js": "^2.5.7",

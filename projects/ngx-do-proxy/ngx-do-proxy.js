@@ -23,7 +23,7 @@ var myOptions = Object.assign({
   dbProxyName : 'ngx-do-proxy.proxy.json', //The file name where proxy json data is stored
   dbRuleName : 'ngx-do-proxy.rule.json', //The file name where rule json data is stored
   watchedDir:  './api',
-  routes: 'ngx-do-proxy-routes.json',
+  routes: null,
   jwtValidation: 'key',  //Set this to your 'key' == secretKey or "azure-aad" to use a azure-aad token
   secretKey : "ngx-do-proxy",
   expiresIn : '8h',
@@ -287,13 +287,13 @@ function ruleJsonParse(obj,server){
 
 //Create the api-proxy server, with memory and persistent to file based json-server
 function createServer(plugins){
-  const routes = JSON.parse(fs.readFileSync(myOptions.routes, 'UTF-8')) //Load the routes from json
+  const routes = myOptions.routes ? JSON.parse(fs.readFileSync(myOptions.routes, 'UTF-8')) : null;//Load the routes from json
   const proxies = JSON.parse(fs.readFileSync(myOptions.dbProxyName, 'UTF-8')) //Load the proxies from json
   const rules = JSON.parse(fs.readFileSync(myOptions.dbRuleName, 'UTF-8')) //Load the rules from json
   const server = jsonServer.create() //Create the server
   const router = jsonServer.router(myOptions.dbName) //Load the database
   server.db = router.db   //Add a reference to our router database to the server
-  server.use(jsonServer.rewriter(routes)) //Set the custom routes
+  if (routes) server.use(jsonServer.rewriter(routes)) //Set the custom routes
   server.use(bodyParser.urlencoded({extended: true}))
   server.use(bodyParser.json())
   //DDOS Protection
@@ -455,7 +455,7 @@ function createServer(plugins){
   
   //Load the plugins
   plugins.forEach(function(file){
-    server.use(require('./'+file));
+    server.use(require(file));
     if (myOptions.logLevel>1) console.log('Adding plugin',file);
   });
  // 
@@ -470,7 +470,7 @@ function createServer(plugins){
 
 //Start the server and check if files have changed
 function start(restart=false){
-   pluginList(myOptions.watchedDir,function(plugins){
+   pluginList(path.join(process.cwd(), myOptions.watchedDir),function(plugins){
    concatJson({  //Rules
       src:  myOptions.watchedDir,
       dest: myOptions.dbRuleName,
