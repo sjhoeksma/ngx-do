@@ -13,7 +13,7 @@ describe('SidebarComponent', () => {
         BrowserAnimationsModule,
         CoreModule,
       ],providers: [
-        {provide: 'Environment', useValue: []},
+        {provide: 'Environment', useValue: {}},
       ]
     })
     .compileComponents();

@@ -3,7 +3,7 @@ import { Component, OnInit, Input } from '@angular/core';
 @Component({
   selector: 'cdk-profile-card',
   templateUrl: './profile-card.component.html',
-  styleUrls: ['./profile-card.component.theme.scss']
+  styleUrls: ['./profile-card.component.scss']
 })
 export class ProfileCardComponent implements OnInit {
     @Input() profile;

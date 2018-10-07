@@ -63,7 +63,7 @@ export class CoreConfig {
       lockScreen: false, //Should we enable a lock screen on lost focus or idle time
       lockIdle: 5, //Time in min you need to be idle before lock screen is triggered
       lockLogout: 0, //Time in min you will be logged out when idle, 0 means disabled
-      demo: false, //For development purpose we use demo data
+      demo: this.env ? this.env.length==0 :true, //For development and test purpose we use demo data
       appID: 'ng-do-cdk', //ID to identify the application
 
       "localhost" : {

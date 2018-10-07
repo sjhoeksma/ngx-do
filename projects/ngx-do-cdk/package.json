@@ -1,17 +1,25 @@
 {
   "name": "ngx-do-cdk",
-  "version": "0.0.1",
+  "version": "0.0.2-0",
   "peerDependencies": {
     "@angular/common": "^6.0.0-rc.0 || ^6.0.0",
     "@angular/core": "^6.0.0-rc.0 || ^6.0.0"
   },
   "scripts": {
-    "scss_bundle":"node ../../node_modules/bundle-scss/dist/bin/bundle-scss --config",
+    "scss_bundle": "node ../../node_modules/bundle-scss/dist/bin/bundle-scss --config",
     "start": "npm run scss_bundle"
   },
   "bundleStyle": {
-     "dest": "../../dist/ngx-do-cdk/_theming.scss",
-     "mask": "./src/lib/**/*.theme.scss",
-     "sort": ["sidemenu", "sidemenu-item", "dashcard", "profile-card","round-progressbar","sales-list","shake"]
-   }
+    "dest": "../../dist/ngx-do-cdk/_theming.scss",
+    "mask": "./src/lib/**/*.scss",
+    "sort": [
+      "sidemenu",
+      "sidemenu-item",
+      "dashcard",
+      "profile-card",
+      "round-progressbar",
+      "sales-list",
+      "shake"
+    ]
+  }
 }

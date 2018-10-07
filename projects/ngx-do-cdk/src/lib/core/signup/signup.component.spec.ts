@@ -20,7 +20,7 @@ describe('SignupComponent', () => {
         RestangularModule,
         SignupModule,
       ],providers: [
-        {provide: 'Environment', useValue: []},
+        {provide: 'Environment', useValue: {}},
         {provide: APP_BASE_HREF, useValue: '/'}
       ],
     })

@@ -3,7 +3,7 @@ import { Component, OnInit } from '@angular/core';
 @Component({
   selector: 'cdk-sales-list',
   templateUrl: './sales-list.component.html',
-  styleUrls: ['./sales-list.component.theme.scss']
+  styleUrls: ['./sales-list.component.scss']
 })
 export class SalesListComponent implements OnInit {
 

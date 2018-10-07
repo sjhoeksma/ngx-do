@@ -14,7 +14,7 @@ describe('ToolbarCartComponent', () => {
         RouterModule.forRoot([]),
         CoreModule,
       ],providers: [
-        {provide: 'Environment', useValue: []},
+        {provide: 'Environment', useValue: {}},
         {provide: APP_BASE_HREF, useValue: '/'}
       ],
     })

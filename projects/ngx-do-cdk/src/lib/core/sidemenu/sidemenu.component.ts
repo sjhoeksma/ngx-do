@@ -4,7 +4,7 @@ import { CoreConfig } from '../core.config';
 @Component({
   selector: 'cdk-sidemenu',
   templateUrl: './sidemenu.component.html',
-  styleUrls: ['./sidemenu.component.theme.scss']
+  styleUrls: ['./sidemenu.component.scss']
 })
 export class SidemenuComponent implements OnInit {
 

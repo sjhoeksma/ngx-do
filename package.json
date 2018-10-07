@@ -1,15 +1,16 @@
 {
-  "name": "ngx-do-cdk",
-  "version": "0.0.2-1",
+  "name": "ngx-do-cdk-library",
+  "version": "0.1.0",
   "scripts": {
     "ng": "ng",
     "start": "ng serve",
-    "build": "ng build",
     "test": "ng test",
     "test-single": "ng test ngx-do-cdk --watch=false --code-coverage",
     "lint": "ng lint",
-    "build_lib": "ng build --prod ngx-do-cdk && cd projects/ngx-do-cdk && npm run scss_bundle",
-    "publish": "npm run build_lib && cd dist/ngx-do-cdk && npm pack && npm publish"
+    "inc_version": "cd projects/ngx-do-cdk && npm version prerelease -f && cd ..",
+    "build": "ng build --prod ngx-do-cdk && cd projects/ngx-do-cdk && npm run scss_bundle",
+    "pack": "npm run inc_version && npm run build_lib && cd dist/ngx-do-cdk && npm pack",
+    "publish": "npm run pack && npm publish"
   },
   "private": false,
   "dependencies": {
