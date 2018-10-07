@@ -12,7 +12,7 @@ export class ToolbarComponent implements OnInit {
 	@Input() sidebar;
 	@Input() drawer;
 	@Input() matDrawerShow;
-  @Input() searchShow = true;
+  @Input() searchShow = false;
   @Input() aiChatbotShow = false;
   @Input() aiToken;
   @Input() settingsRoute;

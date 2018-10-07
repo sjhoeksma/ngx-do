@@ -1,6 +1,6 @@
 {
   "name": "ngx-do-cdk",
-  "version": "0.0.2-2",
+  "version": "0.0.2-5",
   "peerDependencies": {
     "@angular/common": "^6.0.0-rc.0 || ^6.0.0",
     "@angular/core": "^6.0.0-rc.0 || ^6.0.0"
@@ -11,7 +11,7 @@
   },
   "bundleStyle": {
     "dest": "../../dist/ngx-do-cdk/_theming.scss",
-    "mask": "./src/lib/**/*.scss",
+    "mask": "./src/lib/**/*.theme.scss",
     "sort": [
       "sidemenu",
       "sidemenu-item",

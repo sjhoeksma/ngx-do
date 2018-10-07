@@ -3,7 +3,7 @@ import { Observable ,  Observer } from 'rxjs';
 @Component({
     selector: 'cdk-dashcard',
     templateUrl: './dashcard.component.html',
-    styleUrls: ['./dashcard.component.scss']
+    styleUrls: ['./dashcard.component.them.scss']
 })
 export class DashcardComponent implements OnInit {
      
