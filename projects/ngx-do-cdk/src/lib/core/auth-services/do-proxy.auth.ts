@@ -25,17 +25,27 @@ export class DoProxyAuth extends BaseAuth {
           this.authToken = data.access_token;
           resolve(this._token!=null);
         }).catch((ex) => {
-         // console.log("User Not found",ex);
           resolve(false);
         });
     });
   }
   
   public signup(user: string = null, pass: string = null, remember: boolean = false): Promise<boolean>{
-    console.error("Signup not implemented",user,pass,remember);  
-    this._user = user;
-    this._token = null;
-    return Promise.resolve(this._token!=null);
+    return new Promise<boolean>((resolve, reject) => {
+      //We will load user info
+      const pwd = CryptoJS.SHA256(pass).toString(CryptoJS.enc.Hex);
+      let auth=this.rest
+       .one('auth').customPOST({email:user,password:pwd,signup:true},'',{} ,   
+                               {ContentType:'application/x-www-form-urlencoded'})
+       .toPromise().then((obj) => {
+          const data = obj.plain();
+          this._user = user;
+          this.authToken = data.access_token;
+          resolve(this._token!=null);
+        }).catch((ex) => {
+          resolve(false);
+        });
+    });
   }
   
   public refreshToken():  Promise<string> {

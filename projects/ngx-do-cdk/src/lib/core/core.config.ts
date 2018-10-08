@@ -209,6 +209,13 @@ export class CoreConfig {
   public get backendEnv():any {
     return this.environment[this.backend] || [];
   }
+
+  public get DEMO():boolean {
+    return this.backendValue('demo',false)==true;
+  }
+  public get TEST():boolean {
+    return this.backendValue('test',false)==true;
+  }
   
   public backendValue(key:string,defaultValue:any=null):any {
     try {
@@ -265,6 +272,7 @@ export class CoreConfig {
     }
     return this._remember; 
   }
+
   public set remember(value:boolean){
     if (this.remember!=value){
       this._remember=value;

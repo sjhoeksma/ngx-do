@@ -8,6 +8,8 @@ My work list on activities to work on.
 1. Fix style sheet of Survey
 1. Types in stead of []
 1. Make module from ngx-do-proxy, so it can be extended
+1. Add all other CDK components to demo project 
+1. Fix build --prod issue https://github.com/angular/angular-cli/issues/5460
 
 ## Widgets
 * BoxCard - add options for zoom and close

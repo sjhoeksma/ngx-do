@@ -123,7 +123,7 @@ export class SignupComponent implements OnInit {
       .then((res)=>{
         if (res) {
           this.activatedRoute.queryParams.subscribe(params => {
-             this.router.navigate([params['requestedUrl'] || '/']);
+             this.router.navigate([params['requestedUrl'] || '/app']);
           });
         } else {
           this.shake=true;

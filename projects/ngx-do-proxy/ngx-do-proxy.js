@@ -25,14 +25,15 @@ var myOptions = Object.assign({
   watchedDir:  './api',
   routes: null,
   jwtValidation: 'key',  //Set this to your 'key' == secretKey or "azure-aad" to use a azure-aad token
-  secretKey : "ngx-do-proxy",
+  secretKey : "do-proxy",
   expiresIn : '8h',
   logLevel : 1, //0=No log at all, 1=Info, 2=Info,Requests
   reuseDB: true,
   burst:8, //We start bursting ddos as of 8
   limit:10, //We limit to 10 connections per second
+  signup:false, //Is sigup of user allowed
   whitelist:['127.0.0.1'] //Local domain is whitelisted
-},argv);
+});
 
 
 var readError = false, app,server
@@ -129,6 +130,7 @@ function pluginList(filepath,callback){
         } else {
           if (stats.isFile()) {
             if (isPLUGIN(filepath)) {
+                if (myOptions.logLevel>1) console.log("Processing",filepath);
                 ret.push(filepath);
             }
           }
@@ -201,6 +203,7 @@ function concatJson(userOptions, callback) {
                   })
               } else if (stats.isFile()) {
                   if (options.isJsonFile(filepath)) {
+                      if (myOptions.logLevel>1) console.log("Processing",filepath);
                       // file. read it content and concatenate it
                       fs.readFile(filepath, { encoding: "utf8" }, (err, content) => {
                           //quit on the file. couldnt read it
@@ -334,24 +337,40 @@ function createServer(plugins){
       }
       return //No Next
     } else {
-      const {email, password} = req.body
+      const {email, password,signup } = req.body
       var decode = decodeToken(req);
-      let index = 0;
+      let index;
       if (decode && email && !password && decode!=401 && decode && decode.email==email){
         index = db.auth ? db.auth.findIndex(auth => auth.login == email) : -2;
         if (index <0 ) {
-          const status = 401
-          const message = 'Incorrect email'
-          res.status(status).json({status, message})
-          return
+            const status = 401
+            const message = 'Incorrect email'
+            res.status(status).json({status, message})
+            return
         }
       } else {
         index = isAuthenticated({email,password});
-        if (index === -1) {
-          const status = 401
-          const message = 'Incorrect email or password'
-          res.status(status).json({status, message})
-          return
+        if (index <0 ) {
+          if (signup && myOptions.signup){
+             index = db.auth ? db.auth.findIndex(auth => auth.login == email) : -2;
+             if (index<0 ){
+               let id =uuidv4();
+               db.auth.push( {id:id,login:email,hash:password,groups:[]});
+               db.users.push({id:id,email:email});
+               index = db.auth ? db.auth.findIndex(auth => auth.login == email) : -2;
+               if (myOptions.logLevel>1) console.log("Added user",email);
+             } else {
+              const status = 401
+              const message = 'email already exists'
+              res.status(status).json({status, message})
+              return
+             }
+          } else {
+            const status = 401
+            const message = 'Incorrect email or password'
+            res.status(status).json({status, message})
+            return
+          }
         } 
       }
       //create a JWT token with ID, email and roles
@@ -433,11 +452,14 @@ function createServer(plugins){
         res.status(422).json({"error":err});
       }
      }
+    //TODO check if val is a array
     if (val.use) server.use(route,ruleJsonParse(val.use||'[]',server),rl);
     if (val.put) server.put(route,ruleJsonParse(val.put||'[]',server),rl);
     if (val.get) server.get(route,ruleJsonParse(val.get||'[]',server),rl);
     if (val.post) server.post(route,ruleJsonParse(val.post||'[]',server),rl);
+    if (val.patch) server.patch(route,ruleJsonParse(val.patch||'[]',server),rl);
     if (val.delete) server.delete(route,ruleJsonParse(val.delete||'[]',server),rl);
+    if (val.options) server.options(route,ruleJsonParse(val.options||'[]',server),rl);
     if (myOptions.logLevel>1) console.log('Adding rule for',route);
   });
   
@@ -470,22 +492,24 @@ function createServer(plugins){
 
 //Start the server and check if files have changed
 function start(restart=false){
+  if (myOptions.logLevel>1) console.log('Working Dir',path.join(process.cwd(), myOptions.watchedDir));
    pluginList(path.join(process.cwd(), myOptions.watchedDir),function(plugins){
    concatJson({  //Rules
-      src:  myOptions.watchedDir,
+      src:  path.join(process.cwd(), myOptions.watchedDir),
       dest: myOptions.dbRuleName,
       isJsonFile: isRULE,
       reuseDB: false, //Rules are always created at startup
     },function(err,json){
      concatJson({  //Proxy
-      src:  myOptions.watchedDir,
+      src:  path.join(process.cwd(), myOptions.watchedDir),
       dest: myOptions.dbProxyName,
       isJsonFile: isPROXY,
       reuseDB: false, //Proxies are always created at startup
     },function(err,json){
     concatJson({ //DB
-      src:  myOptions.watchedDir,
+      src:  path.join(process.cwd(), myOptions.watchedDir),
       dest: myOptions.dbName,
+      isJsonFile: isJSONDB,
       reuseDB: !restart && myOptions.reuseDB
     }, function(err,json){
       //console.log("Concat finished",json,err)
@@ -494,7 +518,7 @@ function start(restart=false){
       if (app) {
         let obj
         try {
-          obj = jph.parse(fs.readFileSync(myOptions.dbName))
+          obj = jph.parse(fs.readFileSync(path.join(process.cwd(),myOptions.dbName)))
           if (readError) {
             console.log(chalk.green(`  Read error has been fixed :)`))
             readError = false
@@ -528,7 +552,7 @@ function start(restart=false){
 if (myOptions.logLevel==0) console.log = () => {}
 
 //Watch for changes in json files
-gaze(myOptions.watchedDir + '/**/*.json', (err, watcher) => {
+gaze(path.join(process.cwd(), myOptions.watchedDir) + '/**/*.json', (err, watcher) => {
   // On changed/added/deleted
   watcher.on('all', (event, filepath) => {
     if (myOptions.logLevel>1)
@@ -543,7 +567,7 @@ gaze(myOptions.watchedDir + '/**/*.json', (err, watcher) => {
 
 module.exports = {
   start : function(options){
-    myOptions = Object.assign(myOptions,options);
+    myOptions = Object.assign(myOptions,options,argv);
     start(false);
   }
 }
