@@ -4,7 +4,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
 import { CoreGlobalModule} from '../core.global.module'
 import { RestangularModule } from 'ngx-restangular';
-import { LoginModule } from './login.module';
 import { LoginComponent } from './login.component';
 
 
@@ -17,7 +16,6 @@ describe('LoginComponent', () => {
       imports: [ 
         BrowserAnimationsModule,
         CoreGlobalModule,
-        LoginModule,
         RouterModule.forRoot([]),
         RestangularModule,
       ],providers: [

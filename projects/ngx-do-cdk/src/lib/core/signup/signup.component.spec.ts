@@ -4,7 +4,6 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
 import { CoreGlobalModule} from '../core.global.module'
 import { RestangularModule } from 'ngx-restangular';
-import { SignupModule } from './signup.module';
 import { SignupComponent } from './signup.component';
 
 describe('SignupComponent', () => {
@@ -18,7 +17,6 @@ describe('SignupComponent', () => {
         CoreGlobalModule,
         RouterModule.forRoot([]),
         RestangularModule,
-        SignupModule,
       ],providers: [
         {provide: 'Environment', useValue: {}},
         {provide: APP_BASE_HREF, useValue: '/'}
