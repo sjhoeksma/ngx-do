@@ -17,6 +17,10 @@ export const environment = {
   demo: false, //For development purpose we use demo data
   
   appID: '6d2f17d4-c7b6-4c1b-9ed4-e773e88a098e', //ID to identify the application
+  passwordPattern: '^(?=.*[0-9])(?=.*[A-Z])([a-zA-Z0-9!@#$%^&*()]+)$',
+   //The default password pattern
+  passwordMin: 6, //Minimal length of password -->not checked during login
+  passwordMax: 26,//Maximal length of password
   
   //
   "remote" : {
@@ -36,6 +40,7 @@ export const environment = {
   "azure" : {
     signup : false,
     title : "Azure",
+    silentLogin: true,
     type: 'msal',
    // popup: true,
     fullLogout: false,

@@ -1,21 +1,26 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { MatSnackBarModule, MatToolbarModule } from '@angular/material';
-import { MatButtonModule } from '@angular/material/button';
-import { MatIconModule } from '@angular/material/icon';
-import { MatSidenavModule } from '@angular/material/sidenav';
-import { MatTabsModule } from '@angular/material';
-import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
-import { PERFECT_SCROLLBAR_CONFIG } from 'ngx-perfect-scrollbar';
-import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
-import { CoreModule, DoModule,DoComponent } from 'ngx-do-cdk';
+import { MatSnackBarModule, 
+        MatToolbarModule, 
+        MatSidenavModule} from '@angular/material';
+import { PerfectScrollbarModule , 
+        PERFECT_SCROLLBAR_CONFIG ,
+        PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
+import { CoreGlobalModule, 
+        DoModule, 
+        DoComponent } from 'ngx-do-cdk';
 import { AppComponent } from './app.component';
 import { BackendService } from './backend/backend.service';
+import { RestangularModule, Restangular } from 'ngx-restangular';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     suppressScrollX: true
 };
+
+// Function for setting the default restangular configuration
+export function RestangularConfigFactory (RestangularProvider) {
+}
 
 import { AppRoutes } from './app.routes';
 
@@ -24,13 +29,12 @@ import { AppRoutes } from './app.routes';
         CommonModule,
         MatToolbarModule, 
         MatSnackBarModule,
-        MatButtonModule,
-        MatIconModule,
-        MatTabsModule,
         MatSidenavModule,
         PerfectScrollbarModule,
-        CoreModule,
-        RouterModule.forChild(AppRoutes),
+        DoModule,
+        CoreGlobalModule,
+        RestangularModule.forRoot(RestangularConfigFactory),
+        RouterModule.forRoot(AppRoutes),
     ],
     declarations: [AppComponent],
     providers: [
@@ -39,6 +43,9 @@ import { AppRoutes } from './app.routes';
             useValue: DEFAULT_PERFECT_SCROLLBAR_CONFIG
         },
         BackendService
-    ]
+    ],
+   bootstrap: [
+    DoComponent
+   ]
 })
 export class AppModule { }

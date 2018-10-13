@@ -2,7 +2,7 @@ import { Component, OnInit ,Input} from '@angular/core';
 import { MediaChange, ObservableMedia } from '@angular/flex-layout';
 import { CoreConfig } from 'ngx-do-cdk';
 import { BackendService } from './backend/backend.service';
-
+import { AppMenu } from './app.menu'
 
 @Component({
   selector: 'app-app',
@@ -31,14 +31,7 @@ export class AppComponent implements OnInit{
     this.backend.getKeyVault('dialogflow').subscribe(rec=>{
       this.aiToken=rec['key'];
     });
-    this.coreConfig.menus=[
-      {
-          'name': 'Dashboard',
-          'icon': 'dashboard',
-          'link': 'dashboard',
-          'open': true,
-      }
-    ]; //addMenu(goMenus);
+    this.coreConfig.menus= AppMenu; //addMenu(goMenus);
   }
 
 	ngOnInit() {
