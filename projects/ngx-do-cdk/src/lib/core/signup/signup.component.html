@@ -8,7 +8,7 @@
                 </mat-card-title>
                 <mat-card-content [ngSwitch]="coreConfig.authModel" >
                     <mat-form-field *ngIf="coreConfig.backendList.length>1" class="full-width">
-                      <mat-select  id="backend" [(ngModel)]="coreConfig.backend" placeholder="Backend" >
+                      <mat-select  id="backend" [(ngModel)]="coreConfig.backend" placeholder="Backend" (ngModelChange)="backendChange($event)"  >
                         <mat-option *ngFor="let item of coreConfig.backendList | callback: backendAllowed" [value]="item.id" >{{item.title}}</mat-option>
                       </mat-select>  
                    </mat-form-field> 

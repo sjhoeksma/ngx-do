@@ -14,7 +14,7 @@ export class UserMenuComponent implements OnInit {
     @Input() settingsRoute;
     @Input() profileRoute;
     @Input() helpRoute;
-    @Input() logoutRoute =  '/login';
+    @Input() logoutRoute =  '/logout';
   
    
   	constructor(private elementRef: ElementRef,private router: Router,
@@ -37,7 +37,7 @@ export class UserMenuComponent implements OnInit {
   
     logout(){
       this.coreAuth.logout(true);
-      this.router.navigate([this.logoutRoute || '/login']);
+      this.router.navigate([this.logoutRoute || '/logout']);
     }
 
 }

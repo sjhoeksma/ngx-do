@@ -65,7 +65,9 @@ export class CoreConfig {
       lockLogout: 0, //Time in min you will be logged out when idle, 0 means disabled
       demo: this.env ? this.env.length==0 :true, //For development and test purpose we use demo data
       appID: 'ng-do-cdk', //ID to identify the application
-
+      passwordPattern:'^(?=.*[0-9])(?=.*[A-Z])([a-zA-Z0-9!@#$%^&*()]+)$', //The default password pattern
+      passwordMin: 6, //Minimal length of password -->not checked during login
+      passwordMax: 26,//Maximal length of password
       "localhost" : {
          title: 'Localhost JSON',
          type: 'do-proxy',
@@ -211,10 +213,10 @@ export class CoreConfig {
   }
 
   public get DEMO():boolean {
-    return this.backendValue('demo',false)==true;
+    return this.backendValue('demo',false)!=false;
   }
   public get TEST():boolean {
-    return this.backendValue('test',false)==true;
+    return this.backendValue('test',false)!=false;
   }
   
   public backendValue(key:string,defaultValue:any=null):any {

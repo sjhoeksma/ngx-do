@@ -18,7 +18,7 @@ export class ToolbarComponent implements OnInit {
   @Input() settingsRoute;
   @Input() profileRoute;
   @Input() helpRoute;
-  @Input() logoutRoute =  '/login';
+  @Input() logoutRoute =  '/logout';
   
 	searchOpen: boolean = false;
   aiChatbotOpen : boolean = false;

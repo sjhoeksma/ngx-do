@@ -71,15 +71,15 @@ export class SignupComponent implements OnInit {
       ]
       ],
       'password': ['', [
-        Validators.pattern('^(?=.*[0-9])(?=.*[A-Z])(?=.*[!@#$%^&*()])([a-zA-Z0-9!@#$%^&*()]+)$'),
-        Validators.minLength(6),
-        Validators.maxLength(25)
+        Validators.pattern(this.coreConfig.backendValue('passwordPattern')),
+        Validators.minLength(this.coreConfig.backendValue('passwordMin',6)),
+        Validators.maxLength(this.coreConfig.backendValue('passwordMax',25))
       ]
       ],
       'password2': ['', [
-        Validators.pattern('^(?=.*[0-9])(?=.*[A-Z])(?=.*[!@#$%^&*()])([a-zA-Z0-9!@#$%^&*()]+)$'),
-        Validators.minLength(6),
-        Validators.maxLength(25)
+        Validators.pattern(this.coreConfig.backendValue('passwordPattern')),
+        Validators.minLength(this.coreConfig.backendValue('passwordMin',6)),
+        Validators.maxLength(this.coreConfig.backendValue('passwordMax',25))
       ]
       ],
       'remember' : [this.coreConfig.remember]
@@ -130,6 +130,11 @@ export class SignupComponent implements OnInit {
           setTimeout(()=>{this.shake=false},500);
         }
       });
+  }
+  
+  //Change event of backend type
+  backendChange(event:any){
+    
   }
 
 }

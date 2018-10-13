@@ -40,7 +40,7 @@ export class LoginComponent implements OnInit {
   }
 
   ngOnInit() {
-     this.coreAuth.logout();
+     this.backendChange(null); //Check if can re login
      this.userForm = this.fb.group({
       'email': ['', [
         Validators.required,
@@ -48,9 +48,7 @@ export class LoginComponent implements OnInit {
       ]
       ],
       'password': ['', [
-       // Validators.pattern('^(?=.*[0-9])(?=.*[A-Z])(?=.*[!@#$%^&*()])([a-zA-Z0-9!@#$%^&*()]+)$'),
-       //  Validators.minLength(6),
-        Validators.maxLength(25)
+        Validators.maxLength(this.coreConfig.backendValue('passwordMax',25))
       ]
       ],
       'remember': [this.coreConfig.remember]
@@ -96,5 +94,19 @@ export class LoginComponent implements OnInit {
         }
       });
   }
+  
+    //Change event of backend type
+  backendChange(backend:any){
+    if (this.coreConfig.backendValue('silentLogin',false)==true){
+      this.coreAuth.refreshToken().then(token=>{
+        if (token) {
+          this.activatedRoute.queryParams.subscribe(params => {
+             this.router.navigate([params['requestedUrl'] || '/app']);
+          });
+        } 
+      })
+    }
+  }
+
 }
 
