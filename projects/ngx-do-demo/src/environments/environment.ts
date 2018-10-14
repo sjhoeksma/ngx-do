@@ -49,6 +49,6 @@ export const environment = {
     consentScopes: ['user.read'],
     tokenRefresh : 120, //We refresh every 2 hours
   },
-  
+ 
 
 };
