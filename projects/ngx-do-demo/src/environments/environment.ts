@@ -5,7 +5,7 @@
 export const environment = {
   production: false, 
   authentication : true, //Should we do authentication
-  backendList: ['azure','localhost','remote','deloitte'], //List of available back-ends configurations
+  backendList: ['azure','localhost','remote'], //List of available back-ends configurations
   backend : 'localhost', // The default backend
   backendRefresh: 10000, //For testing every 10 seconds refresh
   
