@@ -18,7 +18,7 @@ export class ProfileComponent implements OnInit {
   
   public editProfileCallback(){
     this.edit=!this.edit;
-    console.log("Edit Profile",this.edit);
+    //console.log("Edit Profile",this.edit);
   }
 
 }

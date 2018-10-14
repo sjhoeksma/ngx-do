@@ -16,6 +16,7 @@ export class AppComponent implements OnInit{
   @Input() isVisible : boolean = true;
   aiToken : string = null;
   profileRoute = "/app/pages/profile";
+  title = "DoAdmin Demo";
   
   visibility = 'shown';
 

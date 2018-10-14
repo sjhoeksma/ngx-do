@@ -1,6 +1,6 @@
 import { RouterModule, Routes } from '@angular/router';
 import { AppComponent } from './app.component';
-import { LoginComponent,SignupComponent,LogoutComponent} from 'ngx-do-cdk';
+import { CoreAuth,LoginComponent,SignupComponent,LogoutComponent} from 'ngx-do-cdk';
 
 export const AppRoutes: Routes = [{
   path: 'app', component: AppComponent, children: [
@@ -10,7 +10,7 @@ export const AppRoutes: Routes = [{
     { path: 'material-widgets', loadChildren: './material-widgets/material-widgets.module#MaterialWidgetsModule' },  
     {path:'error',redirectTo:'pages/error'}, //Error Route
     {path:'',redirectTo:'dashboard', pathMatch: 'full'}, //We show by default the dashboard
-   ],
+   ],canActivate:[CoreAuth]
  },
   {path: 'login', component: LoginComponent },
   {path: 'logout', component: LogoutComponent},

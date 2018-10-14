@@ -2,7 +2,7 @@
     <mat-sidenav [mode]="sideNavMode" class="sidenav" #sidenav [opened]="sideNavOpened" style="overflow: hidden;">
         <mat-toolbar color="primary" class="mat-elevation-z4">
             <img src="./assets/logo.png" width="48px">
-              <h1 class="logo">&nbsp;Demo</h1>
+              <h1 class="logo">&nbsp;{{title}}</h1>
         </mat-toolbar>
         <cdk-sidemenu [profileRoute]="profileRoute" [currentUser]="coreConfig?.currentUser"></cdk-sidemenu>
     </mat-sidenav>
@@ -40,17 +40,3 @@
     </mat-sidenav>
 
 </mat-sidenav-container>
-                 
-            
-            
-    
-    
-
-
-
-
-
-
-
-
-

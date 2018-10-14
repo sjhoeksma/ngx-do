@@ -16,8 +16,11 @@ const pagesRoutes: Routes = [
     { path: 'contact', component: ContactComponent ,data: { animation: 'contact' },
       canActivate:[CoreAuth]
     },
-     { path: 'profile', component: ProfileComponent ,data: { animation: 'profile' },
+    { path: 'profile', component: ProfileComponent ,data: { animation: 'profile' },
       canActivate:[CoreAuth]
+    },
+    { path: 'profile/:id', component: ProfileComponent ,data: { animation: 'profile'}
+      ,canActivate:[CoreAuth]
     },
 ];
 
