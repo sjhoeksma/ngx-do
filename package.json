@@ -16,7 +16,6 @@
     "build": "ng build --prod ngx-do-cdk && cd projects/ngx-do-cdk && npm run scss_bundle",
     "pack": "npm run inc_version && npm run build && cd dist/ngx-do-cdk",
     "publish": "npm run pack && cd dist/ngx-do-cdk && npm publish",
-
     "inc_version_proxy": "cd projects/ngx-do-proxy && npm version prerelease -f",
     "build_proxy": "cd projects/ngx-do-proxy && npm run build",
     "pack_proxy": "npm run inc_version_proxy && npm run build_proxy && cd dist/ngx-do-proxy",
