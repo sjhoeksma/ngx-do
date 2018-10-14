@@ -7,7 +7,8 @@ import { CommonModule } from '@angular/common';
 import { CoreConfig} from './core.config';
 import { CoreEvent} from './core.event';
 import { CoreAuth } from './core.auth';
-import { CoreModule} from './core.module'
+import { CoreModule} from './core.module';
+import { CoreBackend} from './core.backend';
 
 @NgModule({
     declarations: [
@@ -22,6 +23,7 @@ import { CoreModule} from './core.module'
        CoreConfig,
        CoreEvent,
        CoreAuth,
+       CoreBackend
     ]
 })
 export class CoreGlobalModule {}

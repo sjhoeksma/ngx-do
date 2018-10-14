@@ -41,7 +41,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
         UserMenuComponent,
         LogoutComponent,
         LoginComponent,
-        SignupComponent
+        SignupComponent,
     ],
 
     imports: [
@@ -83,7 +83,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
         SearchBarComponent,
         FullscreenComponent,
         SidebarComponent,
-        UserMenuComponent,      
+        UserMenuComponent,
     ],
 
     providers: [

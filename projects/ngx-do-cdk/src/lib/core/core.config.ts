@@ -199,7 +199,7 @@ export class CoreConfig {
    public static readonly backendKey = 'backend_key';
    private _backend: string;
    public get backend():string { 
-    if (!this._backend) this._backend = this.getItem(CoreConfig.backendKey,this.environment['backend']);
+    if (!this._backend) this._backend = this.getItem(CoreConfig.backendKey,this.environment['backend'],true);
     return this._backend; 
   }
   
@@ -222,7 +222,7 @@ export class CoreConfig {
   public backendValue(key:string,defaultValue:any=null):any {
     try {
     return (this.environment[this.backend] ? this.environment[this.backend][key] || this.environment[key] 
-                                       :  this.environment[key]) || defaultValue; 
+        :  this.environment[key]) || defaultValue; 
     } catch (ex){
       return defaultValue
     }
@@ -270,7 +270,7 @@ export class CoreConfig {
   public get remember():boolean{
     if (this._remember==null){
       this._remember=false;
-      this._remember=this.getItem(CoreConfig.remember_key,false);
+      this._remember=this.getItem(CoreConfig.remember_key,false,true);
     }
     return this._remember; 
   }
@@ -279,14 +279,27 @@ export class CoreConfig {
     if (this.remember!=value){
       this._remember=value;
       this.setItem(CoreConfig.remember_key,this._remember);
+      this.setItem(CoreConfig.backendKey,this._backend);
     }
   }
+
+  public clearStorage(byUser:boolean):void{
+    if (byUser && this.remember) {
+      localStorage.clear();
+      //Save remember
+      this.setItem(CoreConfig.remember_key,this._remember);
+    }
+    sessionStorage.clear();
+    //Save the  backend
+    this.setItem(CoreConfig.backendKey,this._backend);
+  }
+  
   /* Wrapper functions for local and session storage */
 
   static readonly staticID = "000-000-000";
-  public getItem(key:string,defaultValue:any = null):any {
+  public getItem(key:string,defaultValue:any = null,force:boolean=false):any {
     try {
-     let v = this._remember ? 
+     let v = this._remember || force ? 
       localStorage.getItem(key)||  sessionStorage.getItem(key) :
       sessionStorage.getItem(key);
      v = JSON.parse(CryptoJS.AES.decrypt(v|| defaultValue,

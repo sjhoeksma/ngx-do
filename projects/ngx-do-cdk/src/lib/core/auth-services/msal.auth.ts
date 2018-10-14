@@ -14,14 +14,14 @@ export class MsalAuth extends BaseAuth {
 	
   public get isReady():Promise<boolean>{
     if (!this._isReady){
-     this._isReady =new Promise((resolve,reject)=>{
+     this._isReady=new Promise((resolve,reject)=>{
         //Create the client
         this.msal = new Msal.UserAgentApplication(
              this.coreConfig.backendEnv['clientID'], 
              this.coreConfig.backendEnv['authority'], 
           (errorDesc, token, error, tokenType) => {
-              if (token) this.authToken = token ; //Restore the token from login
-              resolve(this.loggedIn);
+            this.validateToken(token).then(
+            token=>{resolve(this.loggedIn)});
           },{
            cacheLocation: this.coreConfig.remember ? 'localStorage' : 'sessionStorage',
            redirectUri: this.coreConfig.baseUrl,
@@ -32,10 +32,10 @@ export class MsalAuth extends BaseAuth {
         //Check for hash
         let hash = window.location.hash;
         if (hash && hash.indexOf('#id_token=')==0) {
-          this.msal.saveTokenFromHash(this.msal.getRequestInfo(hash))
-          this.authToken=hash.substring(10);
+          this.msal.saveTokenFromHash(this.msal.getRequestInfo(hash));
+          this.validateToken(hash.substring(10)).then(
+            token=>{resolve(this.loggedIn)});
           history.replaceState({}, document.title, "."); //Remove hash from url
-          resolve(this.loggedIn);
         } else {
             //Refresh the hash
            this.refreshToken().then((accesToken)=>{
@@ -50,11 +50,11 @@ export class MsalAuth extends BaseAuth {
   public login(user: string = null, pass: string = null, remember: boolean = false): Promise<boolean> {
      return new Promise<boolean>((resolve,reject)=>{ 
       if (!this.coreConfig.backendEnv['popup']){
-       this.msal.loginRedirect(this.coreConfig.backendEnv['consentScopes']);
+        this.msal.loginRedirect(this.coreConfig.backendEnv['consentScopes']);
       } else this.msal.loginPopup(this.coreConfig.backendEnv['consentScopes'])
         .then((token)=>{
-        this.authToken=token;
-        resolve(this._token!=null);
+        this.validateToken(token).then(
+            token=>{resolve(this.loggedIn)});
       },(error)=>{
         resolve(false);
       })    
@@ -71,25 +71,67 @@ export class MsalAuth extends BaseAuth {
     return super.logout(byUser);
   }
   
+  private validateToken(token:string): Promise<string>{
+    return new Promise<string>((resolve,reject)=>{ 
+      const decoded = this.coreConfig.decodeJWT(token);
+      if (!decoded) {
+        this.authToken=null;
+        return resolve(this._token);
+      } 
+      const apiUrl = this.coreConfig.backendEnv['apiURL'];
+      if (apiUrl){
+        let head : object= {
+          ContentType:'application/x-www-form-urlencoded'};
+        const decoded = this.coreConfig.decodeJWT(token);
+        if ( token) head['Authorization']= `Bearer ${token}` 
+        if ( this._accessToken) head['access_token'] = this._accessToken;
+        this.rest.one('auth')
+           .customPOST({email:decoded['preferred_username'] || decoded['email'],
+              signup: this.coreConfig.backendValue('signup',false),
+              type:  this.coreConfig.backendValue('type','msal')}
+              ,'',{} , head).toPromise().then( (obj) => {          
+           this.authToken = token;
+          return resolve(this._token);
+        }).catch((ex) => {
+          this.authToken = null;
+          console.log("Failed ValidateToken",ex);
+          return resolve(this._token);
+        });
+     } else {
+       this.authToken = token;
+       return resolve(this._token);
+     }
+    });
+  }
+  
+  
   public refreshToken():  Promise<string> {
+    const key = 'msal.idtoken';
     if (navigator.onLine) {
       return new Promise((resolve,reject)=>{
         this.msal.acquireTokenSilent(this.coreConfig.backendEnv['consentScopes'])
-          .then((accessToken)=>{
-             if (accessToken) {                 
-               if (this.accessToken!=accessToken){
-                 const key = 'msal.idtoken';
-                 this._accessToken=accessToken;
-                 let v = this.coreConfig.remember ? localStorage.getItem(key)||  sessionStorage.getItem(key) 
-                      : sessionStorage.getItem(key) || localStorage.getItem(key);
-                 this.authToken = v;
-               } else {
-               //  console.warn('Msal.auth: No change in access_token');
-               }
-             }
-             resolve(this._token);
-          },reject);
-      });
+          .then((accessToken)=>{  
+             const apiUrl = this.coreConfig.backendEnv['apiURL'];
+             this._accessToken=accessToken;
+             this.validateToken(this.coreConfig.remember ?  
+                localStorage.getItem(key)||  sessionStorage.getItem(key) 
+                : sessionStorage.getItem(key)
+               ).then(resolve,reject);
+          },(ex)=>{
+            //Only show real errors, not warnings
+            if (ex.toString().indexOf('AADSTS700051')>=0)
+             console.warn('Token refresh not enabled for this application');
+            else  
+               console.error("RefreshToken Failed",ex);
+            this.validateToken(this.coreConfig.remember ?  
+                localStorage.getItem(key)||  sessionStorage.getItem(key) 
+                : sessionStorage.getItem(key)
+               ).then(resolve,reject);
+          }).catch(function(ex) {
+            console.error("RefreshToken Error",ex)
+            resolve(this._token);
+          });
+        });
     }
     return Promise.resolve(this._token);
   }

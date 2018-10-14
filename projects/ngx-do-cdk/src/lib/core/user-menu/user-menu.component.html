@@ -11,19 +11,19 @@
   	<div class="dropdown mat-elevation-z1" [class.open]="isOpen">
     	<div class="content">
       		<mat-nav-list>
-      			<mat-list-item *ngIf="profileRoute" [routerLink]="[profileRoute,currentUser.id]">
+      			<mat-list-item *ngIf="profileRoute" [routerLink]="[profileRoute,currentUser.id]" (click)="close()">
       				<a matLine >Profile</a>
 				    <button mat-icon-button>
 				       <mat-icon>account_circle</mat-icon>
 				    </button>
       			</mat-list-item>
-      			<mat-list-item *ngIf="settingsRoute" [routerLink]="[settingsRoute]">
+      			<mat-list-item *ngIf="settingsRoute" [routerLink]="[settingsRoute]"  (click)="close()">
       				<a matLine >Settings</a>
 				    <button mat-icon-button>
 				       <mat-icon>settings</mat-icon>
 				    </button>
       			</mat-list-item>
-      			<mat-list-item *ngIf="helpRoute" [routerLink]="[helpRoute]">
+      			<mat-list-item *ngIf="helpRoute" [routerLink]="[helpRoute]"  (click)="close()">
       				<a matLine >Help</a>
 				    <button mat-icon-button>
 				       <mat-icon>help</mat-icon>

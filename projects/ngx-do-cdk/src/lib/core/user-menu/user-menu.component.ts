@@ -31,6 +31,10 @@ export class UserMenuComponent implements OnInit {
       		this.isOpen = false;
     	}
   	}
+  
+    close(){
+      this.isOpen = false;
+    }
 
   	ngOnInit() {
   	}

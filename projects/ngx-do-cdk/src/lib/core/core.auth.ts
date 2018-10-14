@@ -1,5 +1,5 @@
 import { Injectable,ReflectiveInjector,Injector} from '@angular/core';
-import {ActivatedRouteSnapshot, CanActivate, Router, RouterStateSnapshot} from '@angular/router';
+import {ActivatedRouteSnapshot, ActivatedRoute, CanActivate, Router, RouterStateSnapshot} from '@angular/router';
 import {Restangular } from 'ngx-restangular';
 import { Observable } from 'rxjs';
 import { CoreConfig } from './core.config';
@@ -28,6 +28,7 @@ export interface AuthInterface {
 export class CoreAuth implements CanActivate , AuthInterface {
  
   constructor(protected coreConfig:CoreConfig,protected router : Router,
+                private activatedRoute: ActivatedRoute, 
                protected rest: Restangular, protected coreEvent:CoreEvent){
     this.authService; //Init the authService selected by default
     //Set the error handler for 403
@@ -83,7 +84,7 @@ export class CoreAuth implements CanActivate , AuthInterface {
       this.authToken = this.coreConfig.getItem(BaseAuth.sessionKey);
       if (this.loggedIn) {
         this.coreConfig.load().then((loadState)=>{
-          this.router.navigate(["/"]);
+          this.router.navigate(["/app"]);
         });
       }
     }
@@ -109,7 +110,12 @@ export class CoreAuth implements CanActivate , AuthInterface {
       this.isReady.then((loggedIn)=>{
         if (loggedIn) {
           this.coreConfig.load(); //Load the config data
-          this.refresh(); //Start refresh 
+          this.refresh(false); //Start refresh 
+          //On login redirect to app
+          if (this.router.url === '/login')
+            this.activatedRoute.queryParams.subscribe(params => {
+             this.router.navigate([params['requestedUrl'] || '/app']);
+            });
         }
         this.coreEvent.send({event:"isReady",loggedIn:loggedIn},CoreEvent.core_channel);
       });
@@ -155,7 +161,8 @@ export class CoreAuth implements CanActivate , AuthInterface {
     return this.loggedIn ? new Promise<boolean>((resolve,reject)=>{
       (this.authService ? this._authService.logout(byUser): Promise.resolve(true))
       .then((logoutState)=>{
-        this.coreEvent.send({event:"logout",logoutState:logoutState},CoreEvent.core_channel);
+        this.coreEvent.send({event:"logout",logoutState:logoutState},
+                     CoreEvent.core_channel);
         this.coreConfig.clear();
         clearTimeout(this._refreshID);
         this._refreshID=null;
@@ -171,7 +178,8 @@ export class CoreAuth implements CanActivate , AuthInterface {
     return this.loggedIn ? new Promise<string>((resolve,reject)=>{
       (this.authService ? this._authService.refreshToken() : Promise.resolve(null))
       .then((token)=>{
-        this.coreEvent.send({event:"refreshToken",token:token},CoreEvent.core_channel);
+        this.coreEvent.send({event:"refreshToken",token:token},
+                    CoreEvent.core_channel);
         if (!token) this.logout(); //Forced logout when token is not refreshed
         resolve(token);
       });

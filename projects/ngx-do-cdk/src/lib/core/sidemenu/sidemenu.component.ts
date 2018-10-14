@@ -9,12 +9,15 @@ import { CoreConfig } from '../core.config';
 export class SidemenuComponent implements OnInit {
 
     @Input() iconOnly:boolean = false;
-    @Input() profileRoute =  'profile';
+    @Input() profileRoute
     @Input() currentUser;
     profileMenu : object ;
     public menus = this.coreConfig.menus;
 
-    constructor(public coreConfig: CoreConfig ) {
+    constructor(public coreConfig: CoreConfig ) {  
+    }
+
+    ngOnInit() {
       this.profileMenu ={
         'name': 'Profile',
         'icon': 'account_circle',
@@ -22,9 +25,6 @@ export class SidemenuComponent implements OnInit {
         'open': true,
         'visible':true
       }
-    }
-
-    ngOnInit() {
     }
 
 }

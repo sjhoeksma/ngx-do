@@ -29,8 +29,7 @@ export class BaseAuth implements AuthInterface {
 
   public logout(byUser:boolean = false):Promise<boolean>  {
     this.authToken=null;
-    if (byUser && this.coreConfig.remember) localStorage.clear();
-    sessionStorage.clear();
+    this.coreConfig.clearStorage(byUser);
     return Promise.resolve(!this.loggedIn);
   }
   
@@ -70,7 +69,8 @@ export class BaseAuth implements AuthInterface {
       if (decoded && (!decoded['exp'] || decoded['exp']>(new Date().getTime()/1000))){
           this._token = token;
           this.setDefaultHeader();
-          this._user=decoded['preferred_username'] || decoded['name'] || decoded['email'] || this._user;
+          this._user=decoded['preferred_username'] || decoded['name'] || 
+                     decoded['email'] || this._user;
           this.coreConfig.setItem(BaseAuth.sessionKey,token);
       } else {
         this.logout();  

@@ -17,8 +17,10 @@ export class DoProxyAuth extends BaseAuth {
       //We will load user info
       const pwd = CryptoJS.SHA256(pass).toString(CryptoJS.enc.Hex);
       let auth=this.rest
-       .one('auth').customPOST({email:user,password:pwd},'',{} ,   
-                               {ContentType:'application/x-www-form-urlencoded'})
+       .one('auth').customPOST({email:user,
+            password:pwd,
+            type:  this.coreConfig.backendValue('type','do-proxy')},'',{} ,   
+            {ContentType:'application/x-www-form-urlencoded'})
        .toPromise().then((obj) => {
           const data = obj.plain();
           this._user = user;
@@ -35,8 +37,11 @@ export class DoProxyAuth extends BaseAuth {
       //We will load user info
       const pwd = CryptoJS.SHA256(pass).toString(CryptoJS.enc.Hex);
       let auth=this.rest
-       .one('auth').customPOST({email:user,password:pwd,signup:true},'',{} ,   
-                               {ContentType:'application/x-www-form-urlencoded'})
+       .one('auth').customPOST({email:user,
+            password:pwd,
+            signup:true,
+            type:  this.coreConfig.backendValue('type','do-proxy')},'',{} ,   
+            {ContentType:'application/x-www-form-urlencoded'})
        .toPromise().then((obj) => {
           const data = obj.plain();
           this._user = user;
@@ -53,8 +58,9 @@ export class DoProxyAuth extends BaseAuth {
       //let $this: any = this;
       return new Promise<string>((resolve,reject) => {
        let auth=this.rest
-         .one('auth').customPOST({email:this._user},'',{} ,
-                                 {ContentType:'application/x-www-form-urlencoded'})
+         .one('auth').customPOST({email:this._user,
+                  type:  this.coreConfig.backendValue('type','do-proxy')},'',{} ,
+                  {ContentType:'application/x-www-form-urlencoded'})
          .toPromise().then( (obj) => {          
             const data = obj.plain();
             this.authToken = data.access_token;
