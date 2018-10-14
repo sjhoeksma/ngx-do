@@ -12,7 +12,7 @@ import { Observable, Subject,Subscription } from 'rxjs';
     header: "sv_header",
     body: "sv_body",
     footer: "sv_nav",
-    navigationButton: "",
+    navigationButton: "mat-button  btn-primary",
     completedPage: "sv_completed_page",
     navigation: {
       complete: "mat-button sv_complete_btn btn-primary",
@@ -172,8 +172,6 @@ import { Observable, Subject,Subscription } from 'rxjs';
    Survey.defaultStandardCss[key] = themeCss[key];
   });                                        
                                           
-  
-
   Survey.StylesManager.applyTheme();   
 }
 

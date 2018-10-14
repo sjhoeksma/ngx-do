@@ -34,6 +34,7 @@ var myOptions = Object.assign({
   limit:10, //We limit to 10 connections per second
   audience: null, //The audience to be used when decoding an azure token
   signup:true, //Is sigup of user allowed
+  allowOrigin: '*', //The CORS allow origin settings
   whitelist:['127.0.0.1'] //Local domain is whitelisted
 });
 
@@ -325,7 +326,8 @@ function createServer(plugins){
   
   //Allow CORS control for all
   server.use(function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", "*");
+    res.header("Access-Control-Allow-Origin", myOptions.allowOrigin);
+    res.header('Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS');
     res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
     next();
   });

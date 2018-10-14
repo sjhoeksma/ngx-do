@@ -2,7 +2,8 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SidemenuComponent } from './sidemenu/sidemenu.component';
 import { SidemenuItemComponent } from './sidemenu-item/sidemenu-item.component';
-import { MatCardModule , MatListModule , MatButtonModule ,MatInputModule ,MatIconModule, MatToolbarModule , MatChipsModule ,MatFormFieldModule, MatTabsModule, MatOptionModule,  MatSidenavModule, MatSliderModule, MatProgressBarModule, MatSelectModule, MatButtonToggleModule,MatCheckboxModule,MatSnackBarModule} from '@angular/material';
+import { MatCardModule , MatListModule , MatButtonModule ,MatInputModule ,MatIconModule, MatToolbarModule , MatChipsModule ,MatFormFieldModule, MatTabsModule, MatOptionModule,  MatSidenavModule, MatSliderModule, MatProgressBarModule, MatSelectModule, MatButtonToggleModule,MatCheckboxModule,MatSnackBarModule,MatTooltipModule} from '@angular/material';
+
 import { FormsModule,ReactiveFormsModule } from '@angular/forms';
 
 import { RouterModule } from '@angular/router';
@@ -56,6 +57,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
         MatSnackBarModule, 
         MatToolbarModule, 
         MatSidenavModule,
+        MatTooltipModule,
         FormsModule,
         MatButtonToggleModule,
         MatCheckboxModule,
