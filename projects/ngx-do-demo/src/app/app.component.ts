@@ -37,8 +37,8 @@ export class AppComponent implements OnInit{
 
 	ngOnInit() {
 		this.media.subscribe((mediaChange: MediaChange) => {
-            this.toggleView();
-        });
+       this.toggleView();
+    });
 	}
 
   ngOnChanges() {
