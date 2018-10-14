@@ -50,3 +50,4 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 * [Azure Test](https://medium.com/@flu.lund/automated-angular-unit-testing-on-visual-studio-team-services-22c03497265c)
 * [Continues Integration](https://travis-ci.org/)
 * [Configurable Angular Modules](https://medium.com/@michelestieven/angular-writing-configurable-modules-69e6ea23ea42)
+* [NodeJS Request](https://www.thepolyglotdeveloper.com/2017/10/consume-remote-api-data-nodejs-application/)
