@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import {MatTooltipModule} from '@angular/material/tooltip';
 
 @Component({
     selector: 'cdk-sidemenu-item',
@@ -27,7 +28,7 @@ export class SidemenuItemComponent implements OnInit {
    public isVisible(){
      if (!this.menu) return false;
      if (typeof(this.menu.visible)=='function') return this.menu.visible();
-     return this.menu.visible!=false;
+     return this.menu.visible!==false;
    }
   
    public chipValue(){

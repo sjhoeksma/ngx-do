@@ -12,12 +12,14 @@ export class SidemenuComponent implements OnInit {
     @Input() profileRoute
     @Input() currentUser;
     profileMenu : object ;
-    public menus = this.coreConfig.menus;
+    @Input() menus;
 
     constructor(public coreConfig: CoreConfig ) {  
+      
     }
 
     ngOnInit() {
+      if (!this.menus) this.menus = this.coreConfig.menus;
       this.profileMenu ={
         'name': 'Profile',
         'icon': 'account_circle',

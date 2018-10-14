@@ -119,10 +119,17 @@ export class MsalAuth extends BaseAuth {
                ).then(resolve,reject);
           },(ex)=>{
             //Only show real errors, not warnings
-            if (ex.toString().indexOf('AADSTS700051')>=0)
+            if (ex.toString().indexOf('AADSTS700051')>=0){
              console.warn('Token refresh not enabled for this application');
-            else  
+            } else if (ex.toString().indexOf('AADSTS50076')>=0){
+              console.warn('Token refresh requires MFA');
+              this.authToken=null;
+              return resolve(this._token);
+            } else {
                console.error("RefreshToken Failed",ex);
+               this.authToken=null;
+               return resolve(this._token);
+            }
             this.validateToken(this.coreConfig.remember ?  
                 localStorage.getItem(key)||  sessionStorage.getItem(key) 
                 : sessionStorage.getItem(key)
