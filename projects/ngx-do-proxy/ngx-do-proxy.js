@@ -1,4 +1,5 @@
-const fs = require('fs')
+const fs = require('fs');
+var Request = require('request');
 const bodyParser = require('body-parser')
 const jsonServer = require('json-server')
 const jwt = require('jsonwebtoken')
@@ -31,10 +32,10 @@ var myOptions = Object.assign({
   reuseDB: true,
   burst:8, //We start bursting ddos as of 8
   limit:10, //We limit to 10 connections per second
-  signup:false, //Is sigup of user allowed
+  audience: null, //The audience to be used when decoding an azure token
+  signup:true, //Is sigup of user allowed
   whitelist:['127.0.0.1'] //Local domain is whitelisted
 });
-
 
 var readError = false, app,server
 
@@ -50,14 +51,30 @@ function decodeToken(req){
       return 401;
     }
     try {
-       if (myOptions.jwtValidation=="azure-aad"){
-        aad.verify(token[1], null, 
-           (err, decode) => decode !== undefined ?  decode : null);
+       let decoded=jwt.decode(token[1]);
+       if (!decoded) return null;
+       if (myOptions.jwtValidation=="azure-aad" || decoded['iss']){
+        decoded['email']=decoded['preferred_username'];
+        /* This does not work yet, more testing
+        if (myOptions.logLevel>1) console.log("Validate Azure Token",aad.verify(token[1], { audience:  myOptions.audience ?  myOptions.audience :'https://graph.windows.net'}, 
+           (err, decode) => {
+            console.log("decoded",decode,err);
+            return decode;
+           })
+        );
+        */
+        //For now we just decode and date checking
+        let d = Date.now()/1000; //Time is in ms 
+        if (d<=parseInt(decoded['nbf'])-600 || 
+            d>=parseInt(decoded['exp'])+300) 
+          return 403;
+        return decoded;
        } else {
         return  jwt.verify(token[1], myOptions.secretKey, 
           (err, decode) => decode !== undefined ?  decode : null);
         }
     } catch (err) {
+      console.log("decodeToken error",err);
       return 403;
     }
 }
@@ -287,7 +304,6 @@ function ruleJsonParse(obj,server){
  return Function('arg', '"use strict";var check=arg[0],oneOf=arg[1],checkSchema=arg[2],options=arg[3],db=arg[4];return (' + obj + ')')([check, oneOf, checkSchema,myOptions,server.db]);
 }
 
-
 //Create the api-proxy server, with memory and persistent to file based json-server
 function createServer(plugins){
   const routes = myOptions.routes ? JSON.parse(fs.readFileSync(myOptions.routes, 'UTF-8')) : null;//Load the routes from json
@@ -317,10 +333,26 @@ function createServer(plugins){
   // We should check auth before we start accessing api services
   server.all('/auth', (req, res) => {
     const db = server.db.getState() //Get the last active database
+    const {email, password,signup,type } = req.body
+    
     // Check if the user exists in database
     function isAuthenticated({email, password}){
       return db.auth ? db.auth.findIndex(auth => auth.login == email && auth.hash == password ) : -2;
     }
+    
+    //Signup a user, add it to db
+    function createUser(decode){
+       let index = db.auth ? db.auth.findIndex(auth => auth.login == email) : -2;
+       if (index>=0) return -2; //Cannot user already exists
+       let id =uuidv4();
+       db.auth.push( {id:id,login:email,hash:type,groups:[]});
+       db.users.push({id:id,email:email,name:decode['name']});
+       index = db.auth ? db.auth.findIndex(auth => auth.login == email) : -2;
+       if (myOptions.logLevel>1) console.log("Added user",email);
+       server.db.write();
+       return index;
+    }
+    
     if (req.method == 'GET') {
       let tokenState = verifyToken(req);
       if (tokenState!=0) { //Invalid token so we return error
@@ -336,42 +368,23 @@ function createServer(plugins){
         res.status(200).json({status, message})
       }
       return //No Next
-    } else {
-      const {email, password,signup } = req.body
+      
+    } else { //This is post
       var decode = decodeToken(req);
       let index;
-      if (decode && email && !password && decode!=401 && decode && decode.email==email){
+      if (decode && email && !password && decode!=401 && 
+          decode && decode.email==email){
         index = db.auth ? db.auth.findIndex(auth => auth.login == email) : -2;
-        if (index <0 ) {
-            const status = 401
-            const message = 'Incorrect email'
-            res.status(status).json({status, message})
-            return
-        }
-      } else {
+        if (index<0 && signup && myOptions.signup) index=createUser(decode);
+      } else { //Normal login
         index = isAuthenticated({email,password});
-        if (index <0 ) {
-          if (signup && myOptions.signup){
-             index = db.auth ? db.auth.findIndex(auth => auth.login == email) : -2;
-             if (index<0 ){
-               let id =uuidv4();
-               db.auth.push( {id:id,login:email,hash:password,groups:[]});
-               db.users.push({id:id,email:email});
-               index = db.auth ? db.auth.findIndex(auth => auth.login == email) : -2;
-               if (myOptions.logLevel>1) console.log("Added user",email);
-             } else {
-              const status = 401
-              const message = 'email already exists'
-              res.status(status).json({status, message})
-              return
-             }
-          } else {
-            const status = 401
-            const message = 'Incorrect email or password'
-            res.status(status).json({status, message})
-            return
-          }
-        } 
+        if (index<0 && signup && myOptions.signup) index=createUser(decode);
+      }
+      if (index<0){
+        const status = 401
+        const message = 'Incorrect email or password'
+        res.status(status).json({status, message})
+        return 
       }
       //create a JWT token with ID, email and roles
       const groups = db.auth[index].groups;
@@ -452,7 +465,7 @@ function createServer(plugins){
         res.status(422).json({"error":err});
       }
      }
-    //TODO check if val is a array
+    //TODO check if val is a array, use options read and write
     if (val.use) server.use(route,ruleJsonParse(val.use||'[]',server),rl);
     if (val.put) server.put(route,ruleJsonParse(val.put||'[]',server),rl);
     if (val.get) server.get(route,ruleJsonParse(val.get||'[]',server),rl);

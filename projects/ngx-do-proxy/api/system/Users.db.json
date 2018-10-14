@@ -21,11 +21,6 @@
        "html_url": null,
        "createdAt": 1347185460001,
        "avatar_url": "assets/avatars/user1-128x128.jpg",
-    },
-    {
-     "id": 2,   
-     "email " : "sjhoeksma@gmail.com",
-     "avatar_url": "assets/avatars/user7-128x128.jpg"
-    }  
+    } 
   ]
 }
