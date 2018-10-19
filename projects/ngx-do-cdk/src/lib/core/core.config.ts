@@ -12,7 +12,7 @@ interface CoreMessage {
   providedIn: 'root',
 })
 export class CoreConfig {
-  private environment;
+  public environment;
   constructor(@Inject("Environment") private env,protected coreEvent:CoreEvent){
     //Default values of environment and preferences
     this.preferences=null;
@@ -269,8 +269,8 @@ export class CoreConfig {
   private _remember : boolean = null;
   public get remember():boolean{
     if (this._remember==null){
-      this._remember=false;
-      this._remember=this.getItem(CoreConfig.remember_key,false,true);
+      this._remember=this.getItem(CoreConfig.remember_key,
+          this.environment['remember']||false,true);
     }
     return this._remember; 
   }
@@ -284,7 +284,7 @@ export class CoreConfig {
   }
 
   public clearStorage(byUser:boolean):void{
-    if (byUser && this.remember) {
+    if (byUser) {
       localStorage.clear();
       //Save remember
       this.setItem(CoreConfig.remember_key,this._remember);
@@ -299,7 +299,7 @@ export class CoreConfig {
   static readonly staticID = "000-000-000";
   public getItem(key:string,defaultValue:any = null,force:boolean=false):any {
     try {
-     let v = this._remember || force ? 
+     let v = force || this._remember ? 
       localStorage.getItem(key)||  sessionStorage.getItem(key) :
       sessionStorage.getItem(key);
      v = JSON.parse(CryptoJS.AES.decrypt(v|| defaultValue,

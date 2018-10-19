@@ -4,6 +4,8 @@
 
 export const environment = {
   production: false, 
+  remember: true, //By default we remember user
+  title: "DoAdmin",
   authentication : true, //Should we do authentication
   backendList: ['azure','localhost','remote'], //List of available back-ends configurations
   backend : 'localhost', // The default backend
@@ -38,7 +40,7 @@ export const environment = {
   
   //Settings by backend provider
   "azure" : {
-    signup : false,
+    signup : true,
     title : "Azure",
     silentLogin: true,
     type: 'msal',

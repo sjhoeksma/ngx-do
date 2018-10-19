@@ -133,5 +133,19 @@ export const AppMenu: Array<object> = [
             'open': false,
         },
     ]
+  },{
+    'name': 'Do Widgets',
+    'icon': 'view_quilt',
+    'link': false,
+    'open': false,
+    'sub': [
+        {
+            'name': 'Survey',
+            'link': 'widgets/survey',
+            'icon': 'query_builder',
+            'chip': false,
+            'open': false,
+        },
+     ]
   },
 ];

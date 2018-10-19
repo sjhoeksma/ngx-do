@@ -12,9 +12,36 @@ import { BaseAuth} from './base.auth';
 export class MsalAuth extends BaseAuth {
   protected msal : any;
 	
+  /**
+   * There is a bug with using localStorage and redirect msal.
+   * We implemented a workaround which copies sessionStorage
+   * when we want to remember login status
+   */
+  private workAround : boolean = true;
+  private copyMsal(toLocal:boolean){
+    if (!this.coreConfig.remember) return;
+    let keys = ['msal.authority','msal.acquireTokenUser','msal.client.info','msal.error','msal.error.description','msal.session.state','msal.token.keys','msal.access.token.key','msal.expiration.key','msal.state.login','msal.state.acquireToken','msal.state.renew','msal.nonce.idtoken','msal.username','msal.idtoken','msal.login.request','msal.login.error','msal.token.renew.status','adal.idtoken']
+    if (toLocal){
+      keys.forEach(function(k){
+        let v = sessionStorage.getItem(k);
+        if (v) 
+          localStorage.setItem(k,v);
+        else 
+          localStorage.removeItem(k);
+      })
+    } else {
+      keys.forEach(function(k){
+        let v = localStorage.getItem(k);
+        if (v &&  !sessionStorage.getItem(k)) 
+          sessionStorage.setItem(k,v);
+      })
+    }
+  }
+
   public get isReady():Promise<boolean>{
     if (!this._isReady){
      this._isReady=new Promise((resolve,reject)=>{
+        if (this.workAround) this.copyMsal(false);
         //Create the client
         this.msal = new Msal.UserAgentApplication(
              this.coreConfig.backendEnv['clientID'], 
@@ -23,19 +50,30 @@ export class MsalAuth extends BaseAuth {
             this.validateToken(token).then(
             token=>{resolve(this.loggedIn)});
           },{
-           cacheLocation: this.coreConfig.remember ? 'localStorage' : 'sessionStorage',
+           cacheLocation: this. workAround ?  'sessionStorage':
+                this.coreConfig.remember ? 'localStorage' : 'sessionStorage',
            redirectUri: this.coreConfig.baseUrl,
            postLogoutRedirectUri: this.coreConfig.baseUrl,
-           navigateToLoginRequestUrl:false
+           navigateToLoginRequestUrl:false,
+          // isAngular:true,
+           storeAuthStateInCookie:true
         }); 
 
         //Check for hash
-        let hash = window.location.hash;
-        if (hash && hash.indexOf('#id_token=')==0) {
-          this.msal.saveTokenFromHash(this.msal.getRequestInfo(hash));
-          this.validateToken(hash.substring(10)).then(
-            token=>{resolve(this.loggedIn)});
-          history.replaceState({}, document.title, "."); //Remove hash from url
+       let hash = window['#id_token'] || window.location.hash;
+       let i = hash.indexOf('&');
+       let token =(i<0) ? hash.substring(10) : hash.substring(10,i-1);
+       if (hash.indexOf('#id_token')>=0) {
+         hash = (i<0) ? hash : hash.substring(0,i-1);
+         if (this.workAround)
+           this.msal.handleAuthenticationResponse.call(this.msal, hash);
+         this.validateToken(token).then(
+            token=>{  
+              console.log("Token login",this.loggedIn);
+              history.replaceState({}, document.title, "."); //Remove hash from url
+              delete window['#id_token'];
+              resolve(this.loggedIn)
+            });
         } else {
             //Refresh the hash
            this.refreshToken().then((accesToken)=>{
@@ -91,6 +129,7 @@ export class MsalAuth extends BaseAuth {
               type:  this.coreConfig.backendValue('type','msal')}
               ,'',{} , head).toPromise().then( (obj) => {          
            this.authToken = token;
+           if (this.workAround) this.copyMsal(true);
           return resolve(this._token);
         }).catch((ex) => {
           this.authToken = null;

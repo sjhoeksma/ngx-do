@@ -20,4 +20,11 @@ import { DoComponent } from './do.component';
   ]
 })
 export class DoModule {
+  
+  constructor(){
+    let hash = window.location.hash;
+    if (hash && hash.indexOf('#id_token=')==0) {
+      window['#id_token']=hash;
+    }
+  }
 }

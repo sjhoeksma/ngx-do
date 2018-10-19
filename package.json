@@ -64,7 +64,7 @@
     "rxjs-compat": "^6.2.2",
     "screenfull": "^3.3.3",
     "showdown": "^1.8.6",
-    "survey-angular": "^1.0.44",
+    "survey-angular": "^1.0.50",
     "uuid": "^3.3.2",
     "vued3tree": "^3.6.1",
     "zone.js": "~0.8.26"

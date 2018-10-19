@@ -8,10 +8,11 @@ export const AppRoutes: Routes = [{
 
     { path: 'pages', loadChildren: './pages/pages.module#PagesModule' },  //Common pages
     { path: 'material-widgets', loadChildren: './material-widgets/material-widgets.module#MaterialWidgetsModule' },  
+    { path: 'widgets', loadChildren: './do-widgets/do-widgets.module#DoWidgetsModule' },  //Common pages
     {path:'error',redirectTo:'pages/error'}, //Error Route
     {path:'',redirectTo:'dashboard', pathMatch: 'full'}, //We show by default the dashboard
    ],canActivate:[CoreAuth]
- },
+  },
   {path: 'login', component: LoginComponent },
   {path: 'logout', component: LogoutComponent},
   {path: 'signup', component: SignupComponent },

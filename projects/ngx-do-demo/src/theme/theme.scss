@@ -59,11 +59,9 @@ cdk-sidemenu{
   
 }
 
-
 cdk-sidemenu-item{
     @include sidemenu-item($cdk-theme,26px)
 }
-
 
 cdk-dashcard {
     $dashcard-primary: mat-palette($primary);
@@ -80,6 +78,14 @@ cdk-profile-card{
     $cdk-dashboard-profile-theme:   mat-dark-theme($dashboard-profile-primary, $dashboard-profile-accent,$dashboard-profile-warn);
     @include dashboard-profile($cdk-dashboard-profile-theme);
     @include mat-tabs-theme($cdk-dashboard-profile-theme);
+}
+
+cdk-survey{
+  $survey-primary: mat-palette($primary , 400);
+  $survey-accent:  mat-palette($accent , 900);
+  $survey-warn:    mat-palette($warn );
+  $cdk-survey-theme:   mat-dark-theme($survey-primary, $survey-accent,$survey-warn);
+  @include survey($cdk-survey-theme);
 }
 
 @include angular-material-theme($cdk-theme);
@@ -178,8 +184,6 @@ body{
   animation-delay: -0.16s;
   animation-delay: -0.16s;
 }
-
-
 
 @keyframes sk-bouncedelay {
   0%, 80%, 100% { transform: scale(0) }

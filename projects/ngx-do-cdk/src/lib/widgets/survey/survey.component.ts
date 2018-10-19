@@ -4,22 +4,38 @@ import { ShowdownConverter } from 'ngx-showdown';
 import { Observable, Subject,Subscription } from 'rxjs';
 
 /* SurveyJS needs common configuration before it works with our themes
- * For variables see: https://github.com/surveyjs/surveyjs/blob/master/src/stylesmanager.ts
+ * For variables see: https://github.com/surveyjs/surveyjs/blob/master/src/defaultCss/cssstandard.ts
 */
-{                                  
+{  
+
   var themeCss ={
+    navigationButton: "mat-button btn-primary",
+    navigation: {
+      complete: "sv_complete_btn mat-button btn-primary",
+      prev: "sv_prev_btn mat-button btn-basic",
+      next: "sv_next_btn mat-button btn-primary",
+      start: "sv_start_btn mat-button btn-primary"
+    },
+    row: "",
+    /*
+    text: "mat-input-element",
+    checkbox: {
+      root: "mat-checkbox sv_qcbc sv_qcbx",
+      item: "mat-checkbox",
+      label: "mat-checkbox-label",
+      itemControl: "mat-checkbox",
+      controlLabel: " ",
+      materialDecorator: "checkbox-material",
+      other: "sv_q_other form-control"
+    },
+    */
+
+    /*
+    completedPage: "sv_completed_page",
     root: "sv_main sv_default_css",
     header: "sv_header",
     body: "sv_body",
     footer: "sv_nav",
-    navigationButton: "mat-button  btn-primary",
-    completedPage: "sv_completed_page",
-    navigation: {
-      complete: "mat-button sv_complete_btn btn-primary",
-      prev: "mat-button sv_prev_btn btn-basic",
-      next: "mat-button sv_next_btn btn-primary",
-      start: "mat-button sv_start_btn btn-primary"
-    },
     progress: "sv_progress",
     progressBar: "sv_progress_bar",
     page: {
@@ -30,7 +46,7 @@ import { Observable, Subject,Subscription } from 'rxjs';
     // TODO: move to the page object
     pageTitle: "sv_page_title",
     pageDescription: "",
-    row: "",//"sv_row",
+    row: "sv_row",
     question: {
       mainRoot: "sv_q sv_qstn",
       title: "sv_q_title",
@@ -52,15 +68,6 @@ import { Observable, Subject,Subscription } from 'rxjs';
       materialDecorator: "checkbox-material"
     },
     checkbox: {
-      /*
-      root: "sv_qcbc sv_qcbx",
-      item: "sv_q_checkbox",
-      label: "sv_q_checkbox_label",
-      itemControl: "sv_q_checkbox_control_item",
-      controlLabel: "sv_q_checkbox_control_label",
-      materialDecorator: "checkbox-material",
-      other: "sv_q_other sv_q_checkbox_other"
-      */
       root: "sv_qcbc sv_qcbx",
       item: "checkbox",
       label: "sv_q_checkbox_label",
@@ -132,14 +139,8 @@ import { Observable, Subject,Subscription } from 'rxjs';
       itemText: "sv_q_rating_item_text",
       maxText: "sv_q_rating_max_text"
     },
-    /*
-    	<div fxFlex="50" fxLayout.lt-lg="100">
-					<mat-form-field >
-					<input  matInput placeholder="Office">
-				</mat-form-field>
-    */
-    text: "mat-input",
-    expression: "mat-input-element",
+    text: "sv_q_text_root",
+    expression: "",
     file: {
       root: "sv_q_file",
       placeholderInput: "sv_q_file_placeholder",
@@ -166,24 +167,27 @@ import { Observable, Subject,Subscription } from 'rxjs';
         buttonCollapsed: ""
       }
     }
+    */
   };
+  
   //Copy theme into default
   Object.keys(themeCss).forEach(function(key) {
    Survey.defaultStandardCss[key] = themeCss[key];
-  });                                        
-                                          
-  Survey.StylesManager.applyTheme();   
+  });                                           
+  Survey.StylesManager.applyTheme();  
 }
 
 @Component({
   selector: 'cdk-survey',
   templateUrl: './survey.component.html',
-  styleUrls: ['./survey.component.scss']
+  styleUrls: ['./survey.component.theme.scss']
 })
 
 export class SurveyComponent implements OnDestroy, OnInit   {
     private subscription : Subscription;
     @Input() json;
+    @Input() surveyJson;
+    @Input() surveyData;
     @Input() onComplete;
     @Input() readonly = false;
     private survey;
@@ -248,7 +252,14 @@ export class SurveyComponent implements OnDestroy, OnInit   {
     }
    
     ngOnInit() {
-      if (this.json){
+      if (this.surveyJson){
+        let jsonSubject: Subject<object> = new Subject<object>();
+        this.json=jsonSubject.asObservable();
+        this.subscription = this.json.subscribe((update:object) => {
+           if (update) this.updateJson(update);
+         });
+        jsonSubject.next(Object.assign(this.surveyJson,this.surveyData ? {data: this.surveyData}:{}));
+      } else if (this.json){
          this.subscription = this.json.subscribe((update:object) => {
            if (update) this.updateJson(update);
          });

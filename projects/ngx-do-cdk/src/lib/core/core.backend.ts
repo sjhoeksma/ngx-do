@@ -20,6 +20,9 @@ export class CoreBackend implements OnDestroy {
       this.subscription = this.coreEvent.get(CoreEvent.core_channel).subscribe(
           event => { this.processEvent(event)});
       this.loadCommonData();
+      setInterval(()=>{
+        this.refresh();
+      },this.coreConfig.backendValue('backendRefresh',60000));
     }
  
     ngOnDestroy() {
@@ -59,6 +62,10 @@ export class CoreBackend implements OnDestroy {
     })
   }
   
+  public refresh(){
+    this.refreshTasks();
+  }
+  
   
   public loadCommonData(){
     if (this.coreAuth.loggedIn){
@@ -79,7 +86,7 @@ export class CoreBackend implements OnDestroy {
       this.coreConfig.shoppingBasket=this.coreConfig.getItem('cart');
 
       //tasks & Notifications
-      this.refreshTasks();
+      this.refresh();
 
     }
   }
@@ -87,6 +94,7 @@ export class CoreBackend implements OnDestroy {
     //Catch core events, to load data
     public processEvent(event:object){
       switch (event['event']){
+        case "refresh": this.refresh();break;
         case "onUnlock":
         case "load": this.loadCommonData();break;
         default: console.log("Received Event",event);

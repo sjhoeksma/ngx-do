@@ -2,7 +2,6 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { PagesModule} from '../pages.module';
 import { AppModule} from '../../app.module';
 import { APP_BASE_HREF } from '@angular/common';
-import { MainModule } from '../../../main.module';
 import { ErrorComponent } from './error.component';
 import { environment } from '../../../environments/environment.spec';
 
@@ -12,8 +11,7 @@ describe('ErrorComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-     imports: [ 
-        MainModule, 
+     imports: [  
         AppModule,
         PagesModule,
       ],providers: [

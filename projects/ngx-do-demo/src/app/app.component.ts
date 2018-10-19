@@ -2,7 +2,7 @@ import { Component, OnInit ,Input} from '@angular/core';
 import { MediaChange, ObservableMedia } from '@angular/flex-layout';
 import { CoreConfig } from 'ngx-do-cdk';
 import { BackendService } from './backend/backend.service';
-import { AppMenu } from './app.menu'
+import { AppMenu } from './app.menu';
 
 @Component({
   selector: 'app-app',
@@ -16,8 +16,6 @@ export class AppComponent implements OnInit{
   @Input() isVisible : boolean = true;
   aiToken : string = null;
   profileRoute = "/app/pages/profile";
-  title = "DoAdmin Demo";
-  
   visibility = 'shown';
 
   sideNavOpened: boolean = true;
@@ -28,7 +26,6 @@ export class AppComponent implements OnInit{
 	constructor(private media: ObservableMedia, 
               public coreConfig: CoreConfig,
               protected backend: BackendService) { 
-    let $this=this;
     this.backend.getKeyVault('dialogflow').subscribe(rec=>{
       this.aiToken=rec['key'];
     });

@@ -1,4 +1,4 @@
-import { Component,HostListener, OnInit } from '@angular/core';
+import { Component,HostListener, OnInit,Inject } from '@angular/core';
 
 import { CoreAuth } from '../core/core.auth';
 import { CoreConfig } from '../core/core.config';
@@ -21,8 +21,15 @@ export class DoComponent implements OnInit {
   locked = false;
   idleTimer;
 
- constructor(protected coreAuth: CoreAuth,public coreConfig: CoreConfig){
+  
+ constructor(protected coreAuth: CoreAuth,public coreConfig: CoreConfig, @Inject("Environment") private env){
+   let title = this.env['title'];
+   if (title) {
+     if (this.coreConfig.DEMO) title=title+ ' ' + 'DEMO';
+     document.title=title ;
+   }
  }  
+   
   
  ngOnInit() {
     this.onWakeup(null); //Trigger the timer

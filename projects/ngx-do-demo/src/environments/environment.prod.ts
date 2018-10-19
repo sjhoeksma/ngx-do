@@ -1,9 +1,10 @@
 export const environment = {
   production: true, 
+  remember: true, //By default we remember user
   authentication : true, //Should we do authentication
   backendList: ['azure','localhost','remote'], //List of available back-ends configurations
   backend : 'remote', // The default backend
-  backendRefresh: 10000, //For testing every 10 seconds refresh
+  backendRefresh: 60000, //For testing every 60 seconds refresh
   
   //These value can be set also within backend config
   lockScreen: false, //Should we enable a lock screen on lost focus or idle time
