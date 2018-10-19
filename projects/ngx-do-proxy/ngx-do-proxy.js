@@ -66,9 +66,12 @@ function decodeToken(req){
         */
         //For now we just decode and date checking
         let d = Date.now()/1000; //Time is in ms 
-        if (d<=parseInt(decoded['nbf'])-600 || 
-            d>=parseInt(decoded['exp'])+300) 
+        if (myOptions.logLevel>2)console.log("Decode",
+            decoded['nbf']-600,d,d<=decoded['exp']+300,
+            d>=decoded['nbf']-600 && d<=decoded['exp']+300);
+         if (!(d>=decoded['nbf']-600 && d<=decoded['exp']+300)) 
           return 403;
+       
         return decoded;
        } else {
         return  jwt.verify(token[1], myOptions.secretKey, 
@@ -554,8 +557,9 @@ function start(restart=false){
       }
       server && server.destroy()
       app=createServer(plugins);
-      server=app.listen(myOptions.port, () => {
-        console.log('ngx-do-proxy',restart ? 'restarted' : 'started on port:' + chalk.green(myOptions.port))
+      const port = process.env.PORT || myOptions.port;
+      server=app.listen(port, () => {
+        console.log('ngx-do-proxy',restart ? 'restarted' : 'started on port:' + chalk.green(port))
       })
       enableDestroy(server)
     })
