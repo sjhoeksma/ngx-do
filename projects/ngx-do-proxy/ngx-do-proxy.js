@@ -11,7 +11,6 @@ const enableDestroy = require('server-destroy')
 const jsonic = require('jsonic')
 const expressValidator = require('express-validator')
 const {check, oneOf, validationResult, checkSchema }= require('express-validator/check')
-const ddos = require("ddos");
 const aad = require('azure-ad-jwt');
 const argv = require('minimist')(process.argv.slice(2))
 const gaze = require('gaze');
@@ -24,19 +23,29 @@ var myOptions = Object.assign({
   dbProxyName : 'ngx-do-proxy.proxy.json', //The file name where proxy json data is stored
   dbRuleName : 'ngx-do-proxy.rule.json', //The file name where rule json data is stored
   watchedDir:  './api',
+  watch: true, //Should we watch for database changes
   routes: null,
   jwtValidation: 'key',  //Set this to your 'key' == secretKey or "azure-aad" to use a azure-aad token
   secretKey : "do-proxy",
   expiresIn : '8h',
   logLevel : 1, //0=No log at all, 1=Info, 2=Info,Requests
   reuseDB: true,
+  ddosEnabled: true, //When set we enable DDOS checking
   burst:8, //We start bursting ddos as of 8
   limit:10, //We limit to 10 connections per second
   audience: null, //The audience to be used when decoding an azure token
   signup:true, //Is sigup of user allowed
   allowOrigin: '*', //The CORS allow origin settings
-  whitelist:['127.0.0.1'] //Local domain is whitelisted
+  whitelist:['127.0.0.1'], //Local domain is whitelisted
+  rebuild: false, //We set to true database will be rebuild during restart
 });
+
+
+// Converts a string to a bool.
+function strToBool(s){
+    regex=/^\s*(true|1|on)\s*$/i
+    return regex.test(s);
+}
 
 var readError = false, app,server
 
@@ -320,20 +329,25 @@ function createServer(plugins){
   server.use(bodyParser.urlencoded({extended: true}))
   server.use(bodyParser.json())
   //DDOS Protection
-  var dd =new ddos(myOptions)
-  server.use(dd.middleware);
+  if (strToBool(myOptions.ddosEnabled)){
+    const ddos = require("ddos");
+    var dd =new ddos(myOptions)
+    server.use(dd.middleware);
+  }
   server.use(expressValidator());
           
   //Create the json-server
   server.use(jsonServer.defaults({logger:myOptions.logLevel>1}));
   
   //Allow CORS control for all
-  server.use(function(req, res, next) {
-    res.header("Access-Control-Allow-Origin", myOptions.allowOrigin);
-    res.header('Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS');
-    res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-    next();
-  });
+  if (myOptions.allowOrigin){
+    server.use(function(req, res, next) {
+      res.header("Access-Control-Allow-Origin", myOptions.allowOrigin);
+      res.header('Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS');
+      res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+      next();
+    });
+  }
   
   // We should check auth before we start accessing api services
   server.all('/auth', (req, res) => {
@@ -439,7 +453,17 @@ function createServer(plugins){
 
   //Validate if the token is valid when not accessing auth
   server.use(/^(?!\/auth).*$/,  (req, res, next) => { 
-    if (req.originalUrl!=='/db'){ //If not Show the database
+    if (req.originalUrl=='/db'){ //If Show the database
+      const db = server.db.getState() //Get the last active database
+      let ret = {};
+      Object.keys(db).forEach(function(key) {
+         ret[key]=[];
+      });
+      return res.status(200).json(ret);
+      
+    } else if (req.originalUrl=='/__rules'){
+     //Skip     
+    } else {
       let tokenState = verifyToken(req);
       if (tokenState!=0) { //Invalid token so we return error
         const status=tokenState;
@@ -568,25 +592,27 @@ function start(restart=false){
   })
 }
 
-if (myOptions.logLevel==0) console.log = () => {}
+//Watch function for changed files
+function watch(){
+  //Watch for changes in json files
+  gaze(path.join(process.cwd(), myOptions.watchedDir) + '/**/*.json', (err, watcher) => {
+    // On changed/added/deleted
+    watcher.on('all', (event, filepath) => {
+      if (myOptions.logLevel>1)
+        console.log(filepath + ' was ' + event);
+      //If the file is a JSON (database,validation) restart the database
+      if (isJSON(filepath)) {
+        start(true);
+      }
+    });
 
-//Watch for changes in json files
-gaze(path.join(process.cwd(), myOptions.watchedDir) + '/**/*.json', (err, watcher) => {
-  // On changed/added/deleted
-  watcher.on('all', (event, filepath) => {
-    if (myOptions.logLevel>1)
-      console.log(filepath + ' was ' + event);
-    //If the file is a JSON (database,validation) restart the database
-    if (isJSON(filepath)) {
-      start(true);
-    }
   });
-
-});
+}
 
 module.exports = {
   start : function(options){
     myOptions = Object.assign(myOptions,options,argv);
-    start(false);
+    if (myOptions.logLevel==0) console.log = () => {}
+    start(strToBool(myOptions.rebuild));
   }
 }

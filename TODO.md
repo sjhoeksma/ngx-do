@@ -2,6 +2,8 @@
 My work list on activities to work on.
 
 ## Bugs & Enhancements
+1. /DB is readable with all data should only return names
+1. Add option for single runs
 1. Split widgets and core+do
 1. Fix style sheet of Survey
 1. Types in stead of []
@@ -20,6 +22,7 @@ My work list on activities to work on.
 1. Use environment to set title, also in DoComponent
 1. Lets encrypt for Proxy: https://git.coolaj86.com/coolaj86/greenlock-express.js
 1. Fix problem if proxy not available
+1. Audience for jwttoken azure should be web side 
 
 
 ## Widgets

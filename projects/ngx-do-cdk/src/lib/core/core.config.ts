@@ -199,7 +199,9 @@ export class CoreConfig {
    public static readonly backendKey = 'backend_key';
    private _backend: string;
    public get backend():string { 
-    if (!this._backend) this._backend = this.getItem(CoreConfig.backendKey,this.environment['backend'],true);
+    if (!this._backend) 
+      this._backend = this.getItem(CoreConfig.backendKey,this.environment['backend'],true);
+    if (!this.environment[this._backend]) this._backend=this.environment['backend'];
     return this._backend; 
   }
   
