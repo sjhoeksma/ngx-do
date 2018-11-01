@@ -1,9 +1,7 @@
 /**
  Demo Plugin
 */
-const express = require('express')
-const router = express.Router()
-
+const plugin = require('../../ngx-do-proxy').app;
 //Add your custom code here
 
 // Middleware
@@ -16,9 +14,7 @@ function authorize(req, res, next) {
 }
 
 // Domestic animals page
-router.get('/demo', authorize, function(req, res) {
+plugin.get('/demo', authorize, function(req, res) {
   res.send('["Cow", "Horse", "Sheep"]')
 })
 
-//Always end with this
-module.exports = router

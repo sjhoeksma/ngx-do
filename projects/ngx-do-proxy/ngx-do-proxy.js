@@ -16,6 +16,7 @@ const argv = require('minimist')(process.argv.slice(2))
 const gaze = require('gaze');
 const uuidv4 = require('uuid/v4');
 const proxy = require('express-http-proxy');
+var session = require('express-session');
 
 var myOptions = Object.assign({
   port : 3000, //The port number to use
@@ -37,7 +38,15 @@ var myOptions = Object.assign({
   signup:true, //Is sigup of user allowed
   allowOrigin: '*', //The CORS allow origin settings
   whitelist:['127.0.0.1'], //Local domain is whitelisted
-  rebuild: false, //We set to true database will be rebuild during restart
+  rebuild: false, //When set to true database will be rebuild during restart
+  authEnabled: true, //When set to false, auth is disabled
+  greenLock:{
+      email: null // You MUST change this to a valid email address
+    , approveDomains: [] //List of domains need to be set by user
+      // You MUST NOT build clients that accept the ToS without asking the user
+    , agreeTos: false  //Needs to be set by user to true
+    , communityMember: false // Communitymember gets notified of important updates
+  }
 });
 
 
@@ -47,7 +56,7 @@ function strToBool(s){
     return regex.test(s);
 }
 
-var readError = false, app,server
+var readError = false, app,rootServer
 
 // Create a token from a payload 
 function createToken(payload){
@@ -57,12 +66,25 @@ function createToken(payload){
 
 function decodeToken(req){
    let token = req.headers.authorization ? req.headers.authorization.split(' ') : null;
+   //When there is no token check if we have a session cookie
+   if (token == null && req.session.access_token) {
+     token=[];
+     token[0]='Bearer';
+     token[1]=req.session.access_token; 
+   }
+   if (token == null && req.query['_token']!=null && req.method=="GET"){
+      token=[];
+      token[0]='Bearer';
+      token[1]=req.query['_token']; 
+   }
    if (token === null || token[0] !== 'Bearer') {
       return 401;
     }
     try {
        let decoded=jwt.decode(token[1]);
        if (!decoded) return null;
+       if (req.session.access_token!=token[1])
+         req.session.access_token=token[1];
        if (myOptions.jwtValidation=="azure-aad" || decoded['iss']){
         decoded['email']=decoded['preferred_username'];
         /* This does not work yet, more testing
@@ -131,6 +153,11 @@ function isPLUGIN(s) {
   return !isURL(s) && /\.plugin.js$/.test(s)
 }
 
+function isPUBLIC(s){
+  let f = path.join(process.cwd(), myOptions.watchedDir,'/public');
+  return !isURL(s) && s.indexOf(f)==0;
+}
+
 function pluginList(filepath,callback){
    var ret =[];
    var filesEncountered = 0,
@@ -188,8 +215,6 @@ function concatJson(userOptions, callback) {
   //# make options.src an array
   if (typeof(options.src) == "string") options.src = [options.src]
 
-
-  
   // Read Json Content from Directory/File
   var readContent=(filepath, resultObject, callback)=>{
       var filesEncountered = 0,
@@ -318,14 +343,18 @@ function ruleJsonParse(obj,server){
 }
 
 //Create the api-proxy server, with memory and persistent to file based json-server
-function createServer(plugins){
+function createServer(server,plugins){
   const routes = myOptions.routes ? JSON.parse(fs.readFileSync(myOptions.routes, 'UTF-8')) : null;//Load the routes from json
   const proxies = JSON.parse(fs.readFileSync(myOptions.dbProxyName, 'UTF-8')) //Load the proxies from json
   const rules = JSON.parse(fs.readFileSync(myOptions.dbRuleName, 'UTF-8')) //Load the rules from json
-  const server = jsonServer.create() //Create the server
   const router = jsonServer.router(myOptions.dbName) //Load the database
   server.db = router.db   //Add a reference to our router database to the server
   if (routes) server.use(jsonServer.rewriter(routes)) //Set the custom routes
+  app.use(session({ 
+    secret: myOptions.secretKey, 
+    resave: false,
+    saveUninitialized: true,
+    cookie: { maxAge: 6000*60*8 }}));
   server.use(bodyParser.urlencoded({extended: true}))
   server.use(bodyParser.json())
   //DDOS Protection
@@ -348,6 +377,7 @@ function createServer(plugins){
       next();
     });
   }
+
   
   // We should check auth before we start accessing api services
   server.all('/auth', (req, res) => {
@@ -371,8 +401,13 @@ function createServer(plugins){
        server.db.write();
        return index;
     }
-    
-    if (req.method == 'GET') {
+    if (req.method == 'DELETE') {
+        const status=200;
+        let message = "Logout";
+        req.session.access_token=null;
+        res.status(200).json({status, message})
+        return;
+    } else if (req.method == 'GET') {
       let tokenState = verifyToken(req);
       if (tokenState!=0) { //Invalid token so we return error
         const status=tokenState;
@@ -380,6 +415,7 @@ function createServer(plugins){
         if (tokenState==403) {
           message = 'Error access_token is revoked'
         }
+        req.session.access_token=null;
         res.status(status).json({status, message})
       } else {
         const status=200;
@@ -402,6 +438,7 @@ function createServer(plugins){
       if (index<0){
         const status = 401
         const message = 'Incorrect email or password'
+        req.session.access_token=null;
         res.status(status).json({status, message})
         return 
       }
@@ -409,10 +446,32 @@ function createServer(plugins){
       const groups = db.auth[index].groups;
       const id = db.auth[index].id;
       const access_token = createToken({id,email, groups })
+      req.session.access_token = access_token;
       res.status(200).json({access_token})
     }
     return //No Next
   })
+  
+  //Check fo public plugins
+  plugins.forEach(function(file){
+    if (isPUBLIC(file)){
+      let plugin = require(file);
+      if (plugin.length) server.use(plugin);
+      if (myOptions.logLevel>1) console.log('Adding public plugin',file);
+    }
+  });
+  
+  //Public Proxy routes
+  Object.keys(proxies).forEach(function(key) {
+    let val = proxies[key];
+    let route = "/" + key
+    if (val.public){
+      if (myOptions.logLevel>1) console.log('Adding public proxy route for',route);
+      server.use(route,proxy(val.host,Object.assign({
+         proxyReqPathResolver: function (req) {return (val.path||'') + req.url;}
+      },looseJsonParse(val.override||'{}',server))));
+    }
+  });
   
   //TODO: Add validation of API
   
@@ -436,46 +495,37 @@ function createServer(plugins){
     next()
   })
   
+  //DB is always returning list of table
+  server.all('/db',(req, res) => {
+    const db = server.db.getState() //Get the last active database
+    let ret = {};
+    Object.keys(db).forEach(function(key) {
+       ret[key]=[];
+    });
+    return res.status(200).json(ret);
+  })
   
-  //Public Proxy routes
-  Object.keys(proxies).forEach(function(key) {
-    let val = proxies[key];
-    let route = "/" + key
-    if (val.public){
-      if (myOptions.logLevel>1) console.log('Adding public proxy route for',route);
-      server.use(route,proxy(val.host,Object.assign({
-         proxyReqPathResolver: function (req) {return (val.path||'') + req.url;}
-      },looseJsonParse(val.override||'{}',server))));
-    }
-  });
   
   //From here on private stuff
 
   //Validate if the token is valid when not accessing auth
-  server.use(/^(?!\/auth).*$/,  (req, res, next) => { 
-    if (req.originalUrl=='/db'){ //If Show the database
-      const db = server.db.getState() //Get the last active database
-      let ret = {};
-      Object.keys(db).forEach(function(key) {
-         ret[key]=[];
-      });
-      return res.status(200).json(ret);
-      
-    } else if (req.originalUrl=='/__rules'){
-     //Skip     
-    } else {
-      let tokenState = verifyToken(req);
-      if (tokenState!=0) { //Invalid token so we return error
-        const status=tokenState;
-        let message = "Error in authorization format";
-        if (tokenState==403) {
-          message = 'Error access_token is revoked'
+  if (strToBool(myOptions.authEnabled)) 
+   server.use(/^(?!\/auth).*$/,  (req, res, next) => { 
+     if (req.originalUrl=='/__rules'){
+       //Skip     
+      } else {
+        let tokenState = verifyToken(req);
+        if (tokenState!=0) { //Invalid token so we return error
+          const status=tokenState;
+          let message = "Error in authorization format";
+          if (tokenState==403) {
+            message = 'Error access_token is revoked'
+          }
+          res.status(status).json({status, message})
+          return //No Next
         }
-        res.status(status).json({status, message})
-        return //No Next
       }
-    }
-    next()
+      next()
   })
 
 
@@ -517,12 +567,14 @@ function createServer(plugins){
     }
   });
   
-  //Load the plugins
+  //Private plugins
   plugins.forEach(function(file){
-    server.use(require(file));
-    if (myOptions.logLevel>1) console.log('Adding plugin',file);
+    if (!isPUBLIC(file)){
+      let plugin = require(file);
+      if (plugin.length) server.use(plugin);
+      if (myOptions.logLevel>1) console.log('Adding private plugin',file);
+    }
   });
- // 
   
   server.use(router);
   //Add proxy routes to resource list
@@ -532,10 +584,10 @@ function createServer(plugins){
   return server;
 }
 
-//Start the server and check if files have changed
-function start(restart=false){
-  if (myOptions.logLevel>1) console.log('Working Dir',path.join(process.cwd(), myOptions.watchedDir));
-   pluginList(path.join(process.cwd(), myOptions.watchedDir),function(plugins){
+function build(restart,callback){
+  if (myOptions.logLevel>1) 
+    console.log('Working Dir',path.join(process.cwd(), myOptions.watchedDir));
+  pluginList(path.join(process.cwd(), myOptions.watchedDir),function(plugins){
    concatJson({  //Rules
       src:  path.join(process.cwd(), myOptions.watchedDir),
       dest: myOptions.dbRuleName,
@@ -547,48 +599,94 @@ function start(restart=false){
       dest: myOptions.dbProxyName,
       isJsonFile: isPROXY,
       reuseDB: false, //Proxies are always created at startup
-    },function(err,json){
+    },function(err,json){ 
     concatJson({ //DB
       src:  path.join(process.cwd(), myOptions.watchedDir),
       dest: myOptions.dbName,
       isJsonFile: isJSONDB,
       reuseDB: !restart && myOptions.reuseDB
     }, function(err,json){
-      //console.log("Concat finished",json,err)
       if (err || !json) console.log("Concat of json data had error",err); 
-      //else console.log("Concat of json data succesfull"); 
-      if (app) {
-        let obj
-        try {
-          obj = jph.parse(fs.readFileSync(path.join(process.cwd(),myOptions.dbName)))
-          if (readError) {
-            console.log(chalk.green(`  Read error has been fixed :)`))
-            readError = false
-          }
-        } catch (e) {
-          readError = true
-          console.log(chalk.red(`  Error reading ${myOptions.dbName}`))
-          console.error(e.message)
-          return
-        }
+      callback(err,json,plugins);
+    }
+    )})})})
+}
 
-        const isDatabaseDifferent = !_.isEqual(obj, app.db.getState())
-        if (isDatabaseDifferent) {
-          console.log(chalk.gray(`  ${myOptions.dbName} has changed, reloading...`))
-        } else {
-          console.log(chalk.green(`  Database not changed :)`))
+//Start the server and check if files have changed
+function start(restart=false,callback=null){
+  build(restart,function(err,json,plugins){
+    if (app) {
+      if (myOptions.greenLockEnabled) 
+        return; //Greenlock cannot be restarted
+      let obj
+      try {
+        obj = jph.parse(fs.readFileSync(path.join(process.cwd(),myOptions.dbName)))
+        if (readError) {
+          console.log(chalk.green(`  Read error has been fixed :)`))
+          readError = false
         }
+      } catch (e) {
+        readError = true
+        console.log(chalk.red(`  Error reading ${myOptions.dbName}`))
+        console.error(e.message)
+        return
       }
-      server && server.destroy()
-      app=createServer(plugins);
+      const proxies = JSON.parse(fs.readFileSync(myOptions.dbProxyName, 'UTF-8')) //Load the proxies from json
+      //Add proxy routes to resource list
+      Object.keys(proxies).forEach(function(key) {
+        obj[key]=[];
+      });
+
+      const isDatabaseDifferent = !_.isEqual(obj, app.db.getState())
+      if (isDatabaseDifferent) {
+        console.log(chalk.gray(`  ${myOptions.dbName} has changed, reloading...`))
+      } else {
+        console.log(chalk.green(`  Database not changed :)`))
+        return;
+      }
+    }
+
+    app = jsonServer.create() //Create the app server
+
+    //Check if we should create a greenlock wrapper
+    if (myOptions.greenLockEnabled) {
+        rootServer=require('greenlock-express').create(Object.assign({
+            // Let's Encrypt v2 is ACME draft 11
+            version: 'draft-11'
+
+            // Note: If at first you don't succeed, switch to staging to debug
+            // https://acme-staging-v02.api.letsencrypt.org/directory
+          , server: 'https://acme-v02.api.letsencrypt.org/directory'
+
+            // Where the certs will be saved, MUST have write access
+          , configDir: require('path').join(require('os').homedir(), 'acme', 'etc')
+
+          , app: app
+
+            // Join the community to get notified of important updates
+          , communityMember: false
+
+            // Contribute telemetry data to the project
+          , telemetry: false
+
+          //, debug: true
+
+          },myOptions.greenLock));
+      rootServer=rootServer.listen(80, 443,function(){
+        createServer(app,plugins);
+        console.log('ngx-do-proxy','Started secure on port: 443' , chalk.green(443))
+        callback && callback();
+      });
+    } else {
+      rootServer && rootServer.destroy()
       const port = process.env.PORT || myOptions.port;
-      server=app.listen(port, () => {
-        console.log('ngx-do-proxy',restart ? 'restarted' : 'started on port:' + chalk.green(port))
+      rootServer=app.listen(port, () => {
+        createServer(app,plugins);
+        console.log('ngx-do-proxy',restart ? 'restarted on port:' : 'started on port:' , chalk.green(port));
+        callback && callback();
       })
-      enableDestroy(server)
-    })
-   })
-   })
+      enableDestroy(rootServer)
+    }
   })
 }
 
@@ -610,9 +708,24 @@ function watch(){
 }
 
 module.exports = {
-  start : function(options){
+  start : function(options,callback){
     myOptions = Object.assign(myOptions,options,argv);
     if (myOptions.logLevel==0) console.log = () => {}
-    start(strToBool(myOptions.rebuild));
-  }
+    
+    myOptions.greenLockEnabled=(strToBool(myOptions.greenLock.agreeTos) 
+        && myOptions.greenLock.approveDomains.length>0 
+        && myOptions.greenLock.email);
+    if (!myOptions.greenLockEnabled && strToBool(myOptions.watch)) watch();
+    start(strToBool(myOptions.rebuild),callback);
+  },
+  stop: function(){
+    server && server.destroy();
+    server=null;
+  },
+  watch: function(){watch()},
+  static: function(url){return require('express').static(url)},
+  get server(){return rootServer},
+  get app(){return app},
+  get plugin(){return require('express').Router()}
+  
 }

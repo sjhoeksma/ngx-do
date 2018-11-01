@@ -70,7 +70,9 @@ export class MsalAuth extends BaseAuth {
          this.validateToken(token).then(
             token=>{  
               console.log("Token login",this.loggedIn);
-              history.replaceState({}, document.title, "."); //Remove hash from url
+              try {
+                history.replaceState({}, document.title, "."); //Remove hash from url
+              } catch (ex){}
               delete window['#id_token'];
               resolve(this.loggedIn)
             });

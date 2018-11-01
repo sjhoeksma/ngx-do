@@ -146,6 +146,13 @@ export const AppMenu: Array<object> = [
             'chip': false,
             'open': false,
         },
+       {
+            'name': 'Node Red',
+            'link': 'widgets/nodered',
+            'icon': 'build',
+            'chip': false,
+            'open': false,
+        },
      ]
   },
 ];

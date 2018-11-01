@@ -1,5 +1,6 @@
 {
   "name": "ngx-do-cdk",
+  "license" : "MIT", 
   "repository": {
     "type": "git",
     "url": "git://github.com/sjhoeksma/ngx-do.git"
