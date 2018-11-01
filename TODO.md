@@ -2,10 +2,7 @@
 My work list on activities to work on.
 
 ## Bugs & Enhancements
-1. /DB is readable with all data should only return names
-1. Add option for single runs
 1. Split widgets and core+do
-1. Fix style sheet of Survey
 1. Types in stead of []
 1. Add all other CDK components to demo project 
 1. Split ngx-do-proxy in multiple modules making it more readable

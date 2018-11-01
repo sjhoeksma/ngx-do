@@ -1,5 +1,6 @@
 {
   "name": "ngx-do",
+  "license" : "MIT", 
   "repository": {
     "type": "git",
     "url": "git://github.com/sjhoeksma/ngx-do.git"
@@ -17,6 +18,7 @@
     "pack": "npm run inc_version && npm run build && cd dist/ngx-do-cdk",
     "publish": "npm run pack && cd dist/ngx-do-cdk && npm publish",
     "inc_version_proxy": "cd projects/ngx-do-proxy && npm version prerelease -f",
+    "build_demo": "ng build ngx-do-demo ",
     "build_proxy": "cd projects/ngx-do-proxy && npm run build",
     "pack_proxy": "npm run inc_version_proxy && npm run build_proxy && cd dist/ngx-do-proxy",
     "publish_proxy": "npm run pack_proxy && cd dist/ngx-do-proxy && npm publish"
