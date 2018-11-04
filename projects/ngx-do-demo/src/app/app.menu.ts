@@ -152,7 +152,7 @@ export const AppMenu: Array<object> = [
             'icon': 'build',
             'chip': false,
             'open': false,
-            'role': ['node-red']
+            'expectedRole': 'node-red'
         },
      ]
   },

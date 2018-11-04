@@ -11,7 +11,7 @@ const widgetsRoutes: Routes = [
     { path: 'survey', component: SurveyComponent ,data: { animation: 'survey'}
       ,canActivate:[CoreAuth]
     },
-   { path: 'nodered', component: NodeRedComponent ,data: { animation: 'nodered'}
+   { path: 'nodered', component: NodeRedComponent ,data: { animation: 'nodered',            'expectedRole': 'node-red'}
       ,canActivate:[CoreAuth]
     }
 ];
