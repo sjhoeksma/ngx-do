@@ -10,6 +10,6 @@ import {CoreAuth} from 'ngx-do-cdk';
 export class NodeRedComponent {
   public url: string;
   constructor(private coreAuth:CoreAuth){
-    this.url="http://localhost:3000/red?_token="+this.coreAuth.authToken;
+    this.url="http://localhost:3000/red?_!token="+this.coreAuth.authToken;
   }
 }

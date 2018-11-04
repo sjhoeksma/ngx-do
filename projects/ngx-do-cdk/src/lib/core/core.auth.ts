@@ -18,7 +18,7 @@ export interface AuthInterface {
   accessToken: string; //Encrypted access token
   loggedIn:  boolean; //Is user logged in
   authUser: string; //The name of the authenticated user
-  hasRole(role:string):Promise<boolean>; //Check if the user has roles
+  hasRole(role:any):Promise<boolean>; //Check if the user has roles
   isReady:Promise<boolean>; //Make sure the class is ready to be used
 }
 
@@ -110,7 +110,7 @@ export class CoreAuth implements CanActivate , AuthInterface {
       this.isReady.then((loggedIn)=>{
         if (loggedIn) {
           this.coreConfig.load(); //Load the config data
-          this.refresh(false); //Start refresh 
+          this.refresh(true); //Start refresh 
           //On login redirect to app
           if (this.router.url === '/login')
             this.activatedRoute.queryParams.subscribe(params => {
@@ -212,7 +212,7 @@ export class CoreAuth implements CanActivate , AuthInterface {
     return this.authService ? this._authService.loggedIn : false;
   }
   
-  public hasRole(role:string): Promise<boolean> {
+  public hasRole(role:any): Promise<boolean> {
     return this.authService ? this._authService.hasRole(role) : Promise.resolve(false);
   }
   

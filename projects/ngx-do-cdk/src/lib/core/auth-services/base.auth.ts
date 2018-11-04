@@ -104,8 +104,25 @@ export class BaseAuth implements AuthInterface {
     return groups;
   }
   
-  public hasRole(role:string): Promise<boolean>  {
-    return Promise.resolve(this.roles.indexOf(role)>=0);
+  public hasRole(role:any): Promise<boolean>  {
+    return new Promise<boolean>((resolve, reject) => { 
+    let roles = this.roles;
+     if (role==null){
+       resolve(true);
+     } else {
+       if (typeof role == "string"){
+         return resolve(roles.indexOf(role)>=0);
+       } else if (Array.isArray(role)){
+         let state=false;
+         role.forEach(function(el){
+            if (roles.indexOf(el)>=0) state=true;
+          }); 
+         return resolve(state);
+         
+       }
+       return resolve(false);
+     }
+    });
   }
   
   get authUser(): string {

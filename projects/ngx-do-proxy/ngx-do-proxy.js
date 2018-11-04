@@ -40,6 +40,7 @@ var myOptions = Object.assign({
   whitelist:['127.0.0.1'], //Local domain is whitelisted
   rebuild: false, //When set to true database will be rebuild during restart
   authEnabled: true, //When set to false, auth is disabled
+  adminList: [], //List with users which have by default admin rights
   greenLock:{
       email: null // You MUST change this to a valid email address
     , approveDomains: [] //List of domains need to be set by user
@@ -65,18 +66,20 @@ function createToken(payload){
 }
 
 function decodeToken(req){
-   let token = req.headers.authorization ? req.headers.authorization.split(' ') : null;
+   let token = req.headers.authorization ? req.headers.authorization.split(' ') : null
+   //Check if token was passsed as Query
+   if (token == null && req.query['_!token']!=null && req.method=="GET"){
+      token=[];
+      token[0]='Bearer';
+      token[1]=req.query['_!token']; 
+   }
    //When there is no token check if we have a session cookie
    if (token == null && req.session.access_token) {
      token=[];
      token[0]='Bearer';
      token[1]=req.session.access_token; 
    }
-   if (token == null && req.query['_token']!=null && req.method=="GET"){
-      token=[];
-      token[0]='Bearer';
-      token[1]=req.query['_token']; 
-   }
+   
    if (token === null || token[0] !== 'Bearer') {
       return 401;
     }
@@ -112,6 +115,31 @@ function decodeToken(req){
       console.log("decodeToken error",err);
       return 403;
     }
+}
+
+function hasRole(role,req){
+  var decode = decodeToken(req);
+  let index;
+  let ret = false;
+  if (decode && isNaN(decode)){
+     const db = app.db.getState() //Get the last active database
+    index = db.auth ? db.auth.findIndex(auth => auth.login == decode['email']) : -2;
+    if (index>=0) {
+      //create a JWT token with ID, email and roles
+      const groups = db.auth[index].groups ||[];
+      if (myOptions.adminList.indexOf(decode['email'])>=0 
+          && groups.indexOf('admin')<0)
+        groups.push('admin');
+      if (groups) {
+        if (typeof role == "string")
+         return groups.indexOf(role)>=0;
+        if (Array.isArray(role)) role.forEach(function(el){
+          if (groups.indexOf(el)>=0) ret=true;
+        }); 
+      }
+    }
+  }  
+  return ret;
 }
 
 function verifyToken(req){
@@ -350,7 +378,7 @@ function createServer(server,plugins){
   const router = jsonServer.router(myOptions.dbName) //Load the database
   server.db = router.db   //Add a reference to our router database to the server
   if (routes) server.use(jsonServer.rewriter(routes)) //Set the custom routes
-  app.use(session({ 
+  server.use(session({ 
     secret: myOptions.secretKey, 
     resave: false,
     saveUninitialized: true,
@@ -401,6 +429,7 @@ function createServer(server,plugins){
        server.db.write();
        return index;
     }
+    
     if (req.method == 'DELETE') {
         const status=200;
         let message = "Logout";
@@ -443,7 +472,10 @@ function createServer(server,plugins){
         return 
       }
       //create a JWT token with ID, email and roles
-      const groups = db.auth[index].groups;
+      const groups = db.auth[index].groups || [];
+      if (myOptions.adminList.indexOf(email)>=0 
+          && groups.indexOf('admin')<0) 
+        groups.push('admin');
       const id = db.auth[index].id;
       const access_token = createToken({id,email, groups })
       req.session.access_token = access_token;
@@ -479,7 +511,7 @@ function createServer(server,plugins){
   server.use((req, res, next) => {
     var decode = decodeToken(req);
     let by;
-    if (decode && typeof(decode)=="object") {
+    if (decode && isNaN(decode)) {
       if (decode.id || decode.id==0) by=decode.id
       else by=decode.email
     }
@@ -501,6 +533,10 @@ function createServer(server,plugins){
     let ret = {};
     Object.keys(db).forEach(function(key) {
        ret[key]=[];
+    });
+     //Add proxy routes to resource list
+    Object.keys(proxies).forEach(function(key) {
+      ret[key]=[];
     });
     return res.status(200).json(ret);
   })
@@ -577,10 +613,7 @@ function createServer(server,plugins){
   });
   
   server.use(router);
-  //Add proxy routes to resource list
-  Object.keys(proxies).forEach(function(key) {
-    router.db.getState()[key]=[];
-  });
+ 
   return server;
 }
 
@@ -631,12 +664,7 @@ function start(restart=false,callback=null){
         console.error(e.message)
         return
       }
-      const proxies = JSON.parse(fs.readFileSync(myOptions.dbProxyName, 'UTF-8')) //Load the proxies from json
-      //Add proxy routes to resource list
-      Object.keys(proxies).forEach(function(key) {
-        obj[key]=[];
-      });
-
+      
       const isDatabaseDifferent = !_.isEqual(obj, app.db.getState())
       if (isDatabaseDifferent) {
         console.log(chalk.gray(`  ${myOptions.dbName} has changed, reloading...`))
@@ -724,8 +752,11 @@ module.exports = {
   },
   watch: function(){watch()},
   static: function(url){return require('express').static(url)},
+  decodeToken:decodeToken,
+  hasRole:hasRole,
   get server(){return rootServer},
   get app(){return app},
-  get plugin(){return require('express').Router()}
+  get plugin(){return require('express').Router()},
+  get options(){return myOptions}
   
 }

@@ -7,7 +7,7 @@ const plugin = proxy.app;
 //plugin.use("/",express.static("public"));
 
 // Create the settings object - see default settings.js file for other options
-var settings = {
+var settings = Object.assign({
     // By default, the Node-RED UI is available at http://localhost:1880/
     // The following property can be used to specify a different root path.
     // If set to false, this is disabled.
@@ -226,7 +226,7 @@ var settings = {
             // debug - record information which is more verbose than info + info + warn + error + fatal errors
             // trace - record very detailed logging + debug + info + warn + error + fatal errors
             // off - turn off all logging (doesn't affect metrics or audit)
-            level: "info",
+            level: proxy.options.logLevel>1 ? "info" : "error" ,
             // Whether or not to include metric events in the log output
             metrics: false,
             // Whether or not to include audit events in the log output
@@ -241,17 +241,28 @@ var settings = {
             enabled: true
         }
     }
-};
+},proxy.options.red);
+
+
+function authorizeRed(req, res, next) {
+ if (proxy.hasRole(['admin','node-red'],req)){
+   next()
+ } else {
+    const message = 'Forbidden, node-red or admin role required';
+    const status = 403;
+    res.status(status).json({status,message});
+ }
+}
 
 // Initialise the runtime with a server and settings
 RED.init(proxy.server,settings);
 
 if (settings.httpRoot) 
-  plugin.use(settings.httpRoot,RED.httpAdmin);
+  plugin.use(settings.httpRoot,authorizeRed,RED.httpAdmin);
 
 // Serve the editor UI from /red
 if (settings.httpAdminRoot) {
-  plugin.use(settings.httpAdminRoot,RED.httpAdmin);
+  plugin.use(settings.httpAdminRoot,authorizeRed,RED.httpAdmin);
 }
 
 // Serve the http nodes UI from /api

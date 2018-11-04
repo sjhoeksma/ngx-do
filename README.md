@@ -15,7 +15,7 @@ Run `ng generate component component-name` to generate a new component. You can 
 
 ## Build
 
-Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build.
+Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory. Use the `--prod` flag for a production build. If you need to changed the base directory used --base-href /myUrl/
 
 To test your the created website you can use `python -m SimpleHTTPServer 8000` in the build directory to run the web site. 
 
@@ -51,3 +51,4 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 * [Continues Integration](https://travis-ci.org/)
 * [Configurable Angular Modules](https://medium.com/@michelestieven/angular-writing-configurable-modules-69e6ea23ea42)
 * [NodeJS Request](https://www.thepolyglotdeveloper.com/2017/10/consume-remote-api-data-nodejs-application/)
+* [Mongo DB Docs](https://github.com/ramnes/awesome-mongodb)

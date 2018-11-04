@@ -1,5 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import {MatTooltipModule} from '@angular/material/tooltip';
+import { CoreAuth} from '../core.auth';
+import { Observable,from } from 'rxjs';
 
 @Component({
     selector: 'cdk-sidemenu-item',
@@ -11,10 +13,14 @@ export class SidemenuItemComponent implements OnInit {
     @Input() menu;
     @Input() iconOnly: boolean;
     @Input() secondaryMenu = false;
+    visibleRole : boolean = true;
 
-    constructor() { }
+    constructor(private coreAuth:CoreAuth) { }
 
     ngOnInit() {
+      this.coreAuth.hasRole(this.menu ? this.menu.role: null).then(state=>{
+        this.visibleRole=state;
+      })
     }
 
     openLink() {
@@ -25,10 +31,11 @@ export class SidemenuItemComponent implements OnInit {
         return (this.menu && this.menu.sub) ? true : false;
     }
   
+  
    public isVisible(){
-     if (!this.menu) return false;
-     if (typeof(this.menu.visible)=='function') return this.menu.visible();
-     return this.menu.visible!==false;
+     if (!this.menu) return false;   
+     if (typeof(this.menu.visible)=='function') return this.visibleRole && this.menu.visible() ;
+     return this.visibleRole && this.menu.visible!==false;
    }
   
    public chipValue(){
