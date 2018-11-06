@@ -25,7 +25,7 @@ var myOptions = Object.assign({
   dbRuleName : 'ngx-do-proxy.rule.json', //The file name where rule json data is stored
   watchedDir:  './api',
   watch: true, //Should we watch for database changes
-  routes: null,
+  routes: 'ngx-do-proxy-routes.json',
   jwtValidation: 'key',  //Set this to your 'key' == secretKey or "azure-aad" to use a azure-aad token
   secretKey : "do-proxy",
   expiresIn : '8h',
@@ -399,9 +399,9 @@ function createServer(server,plugins){
   //Allow CORS control for all
   if (myOptions.allowOrigin){
     server.use(function(req, res, next) {
-      res.header("Access-Control-Allow-Origin", myOptions.allowOrigin);
-      res.header('Access-Control-Allow-Methods: GET, POST, PATCH, PUT, DELETE, OPTIONS');
-      res.header("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
+      res.set("Access-Control-Allow-Origin", myOptions.allowOrigin);
+      res.set("Access-Control-Allow-Methods", "GET, POST, PATCH, PUT, DELETE, OPTIONS");
+      res.set("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
       next();
     });
   }

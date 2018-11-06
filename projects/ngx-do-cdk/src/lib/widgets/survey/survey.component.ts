@@ -3,180 +3,6 @@ import * as Survey from 'survey-angular';
 import { ShowdownConverter } from 'ngx-showdown'; 
 import { Observable, Subject,Subscription } from 'rxjs';
 
-/* SurveyJS needs common configuration before it works with our themes
- * For variables see: https://github.com/surveyjs/surveyjs/blob/master/src/defaultCss/cssstandard.ts
-*/
-{  
-
-  var themeCss ={
-    navigationButton: "mat-button btn-primary",
-    navigation: {
-      complete: "sv_complete_btn mat-button btn-primary",
-      prev: "sv_prev_btn mat-button btn-basic",
-      next: "sv_next_btn mat-button btn-primary",
-      start: "sv_start_btn mat-button btn-primary"
-    },
-    row: "",
-    /*
-    text: "mat-input-element",
-    checkbox: {
-      root: "mat-checkbox sv_qcbc sv_qcbx",
-      item: "mat-checkbox",
-      label: "mat-checkbox-label",
-      itemControl: "mat-checkbox",
-      controlLabel: " ",
-      materialDecorator: "checkbox-material",
-      other: "sv_q_other form-control"
-    },
-    */
-
-    /*
-    completedPage: "sv_completed_page",
-    root: "sv_main sv_default_css",
-    header: "sv_header",
-    body: "sv_body",
-    footer: "sv_nav",
-    progress: "sv_progress",
-    progressBar: "sv_progress_bar",
-    page: {
-      root: "sv_p_root",
-      title: "",
-      description: ""
-    },
-    // TODO: move to the page object
-    pageTitle: "sv_page_title",
-    pageDescription: "",
-    row: "sv_row",
-    question: {
-      mainRoot: "sv_q sv_qstn",
-      title: "sv_q_title",
-      description: "sv_q_description",
-      comment: "",
-      required: "",
-      titleRequired: "",
-      hasError: "",
-      indent: 20,
-      footer: "sv_q_footer"
-    },
-    panel: { title: "sv_p_title", description: "", container: "sv_p_container" },
-    error: { root: "sv_q_erbox", icon: "", item: "" },
-
-    boolean: {
-      root: "sv_qcbc sv_qbln",
-      item: "sv_q_checkbox",
-      label: "",
-      materialDecorator: "checkbox-material"
-    },
-    checkbox: {
-      root: "sv_qcbc sv_qcbx",
-      item: "checkbox",
-      label: "sv_q_checkbox_label",
-      itemControl: "",
-      controlLabel: " ",
-      materialDecorator: "checkbox-material",
-      other: "sv_q_other form-control"
-    },
-    comment: "",
-    dropdown: {
-      root: "",
-      control: "sv_q_dropdown_control",
-      selectWrapper: "sv_select_wrapper",
-      other: "sv_q_dd_other"
-    },
-    matrix: {
-      root: "sv_q_matrix",
-      label: "sv_q_m_label",
-      cellText: "sv_q_m_cell_text",
-      cellTextSelected: "sv_q_m_cell_selected",
-      cellLabel: "sv_q_m_cell_label"
-    },
-    matrixdropdown: { root: "sv_q_matrix_dropdown" },
-    matrixdynamic: {
-      root: "sv_q_matrix_dynamic",
-      button: "sv_matrix_dynamic_button",
-      buttonAdd: "",
-      buttonRemove: ""
-    },
-    paneldynamic: {
-      root: "sv_panel_dynamic",
-      title: "sv_p_title",
-      button: "",
-      buttonPrev: "",
-      buttonNext: "",
-      buttonAdd: "",
-      buttonRemove: ""
-    },
-    multipletext: {
-      root: "sv_q_mt",
-      itemTitle: "sv_q_mt_title",
-      row: "sv_q_mt_row",
-      itemValue: "sv_q_mt_item_value sv_q_text_root"
-    },
-    radiogroup: {
-      root: "sv_qcbc",
-      item: "sv_q_radiogroup",
-      label: "sv_q_radiogroup_label",
-      itemControl: "sv_q_radiogroup_control_item",
-      controlLabel: "",
-      materialDecorator: "circle",
-      other: "sv_q_other sv_q_radiogroup_other",
-      clearButton: "sv_q_radiogroup_clear"
-    },
-    imagepicker: {
-      root: "sv_imgsel",
-      item: "sv_q_imgsel",
-      label: "sv_q_imgsel_label",
-      itemControl: "sv_q_imgsel_control_item",
-      image: "sv_q_imgsel_image",
-      itemText: "sv_q_imgsel_text",
-      clearButton: "sv_q_radiogroup_clear"
-    },
-    rating: {
-      root: "sv_q_rating",
-      item: "sv_q_rating_item",
-      selected: "active",
-      minText: "sv_q_rating_min_text",
-      itemText: "sv_q_rating_item_text",
-      maxText: "sv_q_rating_max_text"
-    },
-    text: "sv_q_text_root",
-    expression: "",
-    file: {
-      root: "sv_q_file",
-      placeholderInput: "sv_q_file_placeholder",
-      preview: "sv_q_file_preview",
-      removeButton: "sv_q_file_remove_button",
-      fileInput: "sv_q_file_input",
-      removeFile: "sv_q_file_remove"
-    },
-    saveData: {
-      root: "",
-      saving: "",
-      error: "",
-      success: "",
-      saveAgainButton: ""
-    },
-    window: {
-      root: "sv_window",
-      body: "sv_window_content",
-      header: {
-        root: "sv_window_title",
-        title: "",
-        button: "",
-        buttonExpanded: "",
-        buttonCollapsed: ""
-      }
-    }
-    */
-  };
-  
-  //Copy theme into default
-  Object.keys(themeCss).forEach(function(key) {
-   Survey.defaultStandardCss[key] = themeCss[key];
-  });                                           
-  Survey.StylesManager.applyTheme();  
-}
-
 @Component({
   selector: 'cdk-survey',
   templateUrl: './survey.component.html',
@@ -189,13 +15,13 @@ export class SurveyComponent implements OnDestroy, OnInit   {
     @Input() surveyJson;
     @Input() surveyData;
     @Input() onComplete;
+    @Input() themeCss;
     @Input() readonly = false;
     private survey;
 
     constructor(
        private showdownConverter: ShowdownConverter
     ) {
-      
     }
   
     public surveyJSmarkdown(o:any): void{
@@ -252,6 +78,26 @@ export class SurveyComponent implements OnDestroy, OnInit   {
     }
    
     ngOnInit() {
+      /* SurveyJS needs common configuration before it works with our themes
+       * For variables see: https://github.com/surveyjs/surveyjs/blob/master/src/defaultCss/cssstandard.ts
+      */
+       var themeCss =Object.assign({
+        navigationButton: "mat-button btn-primary",
+        navigation: {
+          complete: "sv_complete_btn mat-button btn-primary",
+          prev: "sv_prev_btn mat-button btn-basic",
+          next: "sv_next_btn mat-button btn-primary",
+          start: "sv_start_btn mat-button btn-primary"
+        },
+        row: "",
+      },this.themeCss);
+
+      //Copy theme into default
+      Object.keys(themeCss).forEach(function(key) {
+       Survey.defaultStandardCss[key] = themeCss[key];
+      });                                           
+      Survey.StylesManager.applyTheme();  
+      
       if (this.surveyJson){
         let jsonSubject: Subject<object> = new Subject<object>();
         this.json=jsonSubject.asObservable();
