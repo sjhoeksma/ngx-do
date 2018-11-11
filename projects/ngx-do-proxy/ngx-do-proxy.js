@@ -16,6 +16,7 @@ const argv = require('minimist')(process.argv.slice(2))
 const gaze = require('gaze');
 const uuidv4 = require('uuid/v4');
 const proxy = require('express-http-proxy');
+const crypto = require('crypto'); const algorithm = 'aes-256-ctr';
 var session = require('express-session');
 
 var myOptions = Object.assign({
@@ -37,10 +38,11 @@ var myOptions = Object.assign({
   audience: null, //The audience to be used when decoding an azure token
   signup:true, //Is sigup of user allowed
   allowOrigin: '*', //The CORS allow origin settings
-  whitelist:['127.0.0.1'], //Local domain is whitelisted
+  whitelist:[], //Local domain is whitelisted
   rebuild: false, //When set to true database will be rebuild during restart
   authEnabled: true, //When set to false, auth is disabled
   adminList: [], //List with users which have by default admin rights
+  encryptSystem: false, //Should we encrypt,decrypt system values
   greenLock:{
       email: null // You MUST change this to a valid email address
     , approveDomains: [] //List of domains need to be set by user
@@ -89,7 +91,7 @@ function decodeToken(req){
        if (req.session.access_token!=token[1])
          req.session.access_token=token[1];
        if (myOptions.jwtValidation=="azure-aad" || decoded['iss']){
-        decoded['email']=decoded['preferred_username'];
+          decoded['email']=decoded['preferred_username'];
         /* This does not work yet, more testing
         if (myOptions.logLevel>1) console.log("Validate Azure Token",aad.verify(token[1], { audience:  myOptions.audience ?  myOptions.audience :'https://graph.windows.net'}, 
            (err, decode) => {
@@ -99,11 +101,14 @@ function decodeToken(req){
         );
         */
         //For now we just decode and date checking
-        let d = Date.now()/1000; //Time is in ms 
-        if (myOptions.logLevel>2)console.log("Decode",
-            decoded['nbf']-600,d,d<=decoded['exp']+300,
-            d>=decoded['nbf']-600 && d<=decoded['exp']+300);
-         if (!(d>=decoded['nbf']-600 && d<=decoded['exp']+300)) 
+        let d = (new Date()).getTime()/1000; //Date.now()/1000; //Time is in ms 
+        let nbf = Number(decoded['nbf'])-600;
+        let exp = Number(decoded['exp'])+300;
+        
+        if (myOptions.logLevel>2)
+          console.log("Azure Decode",nbf,d,exp,d<=exp,d>=nbf && d<=exp);
+          
+         if (!(d>=nbf && d<=exp)) 
           return 403;
        
         return decoded;
@@ -117,13 +122,45 @@ function decodeToken(req){
     }
 }
 
+function encrypt(text){
+  var cipher = crypto.createCipher(algorithm,myOptions.secretKey)
+  var crypted = cipher.update(text,'utf8','hex')
+  crypted += cipher.final('hex');
+  return crypted;
+}
+
+function decrypt(text){
+  var decipher = crypto.decipher(algorithm,myOptions.secretKey);
+  var dec = decipher.update(text,'hex','utf8');
+  dec += decipher.final('utf8');
+  return dec;
+}
+
+function getFromKeyVault(req,key,defaultValue=null){
+  let decode = decodeToken(req);
+  let index;
+  let ret = defaultValue;
+  if (decode && isNaN(decode)){
+     const db = app.db.getState() //Get the last active database
+     index = db.keyvault ? db.keyvault.findIndex(keyvault => keyvault.id == key) : -1;
+     if (index>=0){
+       if (myOptions.encryptSystem){
+          ret = decrypt(db.keyvault[index].key);
+       } else {
+         ret = db.keyvault[index].key;
+       } 
+     }
+  }
+  return ret;
+}
+
 function hasRole(role,req){
-  var decode = decodeToken(req);
+  let decode = decodeToken(req);
   let index;
   let ret = false;
   if (decode && isNaN(decode)){
      const db = app.db.getState() //Get the last active database
-    index = db.auth ? db.auth.findIndex(auth => auth.login == decode['email']) : -2;
+    index = db.auth ? db.auth.findIndex(auth => auth.login == decode['email']) : -1;
     if (index>=0) {
       //create a JWT token with ID, email and roles
       const groups = db.auth[index].groups ||[];
@@ -531,6 +568,12 @@ function createServer(server,plugins){
   server.all('/db',(req, res) => {
     const db = server.db.getState() //Get the last active database
     let ret = {};
+    //router.stack
+    router.stack.forEach(function(r) { 
+        if (r.route && r.route.path){
+        ret[r.route.path.substring(1)]=[];
+      }
+    });
     Object.keys(db).forEach(function(key) {
        ret[key]=[];
     });
@@ -754,6 +797,9 @@ module.exports = {
   static: function(url){return require('express').static(url)},
   decodeToken:decodeToken,
   hasRole:hasRole,
+  keyVault: getFromKeyVault,
+  encrypt: encrypt,
+  decrypt: decrypt,
   get server(){return rootServer},
   get app(){return app},
   get plugin(){return require('express').Router()},
