@@ -85,11 +85,13 @@ export class BaseAuth implements AuthInterface {
   protected _isReady:Promise<boolean>
   get isReady():Promise<boolean>{
     if (!this._isReady){
-      this.coreConfig.remember;//Make sure the remember is loaded before we use the key
-      if (this.coreConfig.getItem(BaseAuth.sessionKey)!=null){
-        this.authToken = this.coreConfig.getItem(BaseAuth.sessionKey);
-      }
-      this._isReady =Promise.resolve(this.loggedIn);
+      this._isReady = new Promise<boolean>((resolve, reject) => {
+          let r = this.coreConfig.remember;//Make sure the remember is loaded before we use the key
+          if (this.coreConfig.getItem(BaseAuth.sessionKey,null,r)){
+            this.authToken = this.coreConfig.getItem(BaseAuth.sessionKey,null,r);
+          }
+          resolve(this.loggedIn); 
+      });
     }
     return this._isReady;
   }

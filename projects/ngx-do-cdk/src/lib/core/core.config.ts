@@ -305,10 +305,8 @@ export class CoreConfig {
       localStorage.getItem(key)||  sessionStorage.getItem(key) :
       sessionStorage.getItem(key);
      v = JSON.parse(CryptoJS.AES.decrypt(v|| defaultValue,
-           key==CoreConfig.backendKey ? 
-                (this.environment['appID'] ||  CoreConfig.staticID) :  
-                this.backendValue('appID',CoreConfig.staticID)
-          ).toString(CryptoJS.enc.Utf8));
+                (this.environment['appID'] ||  CoreConfig.staticID)  
+           ).toString(CryptoJS.enc.Utf8));
      if (v=="null") v=null; 
      return v;
     } catch (ex){
@@ -319,7 +317,8 @@ export class CoreConfig {
   public setItem(key:string,value:any=null ):void{  
      if (value!=null) {
        (this._remember ? localStorage : sessionStorage)
-         .setItem(key,CryptoJS.AES.encrypt(JSON.stringify(value),this.backendValue('appID',CoreConfig.staticID))
+         .setItem(key,CryptoJS.AES.encrypt(JSON.stringify(value),
+                (this.environment['appID'] ||  CoreConfig.staticID))
          .toString());
        (!this._remember ? localStorage : sessionStorage).removeItem(key);
      } else{ 

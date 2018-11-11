@@ -36,7 +36,7 @@ export const environment = {
     type: 'msal',
    // popup: true,
     fullLogout: false,
-    apiURL: "http://localhost:3000", 
+    apiURL: "http://localhost:4200", 
     clientID: '6d2f17d4-c7b6-4c1b-9ed4-e773e88a098e',
     consentScopes: ['user.read'],
     tokenRefresh : 120, //We refresh every 2 hours

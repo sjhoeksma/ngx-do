@@ -32,7 +32,7 @@ var myOptions = Object.assign({
   expiresIn : '8h',
   logLevel : 1, //0=No log at all, 1=Info, 2=Info,Requests
   reuseDB: true,
-  ddosEnabled: true, //When set we enable DDOS checking
+  ddosEnabled: false, //When set we enable DDOS checking
   burst:8, //We start bursting ddos as of 8
   limit:10, //We limit to 10 connections per second
   audience: null, //The audience to be used when decoding an azure token

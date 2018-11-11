@@ -52,3 +52,4 @@ node_modules
 /projects/ngx-do-proxy/ngx-do-proxy.db.json
 /projects/ngx-do-proxy/ngx-do-proxy.proxy.json
 /projects/ngx-do-proxy/ngx-do-proxy.rule.json
+/projects/ngx-do-proxy/public

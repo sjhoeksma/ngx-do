@@ -111,11 +111,9 @@ export class CoreAuth implements CanActivate , AuthInterface {
         if (loggedIn) {
           this.coreConfig.load(); //Load the config data
           this.refresh(true); //Start refresh 
-          //On login redirect to app
-          if (this.router.url === '/login')
-            this.activatedRoute.queryParams.subscribe(params => {
+          this.activatedRoute.queryParams.subscribe(params => {
              this.router.navigate([params['requestedUrl'] || '/app']);
-            });
+          });
         }
         this.coreEvent.send({event:"isReady",loggedIn:loggedIn},CoreEvent.core_channel);
       });

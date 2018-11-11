@@ -17,8 +17,12 @@ My work list on activities to work on.
 1. Lets encrypt for Proxy: https://git.coolaj86.com/coolaj86/greenlock-express.js
 1. Fix problem if proxy not available
 1. Audience for jwttoken azure should be web side 
-1. Combine all together in one build script
 1. Have screen where admin can add roles to users, set core admin as parameter
+1. Add option to generate password in doproxy for a user - retruning state
+1. Encrypt doProxy auth data with jwt key
+1. Implement protection of data range, not for admins
+1. Edit table for databases (KeyVault)
+1. Add option to register a function which will be called be fore a restart (plugins)
 
 
 ## Widgets

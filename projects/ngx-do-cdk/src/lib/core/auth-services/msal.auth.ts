@@ -69,12 +69,9 @@ export class MsalAuth extends BaseAuth {
            this.msal.handleAuthenticationResponse.call(this.msal, hash);
          this.validateToken(token).then(
             token=>{  
-              console.log("Token login",this.loggedIn);
-              try {
-                history.replaceState({}, document.title, "."); //Remove hash from url
-              } catch (ex){}
               delete window['#id_token'];
               resolve(this.loggedIn)
+              history.replaceState({}, document.title, "."); //Remove hash from url
             });
         } else {
             //Refresh the hash
@@ -154,8 +151,8 @@ export class MsalAuth extends BaseAuth {
           .then((accessToken)=>{  
              const apiUrl = this.coreConfig.backendEnv['apiURL'];
              this._accessToken=accessToken;
-             this.validateToken(this.coreConfig.remember ?  
-                localStorage.getItem(key)||  sessionStorage.getItem(key) 
+             this.validateToken(!this.workAround && this.coreConfig.remember ?  
+                localStorage.getItem(key)|| sessionStorage.getItem(key) 
                 : sessionStorage.getItem(key)
                ).then(resolve,reject);
           },(ex)=>{
@@ -171,7 +168,7 @@ export class MsalAuth extends BaseAuth {
                this.authToken=null;
                return resolve(this._token);
             }
-            this.validateToken(this.coreConfig.remember ?  
+            this.validateToken(!this.workAround && this.coreConfig.remember ?  
                 localStorage.getItem(key)||  sessionStorage.getItem(key) 
                 : sessionStorage.getItem(key)
                ).then(resolve,reject);
