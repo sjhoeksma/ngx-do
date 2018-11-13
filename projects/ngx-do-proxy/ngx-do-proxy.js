@@ -137,7 +137,7 @@ function decrypt(text){
 }
 
 function getFromKeyVault(req,key,defaultValue=null){
-  let decode = decodeToken(req);
+  let decode = req==null ? {} :decodeToken(req);
   let index;
   let ret = defaultValue;
   if (decode && isNaN(decode)){
@@ -793,7 +793,10 @@ module.exports = {
     server && server.destroy();
     server=null;
   },
-  watch: function(){watch()},
+  restart:function(restart,callback){
+    start(restart,callback);
+  },
+  watch: watch,
   static: function(url){return require('express').static(url)},
   decodeToken:decodeToken,
   hasRole:hasRole,
