@@ -20,6 +20,7 @@ export interface AuthInterface {
   authUser: string; //The name of the authenticated user
   hasRole(role:any):Promise<boolean>; //Check if the user has roles
   isReady:Promise<boolean>; //Make sure the class is ready to be used
+  userData(): Promise<object>; //return the additional user data
 }
 
 @Injectable({
@@ -183,6 +184,10 @@ export class CoreAuth implements CanActivate , AuthInterface {
       });
     }) : Promise.resolve(null);
   }
+  
+  public userData(): Promise<object>{
+     return this.authService ? this._authService.userData() : Promise.resolve({});
+  } 
   
   get authToken():string {
     return this.authService ? this._authService.authToken : null;

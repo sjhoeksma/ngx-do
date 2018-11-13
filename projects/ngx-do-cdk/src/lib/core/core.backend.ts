@@ -22,7 +22,7 @@ export class CoreBackend implements OnDestroy {
       this.loadCommonData();
       setInterval(()=>{
         this.refresh();
-      },this.coreConfig.backendValue('backendRefresh',60000));
+      },this.coreConfig.backendValue('backendRefresh',60)*1000);
     }
  
     ngOnDestroy() {
@@ -71,15 +71,16 @@ export class CoreBackend implements OnDestroy {
     if (this.coreAuth.loggedIn){
       //TODO:Load Secrets which should not be stored in front-end
 
-
-      //Check if user is based on MSAL, and if profile contains consentScopes: ['user.read']
-
       //Load user based on email as key
       this.getList('users',{email:this.coreAuth.authUser})
         .subscribe(data => {
             this.coreConfig.currentUser = Object.assign(
               {name:this.coreAuth.authUser},
-              data[0] ?data[0].plain() : null)
+              data[0] ?data[0].plain() : null);
+            //A sign the drive data
+            this.coreAuth.userData().then(data=>{
+              this.coreConfig.currentUser = Object.assign(data,this.coreConfig.currentUser);
+            });
         });
 
       //Load the shopping cart

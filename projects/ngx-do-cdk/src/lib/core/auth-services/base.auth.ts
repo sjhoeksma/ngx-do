@@ -19,6 +19,10 @@ export class BaseAuth implements AuthInterface {
     return Promise.resolve(this.loggedIn);
   }
   
+  public userData(): Promise<object> {
+    return Promise.resolve(this._token ? {'name':this._user} : {});
+  }
+  
   public signup(user: string = null, pass: string = null, remember: boolean = false): Promise<boolean>{
     return this.login(user,pass,remember);
   }
@@ -86,9 +90,9 @@ export class BaseAuth implements AuthInterface {
   get isReady():Promise<boolean>{
     if (!this._isReady){
       this._isReady = new Promise<boolean>((resolve, reject) => {
-          let r = this.coreConfig.remember;//Make sure the remember is loaded before we use the key
-          if (this.coreConfig.getItem(BaseAuth.sessionKey,null,r)){
-            this.authToken = this.coreConfig.getItem(BaseAuth.sessionKey,null,r);
+          //We make sure the remember is loaded before we use the key
+          if (this.coreConfig.getItem(BaseAuth.sessionKey,null,this.coreConfig.remember)){
+            this.authToken = this.coreConfig.getItem(BaseAuth.sessionKey);
           }
           resolve(this.loggedIn); 
       });

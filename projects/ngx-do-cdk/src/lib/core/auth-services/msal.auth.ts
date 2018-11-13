@@ -115,7 +115,7 @@ export class MsalAuth extends BaseAuth {
         this.authToken=null;
         return resolve(this._token);
       } 
-      const apiUrl = this.coreConfig.backendEnv['apiURL'];
+      const apiUrl = this.coreConfig.backendValue('apiURL');
       if (apiUrl){
         let head : object= {
           ContentType:'application/x-www-form-urlencoded'};
@@ -126,7 +126,7 @@ export class MsalAuth extends BaseAuth {
            .customPOST({email:decoded['preferred_username'] || decoded['email'],
               signup: this.coreConfig.backendValue('signup',false),
               type:  this.coreConfig.backendValue('type','msal')}
-              ,'',{} , head).toPromise().then( (obj) => {          
+              ,'',{} , head).toPromise().then( (res) => { 
            this.authToken = token;
            if (this.workAround) this.copyMsal(true);
           return resolve(this._token);
@@ -179,6 +179,17 @@ export class MsalAuth extends BaseAuth {
         });
     }
     return Promise.resolve(this._token);
+  }
+  
+  public userData(): Promise<object>{
+    if (!this.loggedIn) return Promise.resolve({});
+    return new Promise((resolve,reject)=>{
+      this.rest.oneUrl('msal_user', 'https://graph.microsoft.com/v1.0/me').get()
+        .subscribe(data=>{resolve(data)},error=>{
+        console.error("Failed to retieve user data",error);
+        resolve({})
+      });
+    });
   }
   
 }
