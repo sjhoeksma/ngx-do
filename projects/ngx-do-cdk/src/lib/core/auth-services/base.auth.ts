@@ -48,7 +48,6 @@ export class BaseAuth implements AuthInterface {
   public setDefaultHeader(){
     let head : object= {};
     if ( this._token) head['Authorization']= `Bearer ${this._token}` 
-    if ( this._accessToken) head['access_token'] = this._accessToken;
      this.rest.provider.setDefaultHeaders(head);
   }
   

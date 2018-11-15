@@ -10,12 +10,18 @@ import { BaseAuth} from './base.auth';
 export class MsalAuth extends BaseAuth {
   protected msal : any;
 	
+  
   /**
    * There is a bug with using localStorage and redirect msal.
    * We implemented a workaround which copies sessionStorage
    * when we want to remember login status
    */
-  private workAround : boolean = true;
+  private workAround : boolean = true; //workaround for session cookie in localstorage and reloading after login
+  constructor(protected coreConfig: CoreConfig,protected rest: Restangular) {
+    super(coreConfig,rest);
+    this.workAround = this.coreConfig.backendValue('workAround',true);
+  }
+  
   private copyMsal(toLocal:boolean){
     if (!this.coreConfig.remember) return;
     let keys = ['msal.authority','msal.acquireTokenUser','msal.client.info','msal.error','msal.error.description','msal.session.state','msal.token.keys','msal.access.token.key','msal.expiration.key','msal.state.login','msal.state.acquireToken','msal.state.renew','msal.nonce.idtoken','msal.username','msal.idtoken','msal.login.request','msal.login.error','msal.token.renew.status','adal.idtoken']
@@ -45,19 +51,13 @@ export class MsalAuth extends BaseAuth {
              this.coreConfig.backendEnv['clientID'], 
              this.coreConfig.backendEnv['authority'], 
           (errorDesc, token, error, tokenType) => {
-
             if (token){
               delete window['#id_token'];
               history.replaceState({}, document.title, ".");
-              location.reload(); //Work around reload
-              /*
-              this.refreshToken().then((accesToken)=>{
-                delete window['#id_token'];
-                history.replaceState({}, document.title, ".");
-                location.reload(); //Work around reload
-                resolve(this.loggedIn); 
-              },()=>{resolve(this.loggedIn)});
-              */
+              if (this.workAround)
+                location.reload(); //Work around reload of location works best
+              else 
+                resolve(this.loggedIn);
             } else resolve(this.loggedIn);
           },{
            cacheLocation: this. workAround ?  'sessionStorage':
@@ -65,12 +65,12 @@ export class MsalAuth extends BaseAuth {
            redirectUri: this.coreConfig.baseUrl,
            postLogoutRedirectUri: this.coreConfig.baseUrl,
            navigateToLoginRequestUrl:false,
-           isAngular:false,
+           isAngular: !this.workAround,
            storeAuthStateInCookie:true
         }); 
 
         //Check for hash
-       let hash = window['#id_token'] || ''; //location if picked up above || window.location.hash;
+       let hash = window['#id_token'] || window.location.hash;
        let i = hash.indexOf('&');
        let token =(i<0) ? hash.substring(10) : hash.substring(10,i-1);
        if (window.location.hash.indexOf('#id_token')>0) {
@@ -99,7 +99,6 @@ export class MsalAuth extends BaseAuth {
         this.refreshToken().then((accesToken)=>{
             resolve(this.loggedIn);
           },()=>{resolve(this.loggedIn)}); 
-        //this.validateToken(token).then(token=>{resolve(this.loggedIn)});
       },(error)=>{
         resolve(false);
       })    
