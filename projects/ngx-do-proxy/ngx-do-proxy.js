@@ -165,8 +165,9 @@ function hasRole(role,req){
       //create a JWT token with ID, email and roles
       const groups = db.auth[index].groups ||[];
       if (myOptions.adminList.indexOf(decode['email'])>=0 
-          && groups.indexOf('admin')<0)
+          && groups.indexOf('admin')<0) {
         groups.push('admin');
+      }
       if (groups) {
         if (typeof role == "string")
          return groups.indexOf(role)>=0;
@@ -459,7 +460,7 @@ function createServer(server,plugins){
        let index = db.auth ? db.auth.findIndex(auth => auth.login == email) : -2;
        if (index>=0) return -2; //Cannot user already exists
        let id =uuidv4();
-       db.auth.push( {id:id,login:email,hash:type,groups:[]});
+       db.auth.push( {id:id,login:email,hash:type,groups:['default']});
        db.users.push({id:id,email:email,name:decode['name']});
        index = db.auth ? db.auth.findIndex(auth => auth.login == email) : -2;
        if (myOptions.logLevel>1) console.log("Added user",email);
@@ -509,7 +510,7 @@ function createServer(server,plugins){
         return 
       }
       //create a JWT token with ID, email and roles
-      const groups = db.auth[index].groups || [];
+      const groups = db.auth[index].groups || ['default'];
       if (myOptions.adminList.indexOf(email)>=0 
           && groups.indexOf('admin')<0) 
         groups.push('admin');

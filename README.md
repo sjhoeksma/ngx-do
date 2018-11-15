@@ -52,3 +52,4 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 * [Configurable Angular Modules](https://medium.com/@michelestieven/angular-writing-configurable-modules-69e6ea23ea42)
 * [NodeJS Request](https://www.thepolyglotdeveloper.com/2017/10/consume-remote-api-data-nodejs-application/)
 * [Mongo DB Docs](https://github.com/ramnes/awesome-mongodb)
+* [Express-Mug](https://www.npmjs.com/package/express-mung)
