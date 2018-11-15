@@ -6,9 +6,7 @@ import {Restangular } from 'ngx-restangular';
 import * as Msal  from 'msal';
 import { BaseAuth} from './base.auth';
 
-@Injectable({
-  providedIn: 'root',
-})
+
 export class MsalAuth extends BaseAuth {
   protected msal : any;
 	
@@ -47,34 +45,42 @@ export class MsalAuth extends BaseAuth {
              this.coreConfig.backendEnv['clientID'], 
              this.coreConfig.backendEnv['authority'], 
           (errorDesc, token, error, tokenType) => {
-            this.validateToken(token).then(
-            token=>{resolve(this.loggedIn)});
+
+            if (token){
+              delete window['#id_token'];
+              history.replaceState({}, document.title, ".");
+              location.reload(); //Work around reload
+              /*
+              this.refreshToken().then((accesToken)=>{
+                delete window['#id_token'];
+                history.replaceState({}, document.title, ".");
+                location.reload(); //Work around reload
+                resolve(this.loggedIn); 
+              },()=>{resolve(this.loggedIn)});
+              */
+            } else resolve(this.loggedIn);
           },{
            cacheLocation: this. workAround ?  'sessionStorage':
                 this.coreConfig.remember ? 'localStorage' : 'sessionStorage',
            redirectUri: this.coreConfig.baseUrl,
            postLogoutRedirectUri: this.coreConfig.baseUrl,
            navigateToLoginRequestUrl:false,
-          // isAngular:true,
+           isAngular:false,
            storeAuthStateInCookie:true
         }); 
 
         //Check for hash
-       let hash = window['#id_token'] || window.location.hash;
+       let hash = window['#id_token'] || ''; //location if picked up above || window.location.hash;
        let i = hash.indexOf('&');
        let token =(i<0) ? hash.substring(10) : hash.substring(10,i-1);
-       if (hash.indexOf('#id_token')>=0) {
+       if (window.location.hash.indexOf('#id_token')>0) {
+         //This should be handled during agent creation
+       } else if (hash.indexOf('#id_token')>=0 ) {
          hash = (i<0) ? hash : hash.substring(0,i-1);
-         if (this.workAround)
-           this.msal.handleAuthenticationResponse.call(this.msal, hash);
-         this.validateToken(token).then(
-            token=>{  
-              delete window['#id_token'];
-              resolve(this.loggedIn)
-              history.replaceState({}, document.title, "."); //Remove hash from url
-            });
-        } else {
-            //Refresh the hash
+         //Process the request and this will trigger the agent
+         this.msal.processCallBack.call(this.msal, hash);
+       } else {
+            //Refresh the internal stored hash hash
            this.refreshToken().then((accesToken)=>{
             resolve(this.loggedIn);
           },()=>{resolve(this.loggedIn)}); 
@@ -90,8 +96,10 @@ export class MsalAuth extends BaseAuth {
         this.msal.loginRedirect(this.coreConfig.backendEnv['consentScopes']);
       } else this.msal.loginPopup(this.coreConfig.backendEnv['consentScopes'])
         .then((token)=>{
-        this.validateToken(token).then(
-            token=>{resolve(this.loggedIn)});
+        this.refreshToken().then((accesToken)=>{
+            resolve(this.loggedIn);
+          },()=>{resolve(this.loggedIn)}); 
+        //this.validateToken(token).then(token=>{resolve(this.loggedIn)});
       },(error)=>{
         resolve(false);
       })    
@@ -100,6 +108,7 @@ export class MsalAuth extends BaseAuth {
   
   public logout(byUser:boolean = false):Promise<boolean>  {
     this._accessToken=null;
+    this._groups=null;
     if (this.coreConfig.backendEnv['fullLogout']==true){
       super.logout(byUser); //No Routing
       this.msal.logout();
@@ -107,6 +116,7 @@ export class MsalAuth extends BaseAuth {
     }
     return super.logout(byUser);
   }
+  
   
   private validateToken(token:string): Promise<string>{
     return new Promise<string>((resolve,reject)=>{ 
@@ -128,6 +138,9 @@ export class MsalAuth extends BaseAuth {
               type:  this.coreConfig.backendValue('type','msal')}
               ,'',{} , head).toPromise().then( (res) => { 
            this.authToken = token;
+          //Extract the groups from the proxy
+           const decoded = this.coreConfig.decodeJWT(res.access_token);
+           if (decoded) this._groups=decoded['groups'];
            if (this.workAround) this.copyMsal(true);
           return resolve(this._token);
         }).catch((ex) => {
@@ -149,16 +162,15 @@ export class MsalAuth extends BaseAuth {
       return new Promise((resolve,reject)=>{
         this.msal.acquireTokenSilent(this.coreConfig.backendEnv['consentScopes'])
           .then((accessToken)=>{  
-             const apiUrl = this.coreConfig.backendEnv['apiURL'];
              this._accessToken=accessToken;
              this.validateToken(!this.workAround && this.coreConfig.remember ?  
                 localStorage.getItem(key)|| sessionStorage.getItem(key) 
                 : sessionStorage.getItem(key)
                ).then(resolve,reject);
-          },(ex)=>{
+          },ex=>{
             //Only show real errors, not warnings
             if (ex.toString().indexOf('AADSTS700051')>=0){
-             console.warn('Token refresh not enabled for this application');
+              console.warn('Token refresh not enabled for this application');
             } else if (ex.toString().indexOf('AADSTS50076')>=0){
               console.warn('Token refresh requires MFA');
               this.authToken=null;
@@ -166,7 +178,6 @@ export class MsalAuth extends BaseAuth {
             } else {
                console.error("RefreshToken Failed",ex);
                this.authToken=null;
-               return resolve(this._token);
             }
             this.validateToken(!this.workAround && this.coreConfig.remember ?  
                 localStorage.getItem(key)||  sessionStorage.getItem(key) 
@@ -182,11 +193,12 @@ export class MsalAuth extends BaseAuth {
   }
   
   public userData(): Promise<object>{
-    if (!this.loggedIn) return Promise.resolve({});
+    if (!this._accessToken) return Promise.resolve({});
     return new Promise((resolve,reject)=>{
-      this.rest.oneUrl('msal_user', 'https://graph.microsoft.com/v1.0/me').get()
+      this.rest.oneUrl('msal_user', 'https://graph.microsoft.com/v1.0/me')
+        .get(null,{Authorization: 'Bearer ' + this._accessToken })
         .subscribe(data=>{resolve(data)},error=>{
-        console.error("Failed to retieve user data",error);
+        console.error("Failed to retrieve user data",error);
         resolve({})
       });
     });

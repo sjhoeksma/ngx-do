@@ -7,9 +7,7 @@ import * as CryptoJS from 'crypto-js';
 import { BaseAuth} from './base.auth'
 import { Router} from '@angular/router';
 
-@Injectable({
-  providedIn: 'root',
-})
+
 export class DoProxyAuth extends BaseAuth {
  
   public login(user: string = null, pass: string = null, remember: boolean = false): Promise<boolean> {

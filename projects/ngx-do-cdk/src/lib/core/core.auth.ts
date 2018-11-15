@@ -31,7 +31,7 @@ export class CoreAuth implements CanActivate , AuthInterface {
   constructor(protected coreConfig:CoreConfig,protected router : Router,
                 private activatedRoute: ActivatedRoute, 
                protected rest: Restangular, protected coreEvent:CoreEvent){
-    this.authService; //Init the authService selected by default
+    let s = this.authService; //Init the authService selected by default
     //Set the error handler for 403
     this.rest.provider.addErrorInterceptor((response, subject, responseHandler) => {
       if (this.loggedIn && response.status === 403) {
@@ -94,8 +94,9 @@ export class CoreAuth implements CanActivate , AuthInterface {
 
   public get authService(): AuthInterface { //Create authentication service on the fly
     if (!this._authService || this._authBackend!=this.coreConfig.backend){
+      this._authBackend = this.coreConfig.backend;
       //Create authService class
-      switch (this.coreConfig.backendEnv['type']) {
+      switch (this.coreConfig.backendValue('type')) {
         //TODO: FIND the service through the registred providers  
         case 'do-proxy' : 
           this._authService = new DoProxyAuth(this.coreConfig,this.rest); break;
@@ -106,9 +107,10 @@ export class CoreAuth implements CanActivate , AuthInterface {
                        this.coreConfig.backendEnv['type']); 
          this._authService = new DoProxyAuth(this.coreConfig,this.rest);   
       }
+      
       this.isReady = this._authService.isReady;
       //Wait till the new _authService is ready to see if user info should be loaded
-      this.isReady.then((loggedIn)=>{
+      this.isReady.then(loggedIn=>{
         if (loggedIn) {
           this.coreConfig.load(); //Load the config data
           this.refresh(true); //Start refresh 
@@ -118,7 +120,7 @@ export class CoreAuth implements CanActivate , AuthInterface {
         }
         this.coreEvent.send({event:"isReady",loggedIn:loggedIn},CoreEvent.core_channel);
       });
-      this._authBackend = this.coreConfig.backend;
+
     }
     return this._authService;
   }
@@ -236,7 +238,7 @@ export class CoreAuth implements CanActivate , AuthInterface {
       
     if (this.coreConfig.backendValue('authentication') && this.authService){
       return new Promise((resolve,reject)=>{
-        this.isReady.then((loggedIn)=>{
+        this.isReady.then(loggedIn=>{
           if (!this.loggedIn) {
             this.router.navigate(['/login'], {
               queryParams: {

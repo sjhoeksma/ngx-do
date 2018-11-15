@@ -6,13 +6,16 @@ import {Restangular } from 'ngx-restangular';
 
 export class BaseAuth implements AuthInterface {
   public static sessionKey = 'session_key';
+  protected _isReady:Promise<boolean>;
 	constructor(protected coreConfig: CoreConfig,protected rest: Restangular) {
+    this._isReady=null;
     this.rest.provider.setBaseUrl(this.coreConfig.backendValue('apiURL'));
   }
   
   protected _user  : string;
   protected _token : string;
   protected _accessToken : string;
+  protected _groups : Array<string>;
   public login(user: string = null, pass: string = null, remember: boolean = false): Promise<boolean> {
     this._user = user;
     this._token = null;
@@ -33,6 +36,7 @@ export class BaseAuth implements AuthInterface {
 
   public logout(byUser:boolean = false):Promise<boolean>  {
     this.authToken=null;
+    this._groups=null;
     this.coreConfig.clearStorage(byUser);
     return Promise.resolve(!this.loggedIn);
   }
@@ -66,6 +70,7 @@ export class BaseAuth implements AuthInterface {
       this._token = null;
       this._user = null;
       this._accessToken=null;
+      this._groups=null;
       this.setDefaultHeader();
     } else {
       const decoded = this.coreConfig.decodeJWT(token);
@@ -86,7 +91,6 @@ export class BaseAuth implements AuthInterface {
     return this._token!=null;
   }
   
-  protected _isReady:Promise<boolean>
   get isReady():Promise<boolean>{
     if (!this._isReady){
       this._isReady = new Promise<boolean>((resolve, reject) => {
@@ -102,7 +106,8 @@ export class BaseAuth implements AuthInterface {
   
   public get roles():Array<string>{
     let token = this.coreConfig.decodeJWT(this._token);
-    let groups = ((token) ? token['groups'] : []) ||[];  
+    let groups = ((token) ? token['groups'] : ['default']) ||['default']; 
+    if (this._groups) groups.concat(this._groups);
     let groupMap = this.coreConfig.backendValue('groupMap',{});
     groups.forEach(group=>{
       if (groupMap[group]) groups.push(groupMap[group]);
