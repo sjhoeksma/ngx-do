@@ -5,7 +5,7 @@
 export const environment = {
   production: false, 
   remember: true, //By default we remember user
-  title: "DoAdmin",
+  title: "DoDemo",
   authentication : true, //Should we do authentication
   backendList: ['azure','localhost','remote'], //List of available back-ends configurations
   backend : 'localhost', // The default backend
