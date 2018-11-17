@@ -180,6 +180,18 @@ function hasRole(role,req){
   return ret;
 }
 
+function authId(req){
+  let decode = decodeToken(req);
+  let index;
+  let ret = null;
+  if (decode && isNaN(decode)){
+     const db = app.db.getState() //Get the last active database
+    index = db.auth ? db.auth.findIndex(auth => auth.login == decode['email']) : -1;
+    if (index>=0) ret = db.auth[index]['id'];
+  }  
+  return ret;
+}
+
 function verifyToken(req){
     return isNaN(decodeToken(req)) ? 0 : 403;
 }
@@ -547,20 +559,14 @@ function createServer(server,plugins){
   
   //Set updated and created at
   server.use((req, res, next) => {
-    var decode = decodeToken(req);
-    let by;
-    if (decode && isNaN(decode)) {
-      if (decode.id || decode.id==0) by=decode.id
-      else by=decode.email
-    }
     if (req.method === 'POST') {
       if (!req.body.id) req.body.id=uuidv4();
       req.body.createdAt = Date.now();
-      req.body.createdBy = by;
+      req.body.createdBy = authId(req);
     }
     if (req.method === 'UPDATE' || req.method === 'POST' || req.method === 'PUT') {
       req.body.updatedAt = Date.now()
-      req.body.updatedBy = by ;
+      req.body.updatedBy = authId(req) ;
     }
     next()
   })
