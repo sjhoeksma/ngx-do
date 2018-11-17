@@ -484,6 +484,7 @@ function createServer(server,plugins){
         const status=200;
         let message = "Logout";
         req.session.access_token=null;
+        req.session.client_token=null;
         res.status(200).json({status, message})
         return;
     } else if (req.method == 'GET') {
@@ -518,6 +519,7 @@ function createServer(server,plugins){
         const status = 401
         const message = 'Incorrect email or password'
         req.session.access_token=null;
+        req.session.client_token=null;
         res.status(status).json({status, message})
         return 
       }
@@ -529,6 +531,7 @@ function createServer(server,plugins){
       const id = db.auth[index].id;
       const access_token = createToken({id,email, groups })
       req.session.access_token = access_token;
+      req.session.client_token = req.headers.ClientAuthorization;
       res.status(200).json({access_token})
     }
     return //No Next
