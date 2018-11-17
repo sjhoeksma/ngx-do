@@ -5,7 +5,8 @@ import { ContactComponent } from './contact/contact.component';
 import { AboutComponent } from './about/about.component';
 import { ErrorComponent } from './error/error.component';
 
-import { ProfileComponent } from './profile/profile.component'
+import { ProfileComponent } from './profile/profile.component';
+import { KeyVaultComponent } from './keyvault/keyvault.component'
 
 import { CoreAuth } from 'ngx-do-cdk';
 
@@ -21,6 +22,9 @@ const pagesRoutes: Routes = [
     },
     { path: 'profile/:id', component: ProfileComponent ,data: { animation: 'profile'}
       ,canActivate:[CoreAuth]
+    },
+    { path: 'keyvault', component: KeyVaultComponent ,data: { animation: 'keyvault' },
+      canActivate:[CoreAuth]
     },
 ];
 

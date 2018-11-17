@@ -155,5 +155,20 @@ export const AppMenu: Array<object> = [
             'expectedRole': 'node-red'
         },
      ]
+  },{
+      'name': 'Admin',
+      'icon': 'fingerprint',
+      'link': false,
+      'open': false,
+      'expectedRole': 'admin',
+      'sub':[
+        {
+            'name': 'KeyVault',
+            'link': 'pages/keyvault',
+            'icon': 'phonelink_lock',
+            'chip': false,
+            'open': false,
+        },
+      ]
   },
 ];

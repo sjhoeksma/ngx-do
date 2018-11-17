@@ -21,10 +21,12 @@ import { AboutComponent } from './about/about.component';
 import { ErrorComponent } from './error/error.component';
 
 import { ProfileComponent } from './profile/profile.component';
-
+import { KeyVaultComponent } from './keyvault/keyvault.component';
+import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 
 @NgModule({
     imports: [
+        NgxDatatableModule,
         MatCardModule,
         CommonModule,
         FlexLayoutModule,
@@ -44,6 +46,7 @@ import { ProfileComponent } from './profile/profile.component';
         AboutComponent,
         ErrorComponent,
         ProfileComponent,
+        KeyVaultComponent,
     ],
     exports: [
     ],
