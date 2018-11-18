@@ -21,7 +21,7 @@ export class CoreConfig {
   /* Internal object to externally exposed data elements */
   private _notifications:Array<object>=[];
   private _messages:Array<object>=[];
-  private _shoppingBasket:Array<object>=[];s
+  private _shoppingBasket:Array<object>=[];
   private _currentUser:object={};
   private _events:Array<object>=[];
   private _todoList:Array<object>=[];
@@ -30,24 +30,41 @@ export class CoreConfig {
   //TODO Functions so we allow data manipulations to be saved 
    /* Data elements */
   public get notifications():Array<object>{return this._notifications}
-  public get messages():Array<object>{return this._messages}
-  public get shoppingBasket():Array<object>{return this._shoppingBasket}
-  public get currentUser():object{return this._currentUser}
-  public get events():Array<object>{return this._events}
-  public get todoList():Array<object>{return this._todoList};
-  public get preferences():object{return this._preferences};  
-  //TODO:Fix to proper setters
   public set notifications(v:Array<object>){this._notifications=v ? v : []}
+  public clearNotifications(){this._notifications=[]}
+  public removeNotification(rec:object){this._notifications.splice(this._notifications.indexOf(rec), 1);}
+  public addNotification(rec:object){if (this._notifications.indexOf(rec)<0) this._notifications.push(rec);}
+  
+  public get messages():Array<object>{return this._messages}
   public set messages(v:Array<object>){this._messages=v ? v : []}
+  public clearMessages(){this._messages=[]}
+  public removeMessage(rec:object){this._messages.splice(this._messages.indexOf(rec), 1);}
+  public addMessage(rec:object){if (this._messages.indexOf(rec)<0) this._messages.push(rec);}
+  
+  public get shoppingBasket():Array<object>{return this._shoppingBasket}
   public set shoppingBasket(v:Array<object>){this._shoppingBasket=v ? v : []}
+  public clearShopping(){this._shoppingBasket=[]}
+  public removeShopping(rec:object){this._shoppingBasket.splice(this._shoppingBasket.indexOf(rec), 1);}
+  public addShopping(rec:object){if (this._shoppingBasket.indexOf(rec)<0) this._shoppingBasket.push(rec);}
+  
+  public get events():Array<object>{return this._events}
+  public set events(v:Array<object>){this._events=v ? v : []}
+  public clearEvents(){this._events=[]}
+  public removeEvent(rec:object){this._events.splice(this._events.indexOf(rec), 1);}
+  public addEvent(rec:object){if (this._events.indexOf(rec)<0) this._events.push(rec);}
+ 
+  public get todoList():Array<object>{return this._todoList};
+  public set todoList(v:Array<object>){this._todoList=v ? v:[]};
+
+  public get currentUser():object{return this._currentUser}
   public set currentUser(v:object){
     this._currentUser=v || {};
     if (v && v['preferences']){
       this.preferences=v['preferences'];
     }
   }
-  public set events(v:Array<object>){this._events=v ? v : []}
-  public set todoList(v:Array<object>){this._todoList=v ? v:[]};
+
+  public get preferences():object{return this._preferences};  
   public set preferences(v:object){
     if (v==null) 
       this._preferences={}
