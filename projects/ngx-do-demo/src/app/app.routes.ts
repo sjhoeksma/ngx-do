@@ -7,7 +7,8 @@ export const AppRoutes: Routes = [{
     { path: 'dashboard', loadChildren: './dashboard/dashboard.module#DashboardModule'}, //Dashboard
 
     { path: 'pages', loadChildren: './pages/pages.module#PagesModule' },  //Common pages
-    { path: 'material-widgets', loadChildren: './material-widgets/material-widgets.module#MaterialWidgetsModule' },  
+    { path: 'material-widgets', loadChildren: './material-widgets/material-widgets.module#MaterialWidgetsModule',
+     data: { preload: true, delay: false }},  
     { path: 'widgets', loadChildren: './do-widgets/do-widgets.module#DoWidgetsModule' },  //Common pages
     {path:'error',redirectTo:'pages/error'}, //Error Route
     {path:'',redirectTo:'dashboard', pathMatch: 'full'}, //We show by default the dashboard

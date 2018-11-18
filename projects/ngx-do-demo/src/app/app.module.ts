@@ -9,7 +9,8 @@ import { PerfectScrollbarModule ,
         PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
 import { CoreGlobalModule, 
         DoModule, 
-        DoComponent } from 'ngx-do-cdk';
+        DoComponent,
+        CorePreloadingStrategy} from 'ngx-do-cdk';
 import { AppComponent } from './app.component';
 import { BackendService } from './backend/backend.service';
 import { RestangularModule, Restangular } from 'ngx-restangular';
@@ -34,7 +35,7 @@ import { AppRoutes } from './app.routes';
         DoModule,
         CoreGlobalModule,
         RestangularModule.forRoot(RestangularConfigFactory),
-        RouterModule.forRoot(AppRoutes),
+        RouterModule.forRoot(AppRoutes, {preloadingStrategy:CorePreloadingStrategy}),
     ],
     declarations: [AppComponent],
     providers: [

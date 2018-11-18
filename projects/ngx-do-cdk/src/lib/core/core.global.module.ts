@@ -8,7 +8,7 @@ import { CoreConfig} from './core.config';
 import { CoreEvent} from './core.event';
 import { CoreAuth } from './core.auth';
 import { CoreModule} from './core.module';
-import { CoreBackend} from './core.backend';
+import { CorePreloadingStrategy } from './core.preloading.strategy';
 
 @NgModule({
     declarations: [
@@ -23,7 +23,7 @@ import { CoreBackend} from './core.backend';
        CoreConfig,
        CoreEvent,
        CoreAuth,
-       CoreBackend
+       CorePreloadingStrategy,
     ]
 })
 export class CoreGlobalModule {}

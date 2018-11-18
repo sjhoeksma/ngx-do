@@ -13,6 +13,7 @@ export * from './lib/core/core.config';
 export * from './lib/core/core.event';
 export * from './lib/core/core.auth';
 export * from './lib/core/core.backend';
+export * from './lib/core/core.preloading.strategy';
 
 //Global Components
 export * from './lib/core/login/login.component';
