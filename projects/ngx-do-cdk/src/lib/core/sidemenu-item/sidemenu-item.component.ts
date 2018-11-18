@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Router } from '@angular/router';
+import { Router,ActivatedRoute } from '@angular/router';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import { CoreAuth} from '../core.auth';
 import { Observable,from } from 'rxjs';
@@ -16,7 +16,7 @@ export class SidemenuItemComponent implements OnInit {
     @Input() secondaryMenu = false;
     visibleRole : boolean = true;
 
-    constructor(private coreAuth:CoreAuth,private router:Router) { }
+    constructor(private coreAuth:CoreAuth,private router:Router,private route:ActivatedRoute) { }
 
     ngOnInit() {
       let role = this.menu ? this.menu.expectedRole: null;
@@ -44,6 +44,21 @@ export class SidemenuItemComponent implements OnInit {
 
     openLink() {
         this.menu.open = this.menu.open;
+    }
+  
+    clickLink(menu){
+      if (!(menu.link==false)) {
+        if (menu.sub) menu.open = !menu.open;
+        if (menu.link instanceof Function) {
+          menu.link() 
+        } else if (menu.link.indexOf('/')==0) {
+          this.router.navigate([menu.link]);
+        } else {
+          this.router.navigate([menu.link],{relativeTo:this.route})
+        }
+      } else {
+         menu.open = !menu.open;
+      }
     }
 
     chechForChildMenu() {
