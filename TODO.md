@@ -7,9 +7,7 @@ My work list on activities to work on.
 1. Add all other CDK components to demo project 
 1. Split ngx-do-proxy in multiple modules making it more readable
 1. Add empty base project you could use with ng create
-1. Make function to add/Remove AppMenu 
-1. Fix problem with decoding azure token in proxy
-1. Check on token errors, so we can do MFA is required
+1. Make function to add/Remove AppMenu  
 1. Rename ngx-do-cdk to ngx-do-lib + all tags do-
 1. Create widget for document and demo ing of widget
 1. On click icon toggle menu
@@ -23,6 +21,9 @@ My work list on activities to work on.
 1. Implement protection of data range, not for admins
 1. Edit table for databases (KeyVault)
 1. Add option to register a function which will be called be fore a restart (plugins)
+1. Add SurveyBuilder as Widget --> Item linked to Survey in DB.
+1. Session of ngx-proxy should be stored in db (now single node)
+1. Avatar as function
 
 
 ## Widgets

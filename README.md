@@ -53,3 +53,4 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 * [NodeJS Request](https://www.thepolyglotdeveloper.com/2017/10/consume-remote-api-data-nodejs-application/)
 * [Mongo DB Docs](https://github.com/ramnes/awesome-mongodb)
 * [Express-Mug](https://www.npmjs.com/package/express-mung)
+* [ngx-datatable](http://swimlane.github.io/ngx-datatable)
