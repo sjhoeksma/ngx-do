@@ -54,10 +54,12 @@ export class MsalAuth extends BaseAuth {
             if (token){
               delete window['#id_token'];
               history.replaceState({}, document.title, ".");
-              if (this.workAround)
+              if (this.workAround){
                 location.reload(); //Work around reload of location works best
-              else 
+              } else {
+                this._accessToken = this.coreConfig.getItem(BaseAuth.accessKey);
                 resolve(this.loggedIn);
+              }
             } else resolve(this.loggedIn);
           },{
            cacheLocation: this. workAround ?  'sessionStorage':
@@ -81,7 +83,8 @@ export class MsalAuth extends BaseAuth {
          this.msal.processCallBack.call(this.msal, hash);
        } else {
             //Refresh the internal stored hash hash
-           this.refreshToken().then((accesToken)=>{
+           this.refreshToken().then((accessToken)=>{
+            this._accessToken = this.coreConfig.getItem(BaseAuth.accessKey); 
             resolve(this.loggedIn);
           },()=>{resolve(this.loggedIn)}); 
         }
@@ -130,7 +133,7 @@ export class MsalAuth extends BaseAuth {
           ContentType:'application/x-www-form-urlencoded'};
         const decoded = this.coreConfig.decodeJWT(token);
         if ( token) head['Authorization']= `Bearer ${token}` 
-        if ( this._accessToken) head['access_token'] = this._accessToken;
+        if ( this._accessToken) head['ClientAuthorization'] = this._accessToken;
         this.rest.one('auth')
            .customPOST({email:decoded['preferred_username'] || decoded['email'],
               signup: this.coreConfig.backendValue('signup',false),
@@ -170,8 +173,19 @@ export class MsalAuth extends BaseAuth {
             //Only show real errors, not warnings
             if (ex.toString().indexOf('AADSTS700051')>=0){
               console.warn('Token refresh not enabled for this application');
+               //Check if the accessToken is stored in a session
+              let storage = this.workAround || !this.coreConfig.remember ? sessionStorage : localStorage;
+              Object.keys(storage).forEach(key=>{
+                if (key.indexOf('{"authority"')==0) {
+                  try {
+                   this.accessToken = JSON.parse(storage.getItem(key)).accessToken;
+                   storage.removeItem(key);
+                  } catch(ex){}
+                }
+              });
             } else if (ex.toString().indexOf('AADSTS50076')>=0){
               console.warn('Token refresh requires MFA');
+             
               this.authToken=null;
               return resolve(this._token);
             } else {

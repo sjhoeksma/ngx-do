@@ -6,6 +6,7 @@ import {Restangular } from 'ngx-restangular';
 
 export class BaseAuth implements AuthInterface {
   public static sessionKey = 'session_key';
+  public static accessKey = 'access_key';
   protected _isReady:Promise<boolean>;
 	constructor(protected coreConfig: CoreConfig,protected rest: Restangular) {
     this._isReady=null;
@@ -36,7 +37,6 @@ export class BaseAuth implements AuthInterface {
 
   public logout(byUser:boolean = false):Promise<boolean>  {
     this.authToken=null;
-    this._groups=null;
     this.coreConfig.clearStorage(byUser);
     return Promise.resolve(!this.loggedIn);
   }
@@ -57,7 +57,7 @@ export class BaseAuth implements AuthInterface {
   
   set accessToken(token: string) {
     this._accessToken = token;
-    this.setDefaultHeader();
+    this.coreConfig.setItem(BaseAuth.accessKey,token);
   }
   get authToken(): string {
     return this._token;
@@ -66,6 +66,7 @@ export class BaseAuth implements AuthInterface {
   set authToken(token:string){
     if (!token){
       this.coreConfig.setItem(BaseAuth.sessionKey); 
+      this.coreConfig.setItem(BaseAuth.accessKey); 
       this._token = null;
       this._user = null;
       this._accessToken=null;
@@ -96,6 +97,7 @@ export class BaseAuth implements AuthInterface {
           //We make sure the remember is loaded before we use the key
           if (this.coreConfig.getItem(BaseAuth.sessionKey,null,this.coreConfig.remember)){
             this.authToken = this.coreConfig.getItem(BaseAuth.sessionKey);
+            this.accessToken = this.coreConfig.getItem(BaseAuth.accessKey);
           }
           resolve(this.loggedIn); 
       });
