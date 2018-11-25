@@ -4,10 +4,10 @@ import { CoreConfig } from 'ngx-do-cdk';
 
 @Component({
   selector: 'app-survey',
-  templateUrl: './survey.component.html',
-  styleUrls: ['./survey.component.scss']
+  templateUrl: './survey-editor.component.html',
+  styleUrls: ['./survey-editor.component.scss']
 })
-export class SurveyComponent implements OnInit {
+export class SurveyEditorComponent implements OnInit {
  //Demo JSON
   json: object = {
       questions: [
@@ -63,23 +63,22 @@ export class SurveyComponent implements OnInit {
       ]
   };
 
-  public onComplete; //Used to store real onComplete
-  
+  public onSave; //Used to store real onComplete
   constructor(private router:Router,private coreConfig:CoreConfig) { 
-    this.onComplete = this._onComplete.bind(this);
+    this.onSave = this._onSave.bind(this);
   }
 
   ngOnInit() {
     if (this.coreConfig.preferences['surveyjs'])
       this.json = this.coreConfig.preferences['surveyjs'];
-    this.router.routeReuseStrategy.shouldReuseRoute = function() {
-        return false;
-    };
+    //this.router.routeReuseStrategy.shouldReuseRoute = function() {
+    //    return false;
+    //};
   }
   
-  private _onComplete(result){
-    console.log(JSON.stringify(result));
-    
+  private _onSave(result,source){
+    this.json=result;
+    this.coreConfig.preferences['surveyjs'] = this.json;
   }
   
   

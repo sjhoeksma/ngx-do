@@ -145,6 +145,12 @@ export const AppMenu: Array<object> = [
             'icon': 'query_builder',
             'chip': false,
             'open': false,
+        },{
+            'name': 'Survey Editor',
+            'link': 'widgets/survey-editor',
+            'icon': 'text_fields',
+            'chip': false,
+            'open': false,
         },
        {
             'name': 'Node Red',

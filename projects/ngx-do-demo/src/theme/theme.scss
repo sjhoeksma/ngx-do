@@ -91,6 +91,14 @@ cdk-survey{
   @include survey($cdk-survey-theme);
 }
 
+cdk-survey-editor{
+  $survey-primary: mat-palette($primary , 400);
+  $survey-accent:  mat-palette($accent , 900);
+  $survey-warn:    mat-palette($warn );
+  $cdk-survey-theme:   mat-dark-theme($survey-primary, $survey-accent,$survey-warn);
+  @include survey-editor($cdk-survey-theme);
+}
+
 @include angular-material-theme($cdk-theme);
 @include app($cdk-theme);
 @include round-progressbar($cdk-theme);

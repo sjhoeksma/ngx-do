@@ -1,0 +1,15 @@
+.survey-editor-header {
+    padding: 20px 25px 0px 20px;
+    min-height: 250px;
+    color: white;
+    
+    .content {
+          min-height: 250px;
+         background-color: white;
+    }
+
+    mat-divider {
+            border-top-color: white;
+    }
+
+}

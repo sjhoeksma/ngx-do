@@ -33,6 +33,7 @@ import { PerfectScrollbarModule } from 'ngx-perfect-scrollbar';
 import { PERFECT_SCROLLBAR_CONFIG } from 'ngx-perfect-scrollbar';
 import { PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
 import { SurveyComponent } from './survey/survey.component';
+import { SurveyEditorComponent } from './survey-editor/survey-editor.component';
 import { ShowdownModule, ConverterOptions, IConverterOptions } from 'ngx-showdown';
 import { ReversePipe } from './pipes/reverse/reverse.pipe';
 import { CallbackPipe } from './pipes/callback/callback.pipe';
@@ -85,6 +86,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
       SafeUrlPipe,
       RemoveDuplicatesPipe,
       SurveyComponent,
+      SurveyEditorComponent,
       ],
   exports: [
       DashcardComponent, 
@@ -106,7 +108,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
       TimeAgoPipe,
       SafeUrlPipe,
       RemoveDuplicatesPipe,
-      SurveyComponent
+      SurveyComponent,
+      SurveyEditorComponent,
   ],
   providers: [
         {
