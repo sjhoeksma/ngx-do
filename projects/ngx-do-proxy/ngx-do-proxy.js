@@ -699,8 +699,8 @@ function build(restart,callback){
 }
 
 //Start the server and check if files have changed
-function start(restart=false,callback=null){
-  build(restart,function(err,json,plugins){
+function start(rebuild=0,callback=null){
+  build(rebuild>0,function(err,json,plugins){
     if (app) {
       if (myOptions.greenLockEnabled) 
         return; //Greenlock cannot be restarted
@@ -723,7 +723,7 @@ function start(restart=false,callback=null){
         console.log(chalk.gray(`  ${myOptions.dbName} has changed, reloading...`))
       } else {
         console.log(chalk.green(`  Database not changed :)`))
-        return;
+        if (rebuild>=0) return;
       }
     }
 
@@ -755,7 +755,7 @@ function start(restart=false,callback=null){
           },myOptions.greenLock));
       rootServer=rootServer.listen(80, 443,function(){
         createServer(app,plugins);
-        console.log('ngx-do-proxy','Started secure on port: 443' , chalk.green(443))
+        console.log('ngx-do-proxy, Started secure on port: 443' , chalk.green(443))
         callback && callback();
       });
     } else {
@@ -763,7 +763,7 @@ function start(restart=false,callback=null){
       const port = process.env.PORT || myOptions.port;
       rootServer=app.listen(port, () => {
         createServer(app,plugins);
-        console.log('ngx-do-proxy',restart ? 'restarted on port:' : 'started on port:' , chalk.green(port));
+        console.log('ngx-do-proxy, Started on port:' , chalk.green(port));
         callback && callback();
       })
       enableDestroy(rootServer)
@@ -781,7 +781,7 @@ function watch(){
         console.log(filepath + ' was ' + event);
       //If the file is a JSON (database,validation) restart the database
       if (isJSON(filepath)) {
-        start(true);
+        start(1); //Reload data
       }
     });
 
@@ -797,14 +797,14 @@ module.exports = {
         && myOptions.greenLock.approveDomains.length>0 
         && myOptions.greenLock.email);
     if (!myOptions.greenLockEnabled && strToBool(myOptions.watch)) watch();
-    start(strToBool(myOptions.rebuild),callback);
+    start(strToBool(myOptions.rebuild) ? 1 : 0,callback);
   },
   stop: function(){
     server && server.destroy();
     server=null;
   },
-  restart:function(restart,callback){
-    start(restart,callback);
+  restart:function(rebuild,callback){
+    start(rebuild,callback);
   },
   watch: watch,
   static: function(url){return require('express').static(url)},
