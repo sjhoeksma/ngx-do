@@ -19,6 +19,7 @@ export * from './lib/core/core.preloading.strategy';
 export * from './lib/core/login/login.component';
 export * from './lib/core/signup/signup.component';
 export * from './lib/core/logout/logout.component';
+export * from './lib/core/iframe/iframe.component';
 export * from './lib/do/do.component';
 
 

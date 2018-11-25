@@ -20,6 +20,7 @@ import { WidgetsModule } from '../widgets/widgets.module';
 import { LogoutComponent} from './logout/logout.component';
 import { LoginComponent} from './login/login.component';
 import { SignupComponent} from './signup/signup.component';
+import { IFrameComponent} from './iframe/iframe.component';
 
 
 
@@ -43,6 +44,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
         LogoutComponent,
         LoginComponent,
         SignupComponent,
+        IFrameComponent,
     ],
 
     imports: [
@@ -86,6 +88,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
         FullscreenComponent,
         SidebarComponent,
         UserMenuComponent,
+        IFrameComponent,
     ],
 
     providers: [
