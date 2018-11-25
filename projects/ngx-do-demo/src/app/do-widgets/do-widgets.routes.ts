@@ -4,7 +4,6 @@ import { CoreAuth } from 'ngx-do-cdk';
 
 import { SurveyComponent } from './survey/survey.component';
 import { SurveyEditorComponent } from './survey-editor/survey-editor.component';
-import { NodeRedComponent } from './node-red/node-red.component';
 
 const widgetsRoutes: Routes = [
     //These are public sides
@@ -13,9 +12,6 @@ const widgetsRoutes: Routes = [
       ,canActivate:[CoreAuth]
     },
    { path: 'survey-editor', component: SurveyEditorComponent ,data: { animation: 'survey-editor'}
-      ,canActivate:[CoreAuth]
-    },
-   { path: 'nodered', component: NodeRedComponent ,data: { animation: 'nodered','expectedRole': 'node-red'}
       ,canActivate:[CoreAuth]
     }
 ];

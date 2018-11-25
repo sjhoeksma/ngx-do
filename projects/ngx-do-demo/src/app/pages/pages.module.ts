@@ -24,6 +24,8 @@ import { ProfileComponent } from './profile/profile.component';
 import { KeyVaultComponent } from './keyvault/keyvault.component';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 
+import { CoreModule } from 'ngx-do-cdk';
+
 @NgModule({
     imports: [
         NgxDatatableModule,
@@ -39,6 +41,7 @@ import { NgxDatatableModule } from '@swimlane/ngx-datatable';
         MatListModule,
         MatChipsModule,
         WidgetsModule,
+        CoreModule,
         ShowdownModule.forRoot({} as ConverterOptions | IConverterOptions),
         PagesRouterModule ],
     declarations: [   

@@ -152,14 +152,6 @@ export const AppMenu: Array<object> = [
             'chip': false,
             'open': false,
         },
-       {
-            'name': 'Node Red',
-            'link': 'widgets/nodered',
-            'icon': 'build',
-            'chip': false,
-            'open': false,
-            'expectedRole': 'node-red'
-        },
      ]
   },{
       'name': 'Admin',
@@ -172,6 +164,12 @@ export const AppMenu: Array<object> = [
             'name': 'KeyVault',
             'link': 'pages/keyvault',
             'icon': 'phonelink_lock',
+            'chip': false,
+            'open': false,
+        },{
+            'name': 'Do Proxy',
+            'link': 'pages/doproxy',
+            'icon': 'build',
             'chip': false,
             'open': false,
         },

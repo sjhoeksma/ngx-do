@@ -18,7 +18,6 @@ import { WidgetsModule } from 'ngx-do-cdk';
 import { DoWidgetsRouterModule } from './do-widgets.routes';
 import { SurveyComponent } from './survey/survey.component';
 import { SurveyEditorComponent } from './survey-editor/survey-editor.component';
-import { NodeRedComponent } from './node-red/node-red.component';
 
 @NgModule({
     imports: [
@@ -39,7 +38,6 @@ import { NodeRedComponent } from './node-red/node-red.component';
     declarations: [   
         SurveyComponent,
         SurveyEditorComponent,
-        NodeRedComponent,
     ],
     exports: [
     ],
