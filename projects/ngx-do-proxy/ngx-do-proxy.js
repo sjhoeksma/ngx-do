@@ -43,6 +43,7 @@ var myOptions = Object.assign({
   authEnabled: true, //When set to false, auth is disabled
   adminList: [], //List with users which have by default admin rights
   encryptSystem: false, //Should we encrypt,decrypt system values
+  allowAccessToken: ['admin'], //List with roles allowed to use access_token
   greenLock:{
       email: null // You MUST change this to a valid email address
     , approveDomains: [] //List of domains need to be set by user
@@ -61,6 +62,32 @@ function strToBool(s){
 
 var readError = false, app,rootServer
 
+function hasRole(role,req,decoded){
+  let decode = decoded || decodeToken(req);
+  let index;
+  let ret = false;
+  if (decode && isNaN(decode)){
+     const db = app.db.getState() //Get the last active database
+    index = db.auth ? db.auth.findIndex(auth => auth.login == decode['email']) : -1;
+    if (index>=0) {
+      //create a JWT token with ID, email and roles
+      const groups = db.auth[index].groups ||[];
+      if (myOptions.adminList.indexOf(decode['email'])>=0 
+          && groups.indexOf('admin')<0) {
+        groups.push('admin');
+      }
+      if (groups) {
+        if (typeof role == "string")
+         return groups.indexOf(role)>=0;
+        if (Array.isArray(role)) role.forEach(function(el){
+          if (groups.indexOf(el)>=0) ret=true;
+        }); 
+      }
+    }
+  }  
+  return ret;
+}
+
 // Create a token from a payload 
 function createToken(payload){
   const expiresIn = myOptions.expiresIn;
@@ -69,27 +96,20 @@ function createToken(payload){
 
 function decodeToken(req){
    let token = req.headers.authorization ? req.headers.authorization.split(' ') : null
-   //Check if token was passsed as Query
-   if (token == null && req.query['_!token']!=null && req.method=="GET"){
-      token=[];
-      token[0]='Bearer';
-      token[1]=req.query['_!token']; 
-   }
    //When there is no token check if we have a session cookie
    if (token == null && req.session.access_token) {
-     token=[];
-     token[0]='Bearer';
-     token[1]=req.session.access_token; 
+     if (hasRole(myOptions.allowAccessToken,req,jwt.decode(req.session.access_token))){
+       token=[];
+       token[0]='Bearer';
+       token[1]=req.session.access_token; 
+     }
    }
-   
    if (token === null || token[0] !== 'Bearer') {
       return 401;
     }
     try {
        let decoded=jwt.decode(token[1]);
        if (!decoded) return null;
-       if (req.session.access_token!=token[1])
-         req.session.access_token=token[1];
        if (myOptions.jwtValidation=="azure-aad" || decoded['iss']){
           decoded['email']=decoded['preferred_username'];
         /* This does not work yet, more testing
@@ -151,32 +171,6 @@ function getFromKeyVault(req,key,defaultValue=null){
        } 
      }
   }
-  return ret;
-}
-
-function hasRole(role,req){
-  let decode = decodeToken(req);
-  let index;
-  let ret = false;
-  if (decode && isNaN(decode)){
-     const db = app.db.getState() //Get the last active database
-    index = db.auth ? db.auth.findIndex(auth => auth.login == decode['email']) : -1;
-    if (index>=0) {
-      //create a JWT token with ID, email and roles
-      const groups = db.auth[index].groups ||[];
-      if (myOptions.adminList.indexOf(decode['email'])>=0 
-          && groups.indexOf('admin')<0) {
-        groups.push('admin');
-      }
-      if (groups) {
-        if (typeof role == "string")
-         return groups.indexOf(role)>=0;
-        if (Array.isArray(role)) role.forEach(function(el){
-          if (groups.indexOf(el)>=0) ret=true;
-        }); 
-      }
-    }
-  }  
   return ret;
 }
 
@@ -432,7 +426,17 @@ function createServer(server,plugins){
     secret: myOptions.secretKey, 
     resave: false,
     saveUninitialized: true,
+    genid: function(req) {
+      return uuidv4() // use UUIDs for session IDs
+    },
     cookie: { maxAge: 6000*60*8 }}));
+  server.use(function (req, res, next) {
+   //Check if token was passsed as Query
+   if (req.query['_!token']!=null){
+     req.session.access_token=req.query['_!token'];
+   }  
+   next()
+  })
   server.use(bodyParser.urlencoded({extended: true}))
   server.use(bodyParser.json())
   //DDOS Protection
