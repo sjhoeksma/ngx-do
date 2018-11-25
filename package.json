@@ -68,6 +68,7 @@
     "screenfull": "^3.3.3",
     "showdown": "^1.8.6",
     "survey-angular": "^1.0.50",
+    "surveyjs-editor": "^1.0.55",
     "uuid": "^3.3.2",
     "vued3tree": "^3.6.1",
     "zone.js": "~0.8.26"

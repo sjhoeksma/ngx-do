@@ -24,6 +24,8 @@ My work list on activities to work on.
 1. Add SurveyBuilder as Widget --> Item linked to Survey in DB.
 1. Session of ngx-proxy should be stored in db (now single node)
 1. Avatar as function
+1. enable option for explicit security on setting
+1. Convert the node-red into a iframe component
 
 
 ## Widgets

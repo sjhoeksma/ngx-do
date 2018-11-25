@@ -2,12 +2,19 @@
 
 Based on [CK-Admin](https://github.com/codetok/cdk-admin)
 
-This project contains the library and demo, make sure you build library before you run ng serve 
+This project contains the library, proxy and demo, make sure you run `npm run build` to create library first before you run the demo `ng serve`. The because the demo project uses REST services, like security and user management, you also requires start the proxy service by using `npm run proxy`. 
 
+## Build Library
 
-## Development server
+Run `npm run build` to build the library, or `npm run publish` to push the library to npm.  
 
-Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+## Development Demo
+
+Run `ng serve` or `npm run publish_demo` for a dev server. Navigate to `http://localhost:4200/`. The app will automatically reload if you change any of the source files.
+
+## Run Proxy 
+
+We provide a proxy service base on JSONServer, with implemented security controls. To run the proxy use `npm run proxy` to publish the proxy to npm use `npm run publish_proxy`
 
 ## Code scaffolding
 
