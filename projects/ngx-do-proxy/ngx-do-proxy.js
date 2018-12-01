@@ -34,6 +34,10 @@ var myOptions = Object.assign({
   secretKey : "do-proxy",
   expiresIn : '8h',
   logLevel : 1, //0=No log at all, 1=Info, 2=Info,Requests
+  logSize : '5K', // For Demo we rotate every 5K written
+  logInterval:'1d',  // rotate daily
+  logCompress: false, // no log compression
+  logMaxFiles: 5, //Max 5 Files
   reuseDB: true,
   ddosEnabled: false, //When set we enable DDOS checking
   burst:8, //We start bursting ddos as of 8
@@ -806,12 +810,11 @@ module.exports = {
       console.log("Using external log file",myOptions.logFile);
       //Create new log file
       
-      var log_file = rfs(myOptions.logFile, {
-            size:     '10M', // rotate every 10 MegaBytes written
-            interval: '1d',  // rotate daily
-            maxFiles: 5, //Max 5 Files
-            compress: 'gzip' // compress rotated files
-        });
+      var log_file = rfs(myOptions.logFile, Object.assign({
+            size:    myOptions.logSize || '10M', // rotate every 10 MegaBytes written
+            interval: myOptions.logInterval || '1d',  // rotate daily
+            maxFiles: myOptions.logMaxFiles || 5, //Max 5 Files
+        },myOptions.logCompress ? {compress:myOptions.logCompress}:{}));
 
       console.log = function() { //Append to logfile without locking
         let s = util.format.apply(null,arguments)+ '\n'
