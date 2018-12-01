@@ -53,3 +53,6 @@ node_modules
 /projects/ngx-do-proxy/ngx-do-proxy.proxy.json
 /projects/ngx-do-proxy/ngx-do-proxy.rule.json
 /projects/ngx-do-proxy/public
+/projects/ngx-do-proxy/ngx-do-proxy.log
+*.log
+/projects/ngx-do-proxy/ngx-do-proxy.log.txt

@@ -13,6 +13,7 @@ export class IFrameComponent {
   @Input() url;
   @Input() key;
   @Input() token;
+  @Input() unique = null;
   constructor(private coreAuth:CoreAuth,private coreConfig:CoreConfig,private route: ActivatedRoute){
   }
   
@@ -21,6 +22,7 @@ export class IFrameComponent {
     if (!this.key && data.key) this.key=data.key;
     if (!this.token && data.token) this.token=data.token;
     if (!this.url && data.url) this.url=data.url;
+    if (!this.unique!=null && data.unique!=null) this.unique=data.unique;
     if (this.key){
       if (Array.isArray(this.key)){
         let url;
@@ -32,9 +34,16 @@ export class IFrameComponent {
         this.url=this.coreConfig.backendValue(this.key,this.url);
       }
     }
-    if (this.token==true)
-      this.url += "?" + "_!token="+this.coreAuth.authToken;
-    else if (this.token)
-       this.url += "?" + this.token + "="+this.coreAuth.authToken;
+    let str: string='';
+    if (this.token==true){
+      str += "_!token="+this.coreAuth.authToken;
+    } else if (this.token){
+       str += this.token + "="+this.coreAuth.authToken;
+    }
+    if (this.unique==true){
+      if (str!='') str+='&';
+      str+= Date.now();
+    }
+    if (str!='') this.url += '?' + str;
   }
 }

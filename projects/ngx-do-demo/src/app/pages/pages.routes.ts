@@ -26,7 +26,7 @@ const pagesRoutes: Routes = [
     { path: 'keyvault', component: KeyVaultComponent ,data: { animation: 'keyvault' },
       canActivate:[CoreAuth]
     },
-    { path: 'doproxy', component: IFrameComponent ,data: {  animation: 'iframe' ,key: 'apiURL',token:true },
+    { path: 'doproxy', component: IFrameComponent ,data: {  animation: 'iframe' ,key: 'apiURL',unique:true,token:true },
       canActivate:[CoreAuth]
     },
 ];
