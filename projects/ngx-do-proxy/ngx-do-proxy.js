@@ -17,7 +17,9 @@ const gaze = require('gaze');
 const uuidv4 = require('uuid/v4');
 const proxy = require('express-http-proxy');
 const crypto = require('crypto'); const algorithm = 'aes-256-ctr';
+const util = require('util');
 var session = require('express-session');
+
 
 var myOptions = Object.assign({
   port : 3000, //The port number to use
@@ -44,6 +46,7 @@ var myOptions = Object.assign({
   adminList: [], //List with users which have by default admin rights
   encryptSystem: false, //Should we encrypt,decrypt system values
   allowAccessToken: ['admin'], //List with roles allowed to use access_token
+  logFile: null, //When set with name the console log will be written here
   greenLock:{
       email: null // You MUST change this to a valid email address
     , approveDomains: [] //List of domains need to be set by user
@@ -52,7 +55,6 @@ var myOptions = Object.assign({
     , communityMember: false // Communitymember gets notified of important updates
   }
 });
-
 
 // Converts a string to a bool.
 function strToBool(s){
@@ -598,6 +600,11 @@ function createServer(server,plugins){
     return res.status(200).json(ret);
   })
   
+  if (myOptions.logFile) {
+      server.use('/logF ile', require('express').static(path.join(process.cwd(), myOptions.logFile)));
+  }
+
+  
   
   //From here on private stuff
 
@@ -620,8 +627,6 @@ function createServer(server,plugins){
       }
       next()
   })
-
-
   //TODO: Add Get Auth and Delete Auth --> they need role admin
   
   //Rule routes
@@ -796,6 +801,20 @@ module.exports = {
   start : function(options,callback){
     myOptions = Object.assign(myOptions,options,argv);
     if (myOptions.logLevel==0) console.log = () => {}
+    else if (myOptions.logFile) {
+      console.log("Using external log file",myOptions.logFile);
+      //Create new log file
+      var log_file = fs.createWriteStream(path.join(process.cwd(), myOptions.logFile), {flags : 'w'});
+      log_file.end(); //Close filed
+
+      console.log = function() { //Append to logfile without locking
+        var log_file = fs.createWriteStream(path.join(process.cwd(), myOptions.logFile), {flags : 'a'});
+        let s = util.format.apply(null,arguments)+ '\n'
+        log_file.write(s);
+        log_file.end();
+        process.stdout.write(s);
+      }
+    }
     
     myOptions.greenLockEnabled=(strToBool(myOptions.greenLock.agreeTos) 
         && myOptions.greenLock.approveDomains.length>0 
