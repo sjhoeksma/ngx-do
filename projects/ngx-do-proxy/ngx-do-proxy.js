@@ -18,6 +18,7 @@ const uuidv4 = require('uuid/v4');
 const proxy = require('express-http-proxy');
 const crypto = require('crypto'); const algorithm = 'aes-256-ctr';
 const util = require('util');
+const rfs    = require('rotating-file-stream');
 var session = require('express-session');
 
 
@@ -804,14 +805,17 @@ module.exports = {
     else if (myOptions.logFile) {
       console.log("Using external log file",myOptions.logFile);
       //Create new log file
-      var log_file = fs.createWriteStream(path.join(process.cwd(), myOptions.logFile), {flags : 'w'});
-      log_file.end(); //Close filed
+      
+      var log_file = rfs(myOptions.logFile, {
+            size:     '10M', // rotate every 10 MegaBytes written
+            interval: '1d',  // rotate daily
+            maxFiles: 5, //Max 5 Files
+            compress: 'gzip' // compress rotated files
+        });
 
       console.log = function() { //Append to logfile without locking
-        var log_file = fs.createWriteStream(path.join(process.cwd(), myOptions.logFile), {flags : 'a'});
         let s = util.format.apply(null,arguments)+ '\n'
         log_file.write(s);
-        log_file.end();
         process.stdout.write(s);
       }
     }
