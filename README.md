@@ -61,3 +61,8 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 * [Mongo DB Docs](https://github.com/ramnes/awesome-mongodb)
 * [Express-Mug](https://www.npmjs.com/package/express-mung)
 * [ngx-datatable](http://swimlane.github.io/ngx-datatable)
+* [CI&CD](https://medium.com/@edzob/ci-and-cd-in-the-wild-b5ca8f71fa28)
+* [Infra As Code](https://www.visualstudiogeeks.com/blog/DevOps/Use-VSTS-ReleaseManagement-to-Deploy-and-Test-in-AzureDevTestLabs)
+* [Compliancy](https://azure.microsoft.com/en-us/blog/payment-processing-blueprint-for-pci-dss-compliant-environments/)
+* https://electric-cloud.com/ 
+* [Secure DevOps](http://salmanbaset.blogspot.com/2016/08/can-cloud-help-developers-securely-secdevops.html)
