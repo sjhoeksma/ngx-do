@@ -8,9 +8,15 @@
     },
      { 
        "id": 1,   
-       "login"  : "demo@demo.com",
+       "login"  : "admin@demo.com",
        "hash" : "2a97516c354b68848cdbd8f54a226a0a55b21ed138e207ad6c5cbb9c00aa5aea",
-       "groups": ["admin","approve_it","node-red"]
+       "groups": ["default","admin","approve_it","node-red"]
+    },
+    { 
+       "id": 2,   
+       "login"  : "user@demo.com",
+       "hash" : "2a97516c354b68848cdbd8f54a226a0a55b21ed138e207ad6c5cbb9c00aa5aea",
+       "groups": ["default","test"]
     }
   ]
 }

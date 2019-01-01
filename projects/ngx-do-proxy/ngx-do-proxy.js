@@ -22,6 +22,7 @@ const rfs    = require('rotating-file-stream');
 var session = require('express-session');
 
 
+
 var myOptions = Object.assign({
   port : 3000, //The port number to use
   dbName : 'ngx-do-proxy.db.json', //The file name where json data is stored
@@ -69,29 +70,37 @@ function strToBool(s){
 
 var readError = false, app,rootServer
 
-function hasRole(role,req,decoded){
+function roles(req,decoded){
   let decode = decoded || decodeToken(req);
   let index;
   let ret = false;
+  var groups = ['default'];
   if (decode && isNaN(decode)){
-     const db = app.db.getState() //Get the last active database
+    const db = app.db.getState() //Get the last active database
     index = db.auth ? db.auth.findIndex(auth => auth.login == decode['email']) : -1;
     if (index>=0) {
       //create a JWT token with ID, email and roles
-      const groups = db.auth[index].groups ||[];
+      groups = db.auth[index].groups || groups;
       if (myOptions.adminList.indexOf(decode['email'])>=0 
           && groups.indexOf('admin')<0) {
         groups.push('admin');
       }
-      if (groups) {
-        if (typeof role == "string")
-         return groups.indexOf(role)>=0;
-        if (Array.isArray(role)) role.forEach(function(el){
-          if (groups.indexOf(el)>=0) ret=true;
-        }); 
-      }
     }
-  }  
+  }
+  return groups; 
+}
+
+function hasRole(role,req,decoded){
+  let decode = decoded || decodeToken(req);
+  let index;
+  let ret = false;
+  var groups = roles(req,decoded);
+  if (typeof role == "string")
+    return groups.indexOf(role)>=0;
+  if (Array.isArray(role)) 
+    role.forEach(function(el){
+      if (groups.indexOf(el)>=0) ret=true;
+    }); 
   return ret;
 }
 
@@ -361,6 +370,7 @@ function concatJson(userOptions, callback) {
       var string = contentString.replace(/^({\s*})*|({\s*})*$/g, "")
       string = string.replace(/}\s*({\s*})*\s*{/g, ",")
       string = string.replace(/}\s*{/g, ",")
+      string = string.replace(/\/\*[\s\S]*?\*\/|([^\\:]|^)\/\/.*$/gm, '$1') //Strip comments
       string = string.replace(/\r?\n/g, "") //Allow multiple lines
       try {
           var result=jsonic(string);
@@ -427,6 +437,7 @@ function createServer(server,plugins){
   const proxies = JSON.parse(fs.readFileSync(myOptions.dbProxyName, 'UTF-8')) //Load the proxies from json
   const rules = JSON.parse(fs.readFileSync(myOptions.dbRuleName, 'UTF-8')) //Load the rules from json
   const router = jsonServer.router(myOptions.dbName) //Load the database
+  
   server.db = router.db   //Add a reference to our router database to the server
   if (routes) server.use(jsonServer.rewriter(routes)) //Set the custom routes
   server.use(session({ 
@@ -453,6 +464,7 @@ function createServer(server,plugins){
     server.use(dd.middleware);
   }
   server.use(expressValidator());
+  
           
   //Create the json-server
   server.use(jsonServer.defaults({logger:myOptions.logLevel>1}));
@@ -548,6 +560,7 @@ function createServer(server,plugins){
     return //No Next
   })
   
+  
   //Check fo public plugins
   plugins.forEach(function(file){
     if (isPUBLIC(file)){
@@ -606,10 +619,8 @@ function createServer(server,plugins){
   })
   
   if (myOptions.logFile) {
-      server.use('/logF ile', require('express').static(path.join(process.cwd(), myOptions.logFile)));
+      server.use('/logFile', require('express').static(path.join(process.cwd(), myOptions.logFile)));
   }
-
-  
   
   //From here on private stuff
 
@@ -632,6 +643,26 @@ function createServer(server,plugins){
       }
       next()
   })
+  
+  //We want to validate if user is requesting a keyvault he is allowed
+  server.use("/keyvault",(req,res,next)=>{
+    //Only admin can update or delete
+    var admin = hasRole('admin',req);
+    if (req.method!="GET" && !admin) {
+        const status=403;
+        let message = "Update keyvault only by Admin";
+        res.status(status).json({status, message})
+        return //No Next
+    } else if (req.method=="GET" && !admin){
+      //We need to add the groups of the user
+      req.query = Object.assign(req.query,{groups :roles(req)});
+    } else {
+      if (!req.body.groups) req.body.groups = ["default"]; //Just make sure we have default groups
+    }
+    next();
+  }) 
+  
+  
   //TODO: Add Get Auth and Delete Auth --> they need role admin
   
   //Rule routes
@@ -680,7 +711,7 @@ function createServer(server,plugins){
   });
   
   server.use(router);
- 
+
   return server;
 }
 

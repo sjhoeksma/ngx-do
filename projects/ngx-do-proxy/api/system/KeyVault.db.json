@@ -2,8 +2,8 @@
   keyvault : [
     {
       id: 'dialogflow',
-      key: '5eb276d06e514ce8a450592c2666a38a'
-    }
-    
+      key: '5eb276d06e514ce8a450592c2666a38a',
+      groups: ['default']
+    },
   ]
 }
