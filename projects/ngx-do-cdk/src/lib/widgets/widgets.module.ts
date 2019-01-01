@@ -39,6 +39,7 @@ import { ReversePipe } from './pipes/reverse/reverse.pipe';
 import { CallbackPipe } from './pipes/callback/callback.pipe';
 import { TimeAgoPipe } from './pipes/timeago/timeago.pipe';
 import { SafeUrlPipe } from './pipes/safe-url/safe-url.pipe';
+import { KeysPipe } from './pipes/keys/keys.pipe';
 import { RemoveDuplicatesPipe } from './pipes/remove-duplicates/remove-duplicates.pipe';
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     suppressScrollX: true
@@ -81,6 +82,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
       AiChatbotComponent,
       AiChatbotBarComponent,
       ReversePipe,
+      KeysPipe,
       CallbackPipe,
       TimeAgoPipe,
       SafeUrlPipe,
@@ -106,6 +108,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
       ReversePipe,
       CallbackPipe,
       TimeAgoPipe,
+      KeysPipe,
       SafeUrlPipe,
       RemoveDuplicatesPipe,
       SurveyComponent,

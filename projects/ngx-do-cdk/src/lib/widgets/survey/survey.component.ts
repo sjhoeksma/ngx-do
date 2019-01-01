@@ -17,6 +17,7 @@ export class SurveyComponent implements OnDestroy, OnInit   {
     @Input() onComplete;
     @Input() themeCss;
     @Input() readonly = false;
+    @Input() widgets;
     private survey;
 
     constructor(
@@ -95,7 +96,16 @@ export class SurveyComponent implements OnDestroy, OnInit   {
       //Copy theme into default
       Object.keys(themeCss).forEach(function(key) {
        Survey.defaultStandardCss[key] = themeCss[key];
-      });                                           
+      });
+      if (this.widgets){
+        if (Array.isArray(this.widgets)){
+          this.widgets.forEach(function (widget){
+            Survey.CustomWidgetCollection.Instance.addCustomWidget(widget, "customtype");
+          });
+        } else {
+           Survey.CustomWidgetCollection.Instance.addCustomWidget(this.widgets, "customtype");
+        }
+      }
       Survey.StylesManager.applyTheme();  
       
       if (this.surveyJson){
