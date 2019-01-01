@@ -42,7 +42,7 @@ export class IFrameComponent {
     }
     if (this.unique==true){
       if (str!='') str+='&';
-      str+= Date.now();
+      str+= 'u=' + Date.now();
     }
     if (str!='') this.url += '?' + str;
   }
