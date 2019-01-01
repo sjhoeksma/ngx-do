@@ -30,6 +30,10 @@ export class CoreBackend implements OnDestroy {
         this.subscription.unsubscribe();
     }
   
+    public get authId():string {
+      return this.coreConfig.currentUser['id'];
+    }
+  
     public snackMsg(message:string,action:string='',timeout:number=2000){
       this.snackBar.open(message, action, {duration: timeout });
       
@@ -80,6 +84,7 @@ export class CoreBackend implements OnDestroy {
             //A sign the drive data
             this.coreAuth.userData().then(data=>{
               this.coreConfig.currentUser = Object.assign(data,this.coreConfig.currentUser);
+              this.coreEvent.send({event:"userInfo",userInfo:this.coreConfig.currentUser},CoreEvent.core_channel);
             });
         });
 

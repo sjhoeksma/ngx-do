@@ -22,8 +22,6 @@ import { LoginComponent} from './login/login.component';
 import { SignupComponent} from './signup/signup.component';
 import { IFrameComponent} from './iframe/iframe.component';
 
-
-
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     suppressScrollX: true
 };
