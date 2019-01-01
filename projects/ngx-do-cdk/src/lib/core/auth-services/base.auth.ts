@@ -59,6 +59,7 @@ export class BaseAuth implements AuthInterface {
     this._accessToken = token;
     this.coreConfig.setItem(BaseAuth.accessKey,token);
   }
+  
   get authToken(): string {
     return this._token;
   }
@@ -75,12 +76,12 @@ export class BaseAuth implements AuthInterface {
     } else {
       const decoded = this.coreConfig.decodeJWT(token);
       //Check if token is not expired
-      if (decoded && (!decoded['exp'] || decoded['exp']>(new Date().getTime()/1000))){
-          this._token = token;
-          this.setDefaultHeader();
+      if (decoded && (!decoded['exp'] || decoded['exp']>(new Date().getTime()/1000))){ 
           this._user=decoded['preferred_username'] || decoded['name'] || 
                      decoded['email'] || this._user;
           this.coreConfig.setItem(BaseAuth.sessionKey,token);
+          this._token = token;
+          this.setDefaultHeader();
       } else {
         this.logout();  
       }
