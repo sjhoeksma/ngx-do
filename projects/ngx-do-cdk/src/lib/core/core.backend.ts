@@ -103,7 +103,8 @@ export class CoreBackend implements OnDestroy {
         case "refresh": this.refresh();break;
         case "onUnlock":
         case "load": this.loadCommonData();break;
-        default: console.log("Received Event",event);
+        default: if (!(this.coreConfig.environment && this.coreConfig.environment.production)) 
+          console.log("Received Event",event);
       }
     }
 }

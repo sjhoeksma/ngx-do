@@ -14,8 +14,7 @@ export class SidemenuItemComponent implements OnInit {
     @Input() menu;
     @Input() iconOnly: boolean;
     @Input() secondaryMenu = false;
-    @Input() selectedMenu
-    @Input() selectedClass
+    @Input() onSelectedMenu
     visibleRole : boolean = true;
 
     constructor(private coreAuth:CoreAuth,private router:Router,private route:ActivatedRoute) { }
@@ -44,12 +43,7 @@ export class SidemenuItemComponent implements OnInit {
       })
     }
 
-    openLink() {
-        this.menu.open = this.menu.open;
-    }
-  
-    clickLink(menu){
-      this.selectedMenu=menu
+    clickLink(menu,event){
       if (!(menu.link==false)) {
         if (menu.link instanceof Function) {
           menu.link() 
@@ -61,13 +55,17 @@ export class SidemenuItemComponent implements OnInit {
       } else {
          menu.open = !menu.open;
       }
+      if (this.onSelectedMenu instanceof Function)
+        this.onSelectedMenu(menu);
     }
 
-   clickMenu(menu){
+   clickMenu(menu,event){
      if (menu.sub) menu.open = !menu.open;
+     event.stopPropagation(); //Only drop down or close
+     return false;
    }
 
-    chechForChildMenu() {
+    checkForChildMenu() {
         return (this.menu && this.menu.sub) ? true : false;
     }
   
