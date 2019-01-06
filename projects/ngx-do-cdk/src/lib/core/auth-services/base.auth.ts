@@ -119,19 +119,22 @@ export class BaseAuth implements AuthInterface {
   
   public hasRole(role:any): Promise<boolean>  {
     return new Promise<boolean>((resolve, reject) => { 
-    let roles = this.roles;
+    var find = function(role,roles) {
+      var reg = new RegExp('\\b' + role + '\\b', 'i');
+      return reg.test(roles); 
+    }  
+    let roles = this.roles || []; 
      if (role==null){
        resolve(true);
      } else {
        if (typeof role == "string"){
-         return resolve(roles.indexOf(role)>=0);
+         return resolve(find(role,roles));
        } else if (Array.isArray(role)){
          let state=false;
          role.forEach(function(el){
-            if (roles.indexOf(el)>=0) state=true;
+            if (find(el,roles)) state=true;
           }); 
-         return resolve(state);
-         
+         return resolve(state);  
        }
        return resolve(false);
      }

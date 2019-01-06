@@ -33,4 +33,12 @@ export class CoreEvent {
     public get(channel:string=CoreEvent.default_channel): Observable<any> {
         return this.channel(channel).asObservable();
     }
+  
+    public subscribe(func:Function,eventRegExp:string=".*",channel:string=CoreEvent.default_channel){ 
+     var reg = new RegExp(eventRegExp, 'i');
+     this.channel(channel).subscribe(
+          event => {  
+            if (reg.test(event.event)) func(event); 
+          });
+    }
 }

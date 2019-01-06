@@ -7,6 +7,7 @@ import { CommonModule } from '@angular/common';
 import { CoreConfig} from './core.config';
 import { CoreEvent} from './core.event';
 import { CoreAuth } from './core.auth';
+import { CoreBackend } from './core.backend';
 import { CoreModule} from './core.module';
 import { CorePreloadingStrategy } from './core.preloading.strategy';
 
@@ -23,6 +24,7 @@ import { CorePreloadingStrategy } from './core.preloading.strategy';
        CoreConfig,
        CoreEvent,
        CoreAuth,
+       CoreBackend,
        CorePreloadingStrategy,
     ]
 })
