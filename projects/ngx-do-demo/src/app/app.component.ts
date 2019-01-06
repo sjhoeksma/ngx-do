@@ -16,6 +16,10 @@ export class AppComponent implements OnInit{
   @Input() isVisible : boolean = true;
   aiToken : string = null;
   profileRoute = "/app/pages/profile";
+  securityRoute = "/app/pages/security";
+  settingsRoute = "";;
+  helpRoute= "";
+  
   visibility = 'shown';
 
   sideNavOpened: boolean = true;

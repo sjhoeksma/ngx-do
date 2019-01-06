@@ -8,6 +8,8 @@ import {
         MatIconModule,
         MatCheckboxModule,
         MatListModule,
+        MatSelectModule,
+        MatDialogModule,
        } from '@angular/material';
 import { MatChipsModule } from '@angular/material/chips';
 import { CommonModule } from '@angular/common';
@@ -19,10 +21,10 @@ import { PagesRouterModule } from './pages.routes';
 import { ContactComponent } from './contact/contact.component';
 import { AboutComponent } from './about/about.component';
 import { ErrorComponent } from './error/error.component';
-
 import { ProfileComponent } from './profile/profile.component';
 import { KeyVaultComponent } from './keyvault/keyvault.component';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
+import { SecurityComponent } from './security/security.component'
 
 import { CoreModule } from 'ngx-do-cdk';
 
@@ -41,6 +43,8 @@ import { CoreModule } from 'ngx-do-cdk';
         MatListModule,
         MatChipsModule,
         WidgetsModule,
+        MatSelectModule,
+        MatDialogModule,
         CoreModule,
         ShowdownModule.forRoot({} as ConverterOptions | IConverterOptions),
         PagesRouterModule ],
@@ -50,8 +54,10 @@ import { CoreModule } from 'ngx-do-cdk';
         ErrorComponent,
         ProfileComponent,
         KeyVaultComponent,
+        SecurityComponent,
     ],
     exports: [
+      
     ],
     providers: [
     ]

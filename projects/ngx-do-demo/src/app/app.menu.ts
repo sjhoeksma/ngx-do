@@ -172,12 +172,6 @@ export const AppMenu: Array<object> = [
             'icon': 'build',
             'chip': false,
             'open': false,
-        },{
-            'name': 'CRUD',
-            'link': 'pages/crud',
-            'icon': 'lock',
-            'chip': false,
-            'open': false,
         },
       ]
   },
