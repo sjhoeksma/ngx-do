@@ -2,6 +2,7 @@ import {Component,Input, OnInit} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import {CoreConfig} from '../core.config';
 import {CoreAuth} from '../core.auth';
+import {CoreEvent} from '../core.event';
 
 @Component({
   selector: 'cdk-iframe',
@@ -14,7 +15,9 @@ export class IFrameComponent {
   @Input() key;
   @Input() token;
   @Input() unique = null;
-  constructor(private coreAuth:CoreAuth,private coreConfig:CoreConfig,private route: ActivatedRoute){
+  constructor(private coreAuth:CoreAuth,private coreConfig:CoreConfig,
+              private route: ActivatedRoute,
+              private coreEvent:CoreEvent){
   }
   
   ngOnInit() {
@@ -45,5 +48,6 @@ export class IFrameComponent {
       str+= 'u=' + Date.now();
     }
     if (str!='') this.url += '?' + str;
+    this.coreEvent.send({event:'iframe',url:this.url,data:data});
   }
 }
