@@ -17,6 +17,7 @@ export class ToolbarComponent implements OnInit {
   @Input() aiToken;
   @Input() settingsRoute;
   @Input() profileRoute;
+  @Input() securityRoute;
   @Input() helpRoute;
   @Input() logoutRoute =  '/logout';
   

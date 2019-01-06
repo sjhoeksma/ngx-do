@@ -28,7 +28,7 @@
     <cdk-toolbar-notification [notifications]="coreConfig?.notifications"></cdk-toolbar-notification>
     <cdk-toolbar-cart [basket]="coreConfig?.shoppingBasket"></cdk-toolbar-cart>
 
-    <cdk-user-menu [currentUser]="coreConfig?.currentUser" [settingsRoute]="settingsRoute" [profileRoute]="profileRoute" [helpRoute]="helpRoute" [logoutRoute]="logoutRoute"></cdk-user-menu>
+    <cdk-user-menu [currentUser]="coreConfig?.currentUser" [settingsRoute]="settingsRoute" [profileRoute]="profileRoute" [helpRoute]="helpRoute" [securityRoute]="securityRoute" [logoutRoute]="logoutRoute"></cdk-user-menu>
     
      <button *ngIf="sidebar" mat-icon-button (click)="sidebar.toggle();">
         <i class="material-icons app-toolbar-menu">menu </i>

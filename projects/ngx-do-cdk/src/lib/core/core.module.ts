@@ -2,7 +2,7 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SidemenuComponent } from './sidemenu/sidemenu.component';
 import { SidemenuItemComponent } from './sidemenu-item/sidemenu-item.component';
-import { MatCardModule , MatListModule , MatButtonModule ,MatInputModule ,MatIconModule, MatToolbarModule , MatChipsModule ,MatFormFieldModule, MatTabsModule, MatOptionModule,  MatSidenavModule, MatSliderModule, MatProgressBarModule, MatSelectModule, MatButtonToggleModule,MatCheckboxModule,MatSnackBarModule,MatTooltipModule} from '@angular/material';
+import { MatDialogModule,MatCardModule , MatListModule , MatButtonModule ,MatInputModule ,MatIconModule, MatToolbarModule , MatChipsModule ,MatFormFieldModule, MatTabsModule, MatOptionModule,  MatSidenavModule, MatSliderModule, MatProgressBarModule, MatSelectModule, MatButtonToggleModule,MatCheckboxModule,MatSnackBarModule,MatTooltipModule} from '@angular/material';
 
 import { FormsModule,ReactiveFormsModule } from '@angular/forms';
 
@@ -21,6 +21,9 @@ import { LogoutComponent} from './logout/logout.component';
 import { LoginComponent} from './login/login.component';
 import { SignupComponent} from './signup/signup.component';
 import { IFrameComponent} from './iframe/iframe.component';
+import { CRUDComponent } from './crud/crud.component';
+import { CRUDComponentDialog } from './crud/crud.component.dialog';
+import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     suppressScrollX: true
@@ -43,9 +46,12 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
         LoginComponent,
         SignupComponent,
         IFrameComponent,
+        CRUDComponent,
+        CRUDComponentDialog,
     ],
 
     imports: [
+        NgxDatatableModule,
         CommonModule,
         MatCardModule,
         MatListModule,
@@ -58,6 +64,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
         MatToolbarModule, 
         MatSidenavModule,
         MatTooltipModule,
+        MatDialogModule,
         FormsModule,
         MatButtonToggleModule,
         MatCheckboxModule,
@@ -87,6 +94,11 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
         SidebarComponent,
         UserMenuComponent,
         IFrameComponent,
+        CRUDComponent,
+        CRUDComponentDialog,
+    ],
+    entryComponents :[
+     CRUDComponentDialog,
     ],
 
     providers: [

@@ -23,13 +23,18 @@
 				       <mat-icon>settings</mat-icon>
 				    </button>
       			</mat-list-item>
+            <mat-list-item *ngIf="securityRoute" [routerLink]="[securityRoute]"  (click)="close()">
+      				<a matLine >Security</a>
+				    <button mat-icon-button>
+				       <mat-icon>security</mat-icon>
+				    </button>
+      			</mat-list-item>
       			<mat-list-item *ngIf="helpRoute" [routerLink]="[helpRoute]"  (click)="close()">
       				<a matLine >Help</a>
 				    <button mat-icon-button>
 				       <mat-icon>help</mat-icon>
 				    </button>
       			</mat-list-item>
-
       			<mat-divider></mat-divider>
 
       			<mat-list-item *ngIf="logoutRoute" (click)="logout()">

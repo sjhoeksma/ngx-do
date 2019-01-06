@@ -14,6 +14,7 @@ export class UserMenuComponent implements OnInit {
     @Input() settingsRoute;
     @Input() profileRoute;
     @Input() helpRoute;
+    @Input() securityRoute;
     @Input() logoutRoute =  '/logout';
   
    

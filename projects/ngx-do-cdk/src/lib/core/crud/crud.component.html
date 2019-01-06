@@ -1,0 +1,83 @@
+<div class="crud">
+<div><button mat-button color="primary" (click)="addRow()"><mat-icon>add</mat-icon>Add</button></div>  
+<ngx-datatable 
+      #mydatatable
+      class="material"
+      [headerHeight]="40"
+      [rowHeight]="40"       
+      [columnMode]="'force'"
+      [footerHeight]="0"
+      [rowHeight]="'auto'"
+      [rows]="rows"
+      >
+      <ngx-datatable-column prop="user" name="User or Group" [draggable]="false" >
+        <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+          <div class="crud_field"
+            (dblclick)="editing[rowIndex + '-user']= !(value)"
+            *ngIf="!editing[rowIndex + '-user']">
+            {{(value ? value : "dbClick to edit")}}
+          </div>
+           <input
+            matInput
+            autofocus
+            (blur)="updateValue($event, 'user', rowIndex)"
+            *ngIf="editing[rowIndex+ '-user']"
+            type="text"
+            [value]="value"
+          />
+        </ng-template>
+      </ngx-datatable-column>
+  
+      <ngx-datatable-column name="Table" [draggable]="false" >
+        <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">  
+          <div class="crud_field"
+            (dblclick)="editing[rowIndex + '-table'] = true"
+            *ngIf="!editing[rowIndex + '-table']">
+            {{(value ? value : "dbClick to edit")}}
+          </div>
+           <mat-select 
+               placeholder="select table"           
+               *ngIf="editing[rowIndex + '-table']"
+              (selectionChange)="updateMatValue($event, 'table', rowIndex)"
+              (openedChange)="openedMatValue($event,'table',rowIndex)"
+              [value]="value"
+              >
+            <mat-option *ngFor="let table of tables" [value]="table">{{table}}</mat-option>
+          </mat-select>
+        </ng-template>
+      </ngx-datatable-column>
+  
+      <ngx-datatable-column name="Create" [sortable]="false" [draggable]="false">
+        <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
+          <mat-checkbox [checked]="CRUD('c',rowIndex)" (change)="updateCRUD('c',rowIndex)"></mat-checkbox>
+        </ng-template>
+      </ngx-datatable-column>
+     
+      <ngx-datatable-column name="Read" [sortable]="false" [draggable]="false">
+        <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
+           <mat-checkbox [checked]="CRUD('r',rowIndex)" (change)="updateCRUD('r',rowIndex)"></mat-checkbox>
+        </ng-template>
+      </ngx-datatable-column>
+  
+      <ngx-datatable-column name="Update" [sortable]="false" [draggable]="false">
+        <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
+          <mat-checkbox [checked]="CRUD('u',rowIndex)" (change)="updateCRUD('u',rowIndex)"></mat-checkbox>
+        </ng-template>
+      </ngx-datatable-column>
+  
+      <ngx-datatable-column name="Delete" [sortable]="false" [draggable]="false" >
+        <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
+           <mat-checkbox [checked]="CRUD('d',rowIndex)" (change)="updateCRUD('d',rowIndex)"></mat-checkbox>
+        </ng-template>
+      </ngx-datatable-column>
+  
+       <ngx-datatable-column name="" minWidth="40" [sortable]="false" [draggable]="false" >
+          <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
+          <mat-icon class="crud_delete" color="warn" (click)=deleteCRUD(rowIndex)>delete_forever</mat-icon>
+          </ng-template>  
+       </ngx-datatable-column>
+  
+  </ngx-datatable>
+</div>
+
+
