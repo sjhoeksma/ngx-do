@@ -4,28 +4,33 @@
        "id": 0,   
        "login"  : "backend@do.proxy",
        "hash" : "2a97516c354b68848cdbd8f54a226a0a55b21ed138e207ad6c5cbb9c00aa5aea",
-       "groups": ["admin"]
+       "groups": ["admin"],
+       "createdBy":0
     },
      { 
        "id": 1,   
        "login"  : "admin@demo.com",
        "hash" : "2a97516c354b68848cdbd8f54a226a0a55b21ed138e207ad6c5cbb9c00aa5aea",
-       "groups": ["default","admin","approve_it","node-red"]
+       "groups": ["default","admin","approve_it","node-red"],
+       "createdBy":1
     },{ 
        "id": 2,   
        "login"  : "user@demo.com",
        "hash" : "2a97516c354b68848cdbd8f54a226a0a55b21ed138e207ad6c5cbb9c00aa5aea",
-       "groups": ["default"]
+       "groups": ["default"],
+       "createdBy":2
     },{ 
        "id": 3,   
        "login"  : "cto@demo.com",
        "hash" : "2a97516c354b68848cdbd8f54a226a0a55b21ed138e207ad6c5cbb9c00aa5aea",
        "groups": ["default","approve_it","order"],
+      "createdBy":3
     },{ 
        "id": 4,   
        "login"  : "dev@demo.com",
        "hash" : "2a97516c354b68848cdbd8f54a226a0a55b21ed138e207ad6c5cbb9c00aa5aea",
-       "groups": ["default","order"]
+       "groups": ["default","order"],
+       "createdBy":4
     },
   ]
 }

@@ -21,8 +21,6 @@ const util = require('util');
 const rfs    = require('rotating-file-stream');
 var session = require('express-session');
 
-
-
 var myOptions = Object.assign({
   port : 3000, //The port number to use
   dbName : 'ngx-do-proxy.db.json', //The file name where json data is stored
@@ -52,7 +50,7 @@ var myOptions = Object.assign({
   adminList: [], //List with users which have by default admin rights
   encryptSystem: false, //Should we encrypt,decrypt system values
   allowAccessToken: ['admin'], //List with roles allowed to use access_token
- // crudTables: null, //Array with crud Protected tables, or null when disabled
+  crudTables: ['users'], //Array with crud Protected tables, or null when disabled
   crudTables: ['test'], //Array with crud Protected tables, or null when disabled
   logFile: null, //When set with name the console log will be written here
   greenLock:{
@@ -439,6 +437,7 @@ function createServer(server,plugins){
   const proxies = JSON.parse(fs.readFileSync(myOptions.dbProxyName, 'UTF-8')) //Load the proxies from json
   const rules = JSON.parse(fs.readFileSync(myOptions.dbRuleName, 'UTF-8')) //Load the rules from json
   const router = jsonServer.router(myOptions.dbName) //Load the database
+  server.router = router;
   
   server.db = router.db   //Add a reference to our router database to the server
   if (routes) server.use(jsonServer.rewriter(routes)) //Set the custom routes
@@ -498,8 +497,11 @@ function createServer(server,plugins){
        let index = db.auth ? db.auth.findIndex(auth => auth.login == email) : -2;
        if (index>=0) return -2; //Cannot user already exists
        let id =uuidv4();
-       db.auth.push( {id:id,login:email,hash:type,groups:['default']});
-       db.users.push({id:id,email:email,name:decode['name']});
+       var now = Date.now();
+       db.auth.push( {id:id,login:email,hash:type,groups:['default'],createdBy:id,updatedBy:id,
+                      createdAt:now,updatedAt:now});
+       db.users.push({id:id,email:email,name:decode['name'],createdBy:id,updatedBy:id,
+                      createdAt:now,updatedAt:now});
        index = db.auth ? db.auth.findIndex(auth => auth.login == email) : -2;
        if (myOptions.logLevel>1) console.log("Added user",email);
        server.db.write();
@@ -719,19 +721,21 @@ function createServer(server,plugins){
           if (index>=0){ //Add Filter just my own records, or the once if have the rights
             //Add filter created by
             let allowed = [db.auth[index].id];
-            //Loop trough the auth to see if there are rights given to me
+            let myGroups = db.auth[index].groups || ['default'];
+            //Loop through the auth to see if there are rights given to me
             db.auth.forEach(function(rec){
               if (rec.crud) {
                 rec.crud.forEach(function(crud){
-                  if (crud.user==email && crud.table==table) {
+                  if ((crud.user==email && crud.table==table) || (myGroups.indexOf(crud.user)>=0)) {
                     if (req.method=="GET" && crud.CRUD.indexOf('r')>=0) allowed.push(rec.id)
                     else if (req.method=="PUT" && crud.CRUD.indexOf('u')>=0) allowed.push(rec.id)
                     else if (req.method=="POST" && crud.CRUD.indexOf('c')>=0) allowed.push(rec.id)
                     else if (req.method=="DELETE" && crud.CRUD.indexOf('d')>=0) allowed.push(rec.id)
-                  }
+                  } 
                 })
               }
             })
+            
             //Check if we are seatching for singular
             if (path.length>2){
                req.query = Object.assign(req.query,{createdBy_like:allowed,id:path[2]});
@@ -884,6 +888,13 @@ function start(rebuild=0,callback=null){
         if (rebuild>=0) return;
       }
     }
+      // clean the cache
+      Object.keys(require.cache).forEach((id) => {
+        if (id.indexOf(path.join(process.cwd(), myOptions.watchedDir))>=0) {
+          console.log('Reloading', id);
+          delete require.cache[id];
+        }
+      });
 
     app = jsonServer.create() //Create the app server
 
@@ -989,7 +1000,7 @@ module.exports = {
   decrypt: decrypt,
   get server(){return rootServer},
   get app(){return app},
-  get plugin(){return require('express').Router()},
+  get plugin(){return server.router},//require('express').Router()},
   get options(){return myOptions}
   
 }
