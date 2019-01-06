@@ -25,6 +25,8 @@ My work list on activities to work on.
 1. Session of ngx-proxy should be stored in db (now single node)
 1. Avatar as function
 1. enable option for explicit security on setting
+1. Implement audit trail on all crud elements
+1. CRUD as a function, allowing to grant or revoke access
 
 
 ## Widgets
