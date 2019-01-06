@@ -1,3 +1,4 @@
+
 {
   "users" : [
       { 
@@ -7,8 +8,8 @@
     },
      { 
        "id": 1,   
-       "email": "demo@demo.com",
-       "name": "Mister Demo",
+       "email": "admin@demo.com",
+       "name": "Mister Admin",
        "company": "Demo Corp.",
        "department": "IT",
        "orgGroup": "it",
@@ -20,6 +21,51 @@
        "html_url": null,
        "createdAt": 1347185460001,
        "avatar_url": "assets/avatars/user1-128x128.jpg",
-    } 
+    },{ 
+       "id": 2,   
+       "email": "user@demo.com",
+       "name": "Miss User",
+       "company": "Demo Corp.",
+       "department": "IT",
+       "orgGroup": "it",
+       "role" : "Developer",
+       "education": "B.S. in Computer Science from the University of Amsterdam",
+       "skills": "Node",
+       "note": null,
+       "location": "Hoofddorp, Netherlands",
+       "html_url": null,
+       "createdAt": 1347185460001,
+       "avatar_url": "assets/avatars/user5-128x128.jpg",
+    },{ 
+       "id": 3,   
+       "email": "cto@demo.com",
+       "name": "Mister CTO",
+       "company": "Demo Corp.",
+       "department": "IT",
+       "orgGroup": "it",
+       "role" : "CTO",
+       "education": "B.S. in Computer Science from the University of Amsterdam",
+       "skills": "Management",
+       "note": null,
+       "location": "Hoofddorp, Netherlands",
+       "html_url": null,
+       "createdAt": 1347185460001,
+       "avatar_url": "assets/avatars/user2-160x160.jpg",
+    },{ 
+       "id": 4,   
+       "email": "dev@demo.com",
+       "name": "Miss Developer",
+       "company": "Demo Corp.",
+       "department": "IT",
+       "orgGroup": "it",
+       "role" : "CTO",
+       "education": "B.S. in Computer Science from the University of Amsterdam",
+       "skills": "Developer",
+       "note": null,
+       "location": "Hoofddorp, Netherlands",
+       "html_url": null,
+       "createdAt": 1347185460001,
+       "avatar_url": "assets/avatars/user4-128x128.jpg",
+    }
   ]
 }
