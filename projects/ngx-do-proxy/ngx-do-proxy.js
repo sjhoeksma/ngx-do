@@ -27,6 +27,7 @@ var myOptions = Object.assign({
   dbProxyName : 'ngx-do-proxy.proxy.json', //The file name where proxy json data is stored
   dbRuleName : 'ngx-do-proxy.rule.json', //The file name where rule json data is stored
   watchedDir:  './api',
+  dataDir: './', //The directory where the data will be stored
   watch: true, //Should we watch for database changes
   routes: 'ngx-do-proxy-routes.json',
   jwtValidation: 'key',  //Set this to your 'key' == secretKey or "azure-aad" to use a azure-aad token
@@ -51,7 +52,7 @@ var myOptions = Object.assign({
   encryptSystem: false, //Should we encrypt,decrypt system values
   allowAccessToken: ['admin'], //List with roles allowed to use access_token
   crudTables: ['users'], //Array with crud Protected tables, or null when disabled
-  crudTables: ['test'], //Array with crud Protected tables, or null when disabled
+  crudByPass: ['admin'], //Which groups are allowed to by pass crud
   logFile: null, //When set with name the console log will be written here
   greenLock:{
       email: null // You MUST change this to a valid email address
@@ -90,17 +91,24 @@ function roles(req,decoded){
   return groups; 
 }
 
+function containsValue(value,arr){
+  var reg = new RegExp('\\b' + value + '\\b', 'i');
+  return reg.test(arr); 
+}
+
+//Check if user has a role
 function hasRole(role,req,decoded){
   let decode = decoded || decodeToken(req);
   let index;
   let ret = false;
   var groups = roles(req,decoded);
-  if (typeof role == "string")
-    return groups.indexOf(role)>=0;
-  if (Array.isArray(role)) 
-    role.forEach(function(el){
-      if (groups.indexOf(el)>=0) ret=true;
-    }); 
+  if (role==null) return true;
+  if (typeof role == "string") return containsValue(role,groups);
+  if (Array.isArray(role)){
+     groups.forEach(function(el){
+        if (containsValue(el,groups)) ret=true;
+      }); 
+  }
   return ret;
 }
 
@@ -170,6 +178,11 @@ function decrypt(text){
   var dec = decipher.update(text,'hex','utf8');
   dec += decipher.final('utf8');
   return dec;
+}
+
+function hash(text){
+  var hmac = crypto.createHmac('sha256',myOptions.secretKey);
+  return hmac.update(text).digest('hex');
 }
 
 function getFromKeyVault(req,key,defaultValue=null){
@@ -434,9 +447,9 @@ function ruleJsonParse(obj,server){
 //Create the api-proxy server, with memory and persistent to file based json-server
 function createServer(server,plugins){
   const routes = myOptions.routes ? JSON.parse(fs.readFileSync(myOptions.routes, 'UTF-8')) : null;//Load the routes from json
-  const proxies = JSON.parse(fs.readFileSync(myOptions.dbProxyName, 'UTF-8')) //Load the proxies from json
-  const rules = JSON.parse(fs.readFileSync(myOptions.dbRuleName, 'UTF-8')) //Load the rules from json
-  const router = jsonServer.router(myOptions.dbName) //Load the database
+  const proxies = JSON.parse(fs.readFileSync(path.join(process.cwd(),myOptions.dataDir,myOptions.dbProxyName), 'UTF-8')) //Load the proxies from json
+  const rules = JSON.parse(fs.readFileSync(path.join(process.cwd(),myOptions.dataDir,myOptions.dbRuleName), 'UTF-8')) //Load the rules from json
+  const router = jsonServer.router(path.join(process.cwd(),myOptions.dataDir,myOptions.dbName)) //Load the database
   server.router = router;
   
   server.db = router.db   //Add a reference to our router database to the server
@@ -489,7 +502,9 @@ function createServer(server,plugins){
     
     // Check if the user exists in database
     function isAuthenticated({email, password}){
-      return db.auth ? db.auth.findIndex(auth => auth.login == email && auth.hash == password ) : -2;
+      var hashPwd = hash(password);
+      return db.auth ? db.auth.findIndex(auth => auth.login == email && 
+          (auth.hash == hashPwd || (auth.api && auth.api == hashPwd)) ) : -2;
     }
     
     //Signup a user, add it to db
@@ -498,7 +513,9 @@ function createServer(server,plugins){
        if (index>=0) return -2; //Cannot user already exists
        let id =uuidv4();
        var now = Date.now();
-       db.auth.push( {id:id,login:email,hash:type,groups:['default'],createdBy:id,updatedBy:id,
+       //User will have no valid login if only type is passed (external SSO like azure)
+       db.auth.push( {id:id,login:email,hash:(password ? hash(password) : type),
+                      groups:['default'],createdBy:id,updatedBy:id,
                       createdAt:now,updatedAt:now});
        db.users.push({id:id,email:email,name:decode['name'],createdBy:id,updatedBy:id,
                       createdAt:now,updatedAt:now});
@@ -536,7 +553,7 @@ function createServer(server,plugins){
       var decode = decodeToken(req);
       let index;
       if (decode && email && !password && decode!=401 && 
-          decode && decode.email==email){
+          decode.email==email){
         index = db.auth ? db.auth.findIndex(auth => auth.login == email) : -2;
         if (index<0 && signup && myOptions.signup) index=createUser(decode);
       } else { //Normal login
@@ -624,7 +641,7 @@ function createServer(server,plugins){
   })
   
   if (myOptions.logFile) {
-      server.use('/logFile', require('express').static(path.join(process.cwd(), myOptions.logFile)));
+      server.use('/logFile', require('express').static(path.join(process.cwd(),myOptions.dataDir,myOptions.logFile)));
   }
   
   //From here on private stuff
@@ -710,7 +727,7 @@ function createServer(server,plugins){
     server.use((req,res,next)=>{
       let path = req.url.split('/');
       let table = path[1];
-      let admin = hasRole('admin',req),index;
+      let admin = hasRole(myOptions.crudByPass || 'admin',req),index;
       if (!admin && myOptions.crudTables.indexOf(table)>=0){
         //Load the crud assigned to me
         let decode = decodeToken(req);
@@ -726,7 +743,7 @@ function createServer(server,plugins){
             db.auth.forEach(function(rec){
               if (rec.crud) {
                 rec.crud.forEach(function(crud){
-                  if ((crud.user==email && crud.table==table) || (myGroups.indexOf(crud.user)>=0)) {
+                  if ((crud.user==email && crud.table==table) || containsValue(crud.user,myGroups)) {
                     if (req.method=="GET" && crud.CRUD.indexOf('r')>=0) allowed.push(rec.id)
                     else if (req.method=="PUT" && crud.CRUD.indexOf('u')>=0) allowed.push(rec.id)
                     else if (req.method=="POST" && crud.CRUD.indexOf('c')>=0) allowed.push(rec.id)
@@ -741,11 +758,11 @@ function createServer(server,plugins){
                req.query = Object.assign(req.query,{createdBy_like:allowed,id:path[2]});
                req.signular=true;
                path.splice(2,1);
-               req.originalUrl=req.url=path.join('/');
-              // console.log("URL",req.url,req.query);
+               req.originalUrl=req.url=path.join('/');  
             } else {
                req.query = Object.assign(req.query,{createdBy_like:allowed});
             }
+            if (myOptions.logLevel>3) console.log(req.method,req.url,JSON.stringify(req.query));
           }
         } else {
           let status = 403;
@@ -833,27 +850,29 @@ function createServer(server,plugins){
 }
 
 function build(restart,callback){
-  if (myOptions.logLevel>1) 
+  if (myOptions.logLevel>2) {
     console.log('Working Dir',path.join(process.cwd(), myOptions.watchedDir));
+    console.log('Data Dir',path.join(process.cwd(), myOptions.dataDir));
+  }
   pluginList(path.join(process.cwd(), myOptions.watchedDir),function(plugins){
+   concatJson({ //DB
+      src:  path.join(process.cwd(), myOptions.watchedDir),
+      dest: path.join(process.cwd(),myOptions.dataDir,myOptions.dbName),
+      isJsonFile: isJSONDB,
+      reuseDB: !restart && myOptions.reuseDB
+    }, function(err,json){
    concatJson({  //Rules
       src:  path.join(process.cwd(), myOptions.watchedDir),
-      dest: myOptions.dbRuleName,
+      dest: path.join(process.cwd(),myOptions.dataDir,myOptions.dbRuleName),
       isJsonFile: isRULE,
       reuseDB: false, //Rules are always created at startup
     },function(err,json){
      concatJson({  //Proxy
       src:  path.join(process.cwd(), myOptions.watchedDir),
-      dest: myOptions.dbProxyName,
+      dest: path.join(process.cwd(),myOptions.dataDir,myOptions.dbProxyName),
       isJsonFile: isPROXY,
       reuseDB: false, //Proxies are always created at startup
     },function(err,json){ 
-    concatJson({ //DB
-      src:  path.join(process.cwd(), myOptions.watchedDir),
-      dest: myOptions.dbName,
-      isJsonFile: isJSONDB,
-      reuseDB: !restart && myOptions.reuseDB
-    }, function(err,json){
       if (err || !json) console.log("Concat of json data had error",err); 
       callback(err,json,plugins);
     }
@@ -862,13 +881,14 @@ function build(restart,callback){
 
 //Start the server and check if files have changed
 function start(rebuild=0,callback=null){
+  if (myOptions.logLevel>2) console.log("Start called with ",rebuild);
   build(rebuild>0,function(err,json,plugins){
     if (app) {
       if (myOptions.greenLockEnabled) 
         return; //Greenlock cannot be restarted
       let obj
       try {
-        obj = jph.parse(fs.readFileSync(path.join(process.cwd(),myOptions.dbName)))
+        obj = jph.parse(fs.readFileSync(path.join(process.cwd(),myOptions.dataDir,myOptions.dbName)))
         if (readError) {
           console.log(chalk.green(`  Read error has been fixed :)`))
           readError = false
@@ -960,12 +980,23 @@ function watch(){
 module.exports = {
   start : function(options,callback){
     myOptions = Object.assign(myOptions,options,argv);
+    if (myOptions.generateKey){
+      
+      var h = crypto.createHash('sha256');
+      var key = h.update(myOptions.generateKey).digest('hex');
+      var store = hash(key);
+      console.log("Key Generation completed, [key]=for API login, [store]=for in DB table")
+      console.log("raw=",myOptions.generateKey)
+      console.log("key=",key);
+      console.log("store=",store);
+      return;
+    }
     if (myOptions.logLevel==0) console.log = () => {}
     else if (myOptions.logFile) {
       console.log("Using external log file",myOptions.logFile);
       //Create new log file
       
-      var log_file = rfs(myOptions.logFile, Object.assign({
+      var log_file = rfs(path.join(process.cwd(),myOptions.dataDir,myOptions.logFile), Object.assign({
             size:    myOptions.logSize || '10M', // rotate every 10 MegaBytes written
             interval: myOptions.logInterval || '1d',  // rotate daily
             maxFiles: myOptions.logMaxFiles || 5, //Max 5 Files
@@ -1001,6 +1032,6 @@ module.exports = {
   get server(){return rootServer},
   get app(){return app},
   get plugin(){return server.router},//require('express').Router()},
-  get options(){return myOptions}
-  
+  get options(){return myOptions} 
 }
+

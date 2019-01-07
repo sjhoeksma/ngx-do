@@ -3,32 +3,32 @@
     { 
        "id": 0,   
        "login"  : "backend@do.proxy",
-       "hash" : "2a97516c354b68848cdbd8f54a226a0a55b21ed138e207ad6c5cbb9c00aa5aea",
+       "hash" : "fcc223bd5002f550ad0e36662d2fde81498c0bbceefbc7682aea4dd2bab70c54",
        "groups": ["admin"],
        "createdBy":0
     },
      { 
        "id": 1,   
        "login"  : "admin@demo.com",
-       "hash" : "2a97516c354b68848cdbd8f54a226a0a55b21ed138e207ad6c5cbb9c00aa5aea",
+       "hash" : "fcc223bd5002f550ad0e36662d2fde81498c0bbceefbc7682aea4dd2bab70c54",
        "groups": ["default","admin","approve_it","node-red"],
        "createdBy":1
     },{ 
        "id": 2,   
        "login"  : "user@demo.com",
-       "hash" : "2a97516c354b68848cdbd8f54a226a0a55b21ed138e207ad6c5cbb9c00aa5aea",
+       "hash" : "fcc223bd5002f550ad0e36662d2fde81498c0bbceefbc7682aea4dd2bab70c54",
        "groups": ["default"],
        "createdBy":2
     },{ 
        "id": 3,   
        "login"  : "cto@demo.com",
-       "hash" : "2a97516c354b68848cdbd8f54a226a0a55b21ed138e207ad6c5cbb9c00aa5aea",
+       "hash" : "fcc223bd5002f550ad0e36662d2fde81498c0bbceefbc7682aea4dd2bab70c54",
        "groups": ["default","approve_it","order"],
       "createdBy":3
     },{ 
        "id": 4,   
        "login"  : "dev@demo.com",
-       "hash" : "2a97516c354b68848cdbd8f54a226a0a55b21ed138e207ad6c5cbb9c00aa5aea",
+       "hash" : "fcc223bd5002f550ad0e36662d2fde81498c0bbceefbc7682aea4dd2bab70c54",
        "groups": ["default","order"],
        "createdBy":4
     },
