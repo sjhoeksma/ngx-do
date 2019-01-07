@@ -26,8 +26,7 @@ My work list on activities to work on.
 1. Avatar as function
 1. enable option for explicit security on setting
 1. Implement audit trail on all crud elements
-1. CRUD as a function, allowing to grant or revoke access
-
+1. Implement to block API's by role 
 
 ## Widgets
 * BoxCard - Simple box card with options for zoom and close

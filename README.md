@@ -66,3 +66,4 @@ To get more help on the Angular CLI use `ng help` or go check out the [Angular C
 * [Compliancy](https://azure.microsoft.com/en-us/blog/payment-processing-blueprint-for-pci-dss-compliant-environments/)
 * https://electric-cloud.com/ 
 * [Secure DevOps](http://salmanbaset.blogspot.com/2016/08/can-cloud-help-developers-securely-secdevops.html)
+* [Restart of Express](https://blog.cloudboost.io/reloading-the-express-server-without-nodemon-e7fa69294a96)
