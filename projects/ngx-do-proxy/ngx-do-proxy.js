@@ -1029,6 +1029,7 @@ module.exports = {
   keyVault: getFromKeyVault,
   encrypt: encrypt,
   decrypt: decrypt,
+  strToBool: strToBool,
   get server(){return rootServer},
   get app(){return app},
   get plugin(){return server.router},//require('express').Router()},
