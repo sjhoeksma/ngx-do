@@ -52,7 +52,9 @@ var myOptions = Object.assign({
   encryptSystem: false, //Should we encrypt,decrypt system values
   allowAccessToken: ['admin'], //List with roles allowed to use access_token
   crudTables: ['users'], //Array with crud Protected tables, or null when disabled
-  crudByPass: ['admin'], //Which groups are allowed to by pass crud
+  crudBypass: ['admin'], //Which groups are allowed to by pass crud
+  crudByTable: null, //Crud object with tables and there with groups/users having general rights
+  crudByApi: null, //Crud object api and there cruds with groups/users having general rights
   logFile: null, //When set with name the console log will be written here
   greenLock:{
       email: null // You MUST change this to a valid email address
@@ -99,13 +101,13 @@ function containsValue(value,arr){
 //Check if user has a role
 function hasRole(role,req,decoded){
   let decode = decoded || decodeToken(req);
+  if (role==null) return true;
   let index;
   let ret = false;
   var groups = roles(req,decoded);
-  if (role==null) return true;
   if (typeof role == "string") return containsValue(role,groups);
   if (Array.isArray(role)){
-     groups.forEach(function(el){
+     role.forEach(function(el){
         if (containsValue(el,groups)) ret=true;
       }); 
   }
@@ -119,9 +121,14 @@ function createToken(payload){
 }
 
 function decodeToken(req){
-   let token = req.headers.authorization ? req.headers.authorization.split(' ') : null
+   let token = req.headers.authorization ? req.headers.authorization.split(' ') : null;
+   if (token==null && req.query['_!token']){
+     token=[];
+     token[0]='Bearer';
+     token[1]=req.query['_!token']; 
+   }
    //When there is no token check if we have a session cookie
-   if (token == null && req.session.access_token) {
+   if (token == null  && req.session.access_token) {
      if (hasRole(myOptions.allowAccessToken,req,jwt.decode(req.session.access_token))){
        token=[];
        token[0]='Bearer';
@@ -718,8 +725,7 @@ function createServer(server,plugins){
     }
     let status = 403;
     let message = "Error in CRUD request";
-    res.status(status).json(status,message)
-    return; //CRUD will always exist
+    return res.status(status).json({status,message})
   }) 
   
   //Enforce crud protected tables
@@ -727,7 +733,7 @@ function createServer(server,plugins){
     server.use((req,res,next)=>{
       let path = req.url.split('/');
       let table = path[1];
-      let admin = hasRole(myOptions.crudByPass || 'admin',req),index;
+      let admin = hasRole(myOptions.crudBypass || 'admin',req),index;
       if (!admin && myOptions.crudTables.indexOf(table)>=0){
         //Load the crud assigned to me
         let decode = decodeToken(req);
@@ -736,9 +742,48 @@ function createServer(server,plugins){
           let email =  decode['email'];
           index = db.auth ? db.auth.findIndex(auth => auth.login == email) : -1;
           if (index>=0){ //Add Filter just my own records, or the once if have the rights
-            //Add filter created by
             let allowed = [db.auth[index].id];
             let myGroups = db.auth[index].groups || ['default'];
+            //Check is user is allowed to used api
+            if (myOptions.crudByApi){ //We have a crud for table of api
+              let apiAllowed=-1;
+              myOptions.crudByApi.forEach(function(crud){
+                  if (crud.table==table && apiAllowed==-1) apiAllowed=0
+                  if ((crud.user==email && crud.table==table) || containsValue(crud.user,myGroups)) {
+                    if ((req.method=="GET" && crud.CRUD.indexOf('r')>=0)|| 
+                        (req.method=="PUT" && crud.CRUD.indexOf('u')>=0) || 
+                        (req.method=="POST" && crud.CRUD.indexOf('c')>=0) ||
+                        (req.method=="DELETE" && crud.CRUD.indexOf('d')>=0)) apiAllowed=1
+                  } 
+                })
+              if (apiAllowed==0){
+                 if (myOptions.logLevel>2) console.log("CRUD api rejected",req.method,req.url);
+                let status = 403;
+                let message = "API request refused by crudByApi";
+                return res.status(status).json({status,message})
+              }
+            }
+            
+            //check if the user is allowed to do action based on the table crud
+            if (myOptions.crudByTable){
+              let tableAllowed = false;
+              myOptions.crudByTable.forEach(function(crud){
+                  if ((crud.user==email && crud.table==table) || containsValue(crud.user,myGroups)) {
+                    if ((req.method=="GET" && crud.CRUD.indexOf('r')>=0)|| 
+                        (req.method=="PUT" && crud.CRUD.indexOf('u')>=0) || 
+                        (req.method=="POST" && crud.CRUD.indexOf('c')>=0) ||
+                        (req.method=="DELETE" && crud.CRUD.indexOf('d')>=0)) tableAllowed=true
+                  } 
+                })
+              if (tableAllowed) {
+                if (myOptions.logLevel>2) console.log("CRUD table",req.method,req.url);
+                next();
+                return;
+              }
+            }
+            
+            
+            //Check if we are allowed to access the database on user crud resulting in Adding filter createdby       
             //Loop through the auth to see if there are rights given to me
             db.auth.forEach(function(rec){
               if (rec.crud) {
@@ -762,12 +807,13 @@ function createServer(server,plugins){
             } else {
                req.query = Object.assign(req.query,{createdBy_like:allowed});
             }
-            if (myOptions.logLevel>3) console.log(req.method,req.url,JSON.stringify(req.query));
+            if (myOptions.logLevel>2) console.log("CRUD",req.method,req.url+'?'+
+                    Object.keys(req.query).map(function(key) {return key + '=' + req.query[key];}).join('&'));
           }
         } else {
           let status = 403;
           let message = "Error in CRUD request";
-          res.status(status).json(status,message)
+          res.status(status).json({status,message})
           return; //CRUD will always exist
         }
       }
