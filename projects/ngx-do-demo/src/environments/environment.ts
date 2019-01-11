@@ -4,6 +4,8 @@
 
 export const environment = {
   production: false, 
+  version: require('../../../../package.json').version,
+  name: require('../../../../package.json').name,
   remember: true, //By default we remember user
   title: "DoDemo",
   authentication : true, //Should we do authentication

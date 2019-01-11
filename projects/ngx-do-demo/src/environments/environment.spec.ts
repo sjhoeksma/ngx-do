@@ -4,6 +4,8 @@
 
 export const environment = {
   production: true,
+  version: require('../../../../package.json').version,
+  name: require('../../../../package.json').name,
   authentication : true, //Should we do authentication
   backendList: ['localhost'], //List of available back-ends configurations
   backend : 'localhost', // The default backend

@@ -28,12 +28,6 @@ import { MatProgressSpinnerModule,
 
 
 import { MaterialWidgetsRouterModule } from './material-widgets.router';
-
-import * as hljs from 'highlight.js';
-import { HighlightModule} from 'ngx-highlightjs';
-import xml from 'highlight.js/lib/languages/xml';
-import scss from 'highlight.js/lib/languages/scss';
-import typescript from 'highlight.js/lib/languages/typescript';
 import { ListComponent } from './list/list.component';
 import { ButtonsComponent } from './buttons/buttons.component';
 import { StepperComponent } from './stepper/stepper.component';
@@ -55,7 +49,10 @@ import { RadioComponent } from './radio/radio.component';
 import { SelectComponent } from './select/select.component';
 
 
-
+import { HighlightModule} from 'ngx-highlightjs';
+import xml from 'highlight.js/lib/languages/xml';
+import scss from 'highlight.js/lib/languages/scss';
+import typescript from 'highlight.js/lib/languages/typescript';
 export function hljsLanguages() {
   return [
     {name: 'typescript', func: typescript},
@@ -91,9 +88,7 @@ export function hljsLanguages() {
     MatSelectModule,
     MatSlideToggleModule,
     MatProgressBarModule,
-    HighlightModule.forRoot({
-      languages: hljsLanguages
-    }),
+    HighlightModule.forRoot({languages: hljsLanguages}),
     MaterialWidgetsRouterModule
   ],
   declarations: [

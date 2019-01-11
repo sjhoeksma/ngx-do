@@ -15,6 +15,19 @@ import { AppComponent } from './app.component';
 import { BackendService } from './backend/backend.service';
 import { RestangularModule, Restangular } from 'ngx-restangular';
 
+import { HighlightModule} from 'ngx-highlightjs';
+import xml from 'highlight.js/lib/languages/xml';
+import scss from 'highlight.js/lib/languages/scss';
+import typescript from 'highlight.js/lib/languages/typescript';
+export function hljsLanguages() {
+  return [
+    {name: 'typescript', func: typescript},
+    {name: 'scss', func: scss},
+    {name: 'xml', func: xml}
+  ];
+}
+
+
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     suppressScrollX: true
 };
@@ -34,6 +47,7 @@ import { AppRoutes } from './app.routes';
         PerfectScrollbarModule,
         DoModule,
         CoreGlobalModule,
+          HighlightModule.forRoot({ languages: hljsLanguages}),
         RestangularModule.forRoot(RestangularConfigFactory),
         RouterModule.forRoot(AppRoutes, {preloadingStrategy:CorePreloadingStrategy}),
     ],

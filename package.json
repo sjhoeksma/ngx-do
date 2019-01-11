@@ -85,7 +85,7 @@
     "@angular/language-service": "^6.1.7",
     "@types/jasmine": "^2.8.9",
     "@types/jasminewd2": "~2.0.3",
-    "@types/node": "^10.11.4",
+    "@types/node": "^10.12.18",
     "bundle-scss": "^1.3.4",
     "codelyzer": "^4.5.0",
     "copyfiles": "^2.1.0",
