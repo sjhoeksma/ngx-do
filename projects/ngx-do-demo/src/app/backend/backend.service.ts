@@ -1,7 +1,7 @@
 import { Injectable, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { Observable, Subject,Subscription } from 'rxjs';
-import 'rxjs/add/observable/of';
+
 import {Restangular } from 'ngx-restangular';
 import { CoreEvent, CoreAuth, CoreConfig, CoreBackend } from 'ngx-do-cdk';
 import * as uuidv4 from 'uuid/v4';
