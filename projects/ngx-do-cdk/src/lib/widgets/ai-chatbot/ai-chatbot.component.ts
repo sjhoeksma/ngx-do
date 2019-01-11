@@ -1,7 +1,7 @@
 
-//import {scan} from 'rxjs/operators';
+import {scan} from 'rxjs/operators';
 import { Component, OnInit, Input } from '@angular/core';
-import { scan, Observable ,  BehaviorSubject } from 'rxjs';
+import { Observable ,  BehaviorSubject } from 'rxjs';
 
 import { AiChatbotService, Message } from './ai-chatbot.service';
 
