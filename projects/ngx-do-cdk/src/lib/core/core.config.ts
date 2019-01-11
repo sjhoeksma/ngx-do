@@ -1,6 +1,6 @@
 import { Injectable,Inject } from '@angular/core';
 import * as CryptoJS from 'crypto-js';
-import { Observable, Subject } from "rxjs/Rx";
+import { Observable, Subject } from "rxjs";
 import { CoreEvent } from "./core.event";
 
 interface CoreMessage {

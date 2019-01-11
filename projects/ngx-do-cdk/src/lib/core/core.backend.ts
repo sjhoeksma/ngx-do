@@ -1,7 +1,8 @@
+
+import {of as observableOf,  Observable, Subject,Subscription } from 'rxjs';
 import { Injectable, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
-import { Observable, Subject,Subscription } from 'rxjs';
-import 'rxjs/add/observable/of';
+
 import {Restangular } from 'ngx-restangular';
 import { CoreEvent} from './core.event';
 import { CoreAuth} from './core.auth';
@@ -40,12 +41,12 @@ export class CoreBackend implements OnDestroy {
     }
   
     public getList(name:string,options:object={}, loggedIn:boolean=true):Observable<any>{
-      if (loggedIn && !this.coreAuth.loggedIn) return Observable.of([]);
+      if (loggedIn && !this.coreAuth.loggedIn) return observableOf([]);
       return this.rest.all(name).getList(options);
     }
   
     public getOne(name:string,id:string,options:object={},loggedIn:boolean=true):Observable<any>{
-      if (loggedIn && !this.coreAuth.loggedIn) return Observable.of([]);
+      if (loggedIn && !this.coreAuth.loggedIn) return observableOf([]);
       return this.rest.one(name,id).get(options);
     }
 

@@ -1024,7 +1024,7 @@ function watch(){
 }
 
 module.exports = {
-  start : function(options,callback){
+  start : function(options,callback){    
     myOptions = Object.assign(myOptions,options,argv);
     if (myOptions.generateKey){
       
@@ -1054,6 +1054,7 @@ module.exports = {
         process.stdout.write(s);
       }
     }
+    if (myOptions.logLevel>0) console.log("ngx-do-proxy "+require('./package.json').version);
     
     myOptions.greenLockEnabled=(strToBool(myOptions.greenLock.agreeTos) 
         && myOptions.greenLock.approveDomains.length>0 

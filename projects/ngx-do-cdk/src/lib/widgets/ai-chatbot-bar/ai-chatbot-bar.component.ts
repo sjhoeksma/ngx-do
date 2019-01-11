@@ -1,7 +1,6 @@
 import { Component, OnInit, Input, ViewChild, ElementRef } from '@angular/core';
-import { Observable } from 'rxjs/Observable';
-import { BehaviorSubject } from 'rxjs/BehaviorSubject';
-import 'rxjs/add/operator/scan';
+import { Observable ,  BehaviorSubject } from 'rxjs';
+
 import { AiChatbotService, Message } from '../ai-chatbot/ai-chatbot.service';
 import { AiChatbotComponent } from '../ai-chatbot/ai-chatbot.component';
 import { ReversePipe } from '../pipes/reverse/reverse.pipe';
