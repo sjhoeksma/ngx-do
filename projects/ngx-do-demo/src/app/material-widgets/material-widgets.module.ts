@@ -30,8 +30,10 @@ import { MatProgressSpinnerModule,
 import { MaterialWidgetsRouterModule } from './material-widgets.router';
 
 import * as hljs from 'highlight.js';
-import { HighlightJsModule, HIGHLIGHT_JS } from 'angular-highlight-js';
-import * as hljsTypescript from 'highlight.js/lib/languages/typescript';
+import { HighlightModule} from 'ngx-highlightjs';
+import xml from 'highlight.js/lib/languages/xml';
+import scss from 'highlight.js/lib/languages/scss';
+import typescript from 'highlight.js/lib/languages/typescript';
 import { ListComponent } from './list/list.component';
 import { ButtonsComponent } from './buttons/buttons.component';
 import { StepperComponent } from './stepper/stepper.component';
@@ -54,9 +56,12 @@ import { SelectComponent } from './select/select.component';
 
 
 
-export function highlightJsFactory(): any {
-  hljs.registerLanguage('typescript', hljsTypescript);
-  return hljs;
+export function hljsLanguages() {
+  return [
+    {name: 'typescript', func: typescript},
+    {name: 'scss', func: scss},
+    {name: 'xml', func: xml}
+  ];
 }
 
 @NgModule({
@@ -86,16 +91,14 @@ export function highlightJsFactory(): any {
     MatSelectModule,
     MatSlideToggleModule,
     MatProgressBarModule,
-    HighlightJsModule.forRoot({
-      provide: HIGHLIGHT_JS,
-      useFactory: highlightJsFactory
+    HighlightModule.forRoot({
+      languages: hljsLanguages
     }),
     MaterialWidgetsRouterModule
   ],
   declarations: [
     ButtonsComponent,
     ListComponent,
-
     StepperComponent,
     ExpansionPanelComponent,
     SpinnerComponent,
@@ -103,9 +106,7 @@ export function highlightJsFactory(): any {
     IconsComponent,
     AutocompleteComponent,
     CheckboxComponent,
-
     SelectComponent,
-
     DatepickerComponent,
     SliderComponent,
     SlidetoggleComponent,
@@ -114,9 +115,7 @@ export function highlightJsFactory(): any {
     InputComponent,
     RadioComponent,
     SelectComponent,
-    
-
-
+  
     ],
 
   exports: [

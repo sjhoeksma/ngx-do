@@ -32,7 +32,7 @@
               "node_modules/ammap3/ammap/ammap.css"
             ],
             "scripts": [
-              "node_modules/d3/dist/d3.min.js",
+              "node_modules/d3/d3.min.js",
               "node_modules/amcharts3/amcharts/amcharts.js",
               "node_modules/amcharts3/amcharts/themes/light.js",
               "node_modules/amcharts3/amcharts/plugins/export/export.min.js",
@@ -83,7 +83,7 @@
               "projects/ngx-do-demo/src/styles.css"
             ],
             "scripts": [
-              "node_modules/d3/dist/d3.min.js",
+              "node_modules/d3/d3.min.js",
               "node_modules/amcharts3/amcharts/amcharts.js",
               "node_modules/amcharts3/amcharts/themes/light.js",
               "node_modules/amcharts3/amcharts/plugins/export/export.min.js",
@@ -148,7 +148,7 @@
               "projects/ngx-do-demo/src/styles.css"
             ],
             "scripts": [
-              "node_modules/d3/dist/d3.min.js",
+              "node_modules/d3/d3.min.js",
               "node_modules/amcharts3/amcharts/amcharts.js",
               "node_modules/amcharts3/amcharts/themes/light.js",
               "node_modules/amcharts3/amcharts/plugins/export/export.min.js",
