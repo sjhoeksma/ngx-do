@@ -666,8 +666,7 @@ function createServer(server,plugins){
           if (tokenState==403) {
             message = 'Error access_token is revoked'
           }
-          res.status(status).json({status, message})
-          return //No Next
+          return res.status(status).json({status, message})
         }
       }
       next()
@@ -680,8 +679,7 @@ function createServer(server,plugins){
     if (req.method!="GET" && !admin) {
         const status=403;
         let message = "Update keyvault only by Admin";
-        res.status(status).json({status, message})
-        return //No Next
+        return res.status(status).json({status, message})
     } else if (req.method=="GET" && !admin){
       //We need to add the groups of the user
       req.query = Object.assign(req.query,{groups :roles(req)});
