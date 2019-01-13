@@ -264,8 +264,8 @@ function pluginList(filepath,callback){
         ret.sort(function(a, b) {
           let x = a.split('/');x=x[x.length-1]; 
           let y = b.split('/');b=b[b.length-1]; 
-          if (x < y) return -1;
-          if (x > y) return 1;
+          if (x > y) return -1;
+          if (x < y) return 1;
           return 0;
         });
         callback(ret);
@@ -642,7 +642,7 @@ function createServer(server,corePlugins,plugins){
   
   //Load the core plugins
   corePlugins.forEach(function(file){
-      let plugin = require('./'+ file);
+      let plugin = require(file);
       if (plugin.length) server.use(plugin);
       if (myOptions.logLevel>1) console.log('Adding core plugin',file);
   }); 
@@ -668,7 +668,7 @@ function build(restart,callback){
     console.log('Working Dir',path.join(process.cwd(), myOptions.watchedDir));
     console.log('Data Dir',path.join(process.cwd(), myOptions.dataDir));
   }
-  pluginList('./core',function(corePlugins){
+  pluginList(path.join(__dirname,'./core'),function(corePlugins){
     pluginList(path.join(process.cwd(), myOptions.watchedDir),function(plugins){
      concatJson({ //DB
         src:  path.join(process.cwd(), myOptions.watchedDir),
