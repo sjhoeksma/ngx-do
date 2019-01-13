@@ -11,7 +11,7 @@ plugin.use("/keyvault",(req,res,next)=>{
       return res.status(status).json({status, message})
   } else if (req.method=="GET" && !admin){
     //We need to add the groups of the user
-    req.query = Object.assign(req.query,{groups :roles(req)});
+    req.query = Object.assign(req.query,{groups :proxy.roles(req)});
   } else {
     if (!req.body.groups) req.body.groups = ["default"]; //Just make sure we have default groups
   }

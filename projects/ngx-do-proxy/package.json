@@ -1,6 +1,6 @@
 {
   "name": "ngx-do-proxy",
-  "version": "0.2.6",
+  "version": "0.2.7",
   "license": "MIT",
   "main": "ngx-do-proxy.js",
   "repository": {

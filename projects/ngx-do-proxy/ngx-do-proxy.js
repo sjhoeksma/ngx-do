@@ -840,6 +840,7 @@ module.exports = {
   get app(){return app},
   get plugin(){return server.router},//require('express').Router()},
   get options(){return myOptions},
-  containsValue: containsValue
+  containsValue: containsValue,
+  roles: roles
 }
 
