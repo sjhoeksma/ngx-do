@@ -20,10 +20,6 @@ export class SurveyEditorComponent implements OnInit {
   }
   
   private updateJson(data:any){
-    this.editor.text = (data === 'string') ? data : JSON.stringify(data);
-  }
-
-  ngOnInit() {
     var editorOptions = Object.assign({
      // show the embeded survey tab. It is hidden by default
      showEmbededSurveyTab : false,
@@ -39,6 +35,17 @@ export class SurveyEditorComponent implements OnInit {
      haveCommercialLicense: this.licensed 
     },this.options);
     this.editor = new SurveyEditor.SurveyEditor("surveyEditorContainer", editorOptions);
+    this.editor.text = (data === 'string') ? data : JSON.stringify(data);
+     this.editor.saveSurveyFunc = function(){
+      if (this.onSave) {  
+        this.onSave(JSON.parse(this.editor.text));  
+      } else {
+        this.surveyJson=JSON.parse(this.editor.text); 
+      }
+     }.bind(this);
+  }
+
+  ngOnInit() {
      if (this.surveyJson){
         let jsonSubject: Subject<object> = new Subject<object>();
         this.json=jsonSubject.asObservable();
@@ -50,16 +57,7 @@ export class SurveyEditorComponent implements OnInit {
          this.subscription = this.json.subscribe((update:object) => {
            if (update) this.updateJson(update);
          });
-      }
-    //set function on save callback
-     
-     this.editor.saveSurveyFunc = function(){
-      if (this.onSave) {  
-        this.onSave(JSON.parse(this.editor.text));  
-      } else {
-        this.surveyJson=JSON.parse(this.editor.text); 
-      }
-     }.bind(this);
+      }    
   }
   
   ngOnDestroy(){
