@@ -19,15 +19,13 @@
    
     "build_demo": "npm run inc_patch_demo && ng build ngx-do-demo --",
     
-    "build_proxy": "npm run inc_release_proxy && cd projects/ngx-do-proxy && npm run build",
+    "build_proxy": "cd projects/ngx-do-proxy && npm run build",
     "pack_proxy": "npm run build_proxy && cd dist/ngx-do-proxy",
-    "publish_proxy": "npm run pack_proxy && npm run inc_patch_proxy && cd dist/ngx-do-proxy && npm publish",
+    "publish_proxy": "npm run pack_proxy && cd dist/ngx-do-proxy && npm publish",
     
     "inc_patch": "cd projects/ngx-do-cdk && npm version patch -f",
     "inc_release_demo": "npm version prerelease -f",
-    "inc_patch_demo": "npm version patch -f",
-    "inc_release_proxy": "cd projects/ngx-do-proxy && npm version prerelease -f",
-    "inc_patch_proxy": "cd projects/ngx-do-proxy && npm version patch -f"
+    "inc_patch_demo": "npm version patch -f"
   },
   "private": false,
   "dependencies": {

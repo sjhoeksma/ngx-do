@@ -57,3 +57,7 @@ node_modules
 *.log
 /projects/ngx-do-proxy/ngx-do-proxy.log.txt
 /data
+/projects/ngx-do-proxy/ngx-do-proxy.log.1
+/projects/ngx-do-proxy/ngx-do-proxy.log.2
+/projects/ngx-do-proxy/ngx-do-proxy.log.3
+/projects/ngx-do-proxy/ngx-do-proxy.log.4

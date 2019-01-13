@@ -7,15 +7,13 @@ const path = require('path')
 const jph = require('json-parse-helpfulerror')
 const chalk = require('chalk')
 const _ = require('lodash')
+const expressValidator = require('express-validator')
 const enableDestroy = require('server-destroy')
 const jsonic = require('jsonic')
-const expressValidator = require('express-validator')
-const {check, oneOf, validationResult, checkSchema }= require('express-validator/check')
 const aad = require('azure-ad-jwt');
 const argv = require('minimist')(process.argv.slice(2))
 const gaze = require('gaze');
 const uuidv4 = require('uuid/v4');
-const proxy = require('express-http-proxy');
 const crypto = require('crypto'); const algorithm = 'aes-256-ctr';
 const util = require('util');
 const rfs    = require('rotating-file-stream');
@@ -24,8 +22,6 @@ var session = require('express-session');
 var myOptions = Object.assign({
   port : 3000, //The port number to use
   dbName : 'ngx-do-proxy.db.json', //The file name where json data is stored
-  dbProxyName : 'ngx-do-proxy.proxy.json', //The file name where proxy json data is stored
-  dbRuleName : 'ngx-do-proxy.rule.json', //The file name where rule json data is stored
   watchedDir:  './api',
   dataDir: './', //The directory where the data will be stored
   watch: true, //Should we watch for database changes
@@ -47,6 +43,7 @@ var myOptions = Object.assign({
   allowOrigin: '*', //The CORS allow origin settings
   whitelist:[], //Local domain is whitelisted
   rebuild: false, //When set to true database will be rebuild during restart
+  'rebuild-db': true, //Is rebuild-db API allowed to be called by admin
   authEnabled: true, //When set to false, auth is disabled
   adminList: [], //List with users which have by default admin rights
   encryptSystem: false, //Should we encrypt,decrypt system values
@@ -55,6 +52,7 @@ var myOptions = Object.assign({
   crudBypass: ['admin'], //Which groups are allowed to by pass crud
   crudByTable: null, //Crud object with tables and there with groups/users having general rights
   crudByApi: null, //Crud object api and there cruds with groups/users having general rights
+  'demo-data': true, //Should demo data api be loaded
   logFile: null, //When set with name the console log will be written here
   greenLock:{
       email: null // You MUST change this to a valid email address
@@ -65,13 +63,13 @@ var myOptions = Object.assign({
   }
 });
 
+var readError = false, app,rootServer
+
 // Converts a string to a bool.
 function strToBool(s){
     regex=/^\s*(true|1|on)\s*$/i
     return regex.test(s);
 }
-
-var readError = false, app,rootServer
 
 function roles(req,decoded){
   let decode = decoded || decodeToken(req);
@@ -246,16 +244,6 @@ function isJSONDB(s) {
   return !isURL(s) && /\.db.json$/.test(s)
 }
 
-//Check if this is a json db file and not url 
-function isPROXY(s) {
-  return !isURL(s) && /\.proxy.json$/.test(s)
-}
-
-//Check if this is a json db file and not url 
-function isRULE(s) {
-  return !isURL(s) && /\.rule.json$/.test(s)
-}
-
 //Check if this is a plugin file and not url 
 function isPLUGIN(s) {
   return !isURL(s) && /\.plugin.js$/.test(s)
@@ -272,7 +260,16 @@ function pluginList(filepath,callback){
    filesProcessed = 0;
    var processedFile = () =>{
       filesProcessed++;
-      if (filesProcessed == filesEncountered) callback(ret)
+      if (filesProcessed == filesEncountered) {
+        ret.sort(function(a, b) {
+          let x = a.split('/');x=x[x.length-1]; 
+          let y = b.split('/');b=b[b.length-1]; 
+          if (x < y) return -1;
+          if (x > y) return 1;
+          return 0;
+        });
+        callback(ret);
+      }
    }
    var read = (filepath) =>{
       filesEncountered++;
@@ -443,19 +440,9 @@ function concatJson(userOptions, callback) {
   return startConcat(callback)
 }
 
-function looseJsonParse(obj,server){
-    return Function('arg','"use strict";var options=arg[0],db=arg[1];return (' + obj + ')')([myOptions,server.db]);
-}
-
-function ruleJsonParse(obj,server){
- return Function('arg', '"use strict";var check=arg[0],oneOf=arg[1],checkSchema=arg[2],options=arg[3],db=arg[4];return (' + obj + ')')([check, oneOf, checkSchema,myOptions,server.db]);
-}
-
 //Create the api-proxy server, with memory and persistent to file based json-server
-function createServer(server,plugins){
+function createServer(server,corePlugins,plugins){
   const routes = myOptions.routes ? JSON.parse(fs.readFileSync(myOptions.routes, 'UTF-8')) : null;//Load the routes from json
-  const proxies = JSON.parse(fs.readFileSync(path.join(process.cwd(),myOptions.dataDir,myOptions.dbProxyName), 'UTF-8')) //Load the proxies from json
-  const rules = JSON.parse(fs.readFileSync(path.join(process.cwd(),myOptions.dataDir,myOptions.dbRuleName), 'UTF-8')) //Load the rules from json
   const router = jsonServer.router(path.join(process.cwd(),myOptions.dataDir,myOptions.dbName)) //Load the database
   server.router = router;
   
@@ -589,7 +576,6 @@ function createServer(server,plugins){
     return //No Next
   })
   
-  
   //Check fo public plugins
   plugins.forEach(function(file){
     if (isPUBLIC(file)){
@@ -598,21 +584,7 @@ function createServer(server,plugins){
       if (myOptions.logLevel>1) console.log('Adding public plugin',file);
     }
   });
-  
-  //Public Proxy routes
-  Object.keys(proxies).forEach(function(key) {
-    let val = proxies[key];
-    let route = "/" + key
-    if (val.public){
-      if (myOptions.logLevel>1) console.log('Adding public proxy route for',route);
-      server.use(route,proxy(val.host,Object.assign({
-         proxyReqPathResolver: function (req) {return (val.path||'') + req.url;}
-      },looseJsonParse(val.override||'{}',server))));
-    }
-  });
-  
-  //TODO: Add validation of API
-  
+    
   //Set updated and created at
   server.use((req, res, next) => {
     if (req.method === 'POST') {
@@ -646,11 +618,7 @@ function createServer(server,plugins){
     });
     return res.status(200).json(ret);
   })
-  
-  if (myOptions.logFile) {
-      server.use('/logFile', require('express').static(path.join(process.cwd(),myOptions.dataDir,myOptions.logFile)));
-  }
-  
+    
   //From here on private stuff
 
   //Validate if the token is valid when not accessing auth
@@ -672,212 +640,14 @@ function createServer(server,plugins){
       next()
   })
   
-  //We want to validate if user is requesting a keyvault he is allowed
-  server.use("/keyvault",(req,res,next)=>{
-    //Only admin can update or delete
-    var admin = hasRole('admin',req);
-    if (req.method!="GET" && !admin) {
-        const status=403;
-        let message = "Update keyvault only by Admin";
-        return res.status(status).json({status, message})
-    } else if (req.method=="GET" && !admin){
-      //We need to add the groups of the user
-      req.query = Object.assign(req.query,{groups :roles(req)});
-    } else {
-      if (!req.body.groups) req.body.groups = ["default"]; //Just make sure we have default groups
-    }
-    next();
-  }) 
-  
-  
-  //CRUD will deliver the crud data from AUTH table
-  server.use("/CRUD",(req,res,next)=>{
-    let id= req.url.substr(1);
-    let decode = decodeToken(req);
-    if (decode && isNaN(decode)){  
-       const db = app.db.getState() //Get the last active database
-       let admin = hasRole('admin',req),index;
-       if (id && admin){
-         index = db.auth ? db.auth.findIndex(auth => auth.id == id) : -1; 
-       } else {
-        index = db.auth ? db.auth.findIndex(auth => auth.login == decode['email']) : -1;
-       }
-       if (index>=0 && req.method=="GET") { //READ
-         let status = 200;
-         let rec = db.auth[index];
-         let message = {id:rec.id,crud:rec.crud || [],tables:myOptions.crudTables};
-         res.status(status).json(message) 
-        return; 
-       } else if (index>=0 && (req.method=="PUT" || req.method=="POST")) { //Save
-         let status = 200;
-         let rec = db.auth[index];
-         rec['crud']=req.body.crud;
-         rec['updatedAt']=req.body.updatedAt;
-         rec['updatedBy']=req.body.updatedBy;
-         db.auth[index]=rec;
-          server.db.write();
-         let message = {id:rec.id,crud:rec.crud || [],tables:myOptions.crudTables};
-         res.status(status).json(message) 
-         return;
-       }
-    }
-    let status = 403;
-    let message = "Error in CRUD request";
-    return res.status(status).json({status,message})
-  }) 
-  
-  //Enforce crud protected tables
-  if (myOptions.crudTables){
-    server.use((req,res,next)=>{
-      let path = req.url.split('/');
-      let table = path[1];
-      let admin = hasRole(myOptions.crudBypass || 'admin',req),index;
-      if (!admin && myOptions.crudTables.indexOf(table)>=0){
-        //Load the crud assigned to me
-        let decode = decodeToken(req);
-        if (decode && isNaN(decode)){ 
-          const db = app.db.getState() //Get the last active database
-          let email =  decode['email'];
-          index = db.auth ? db.auth.findIndex(auth => auth.login == email) : -1;
-          if (index>=0){ //Add Filter just my own records, or the once if have the rights
-            let allowed = [db.auth[index].id];
-            let myGroups = db.auth[index].groups || ['default'];
-            //Check is user is allowed to used api
-            if (myOptions.crudByApi){ //We have a crud for table of api
-              let apiAllowed=-1;
-              myOptions.crudByApi.forEach(function(crud){
-                  if (crud.table==table && apiAllowed==-1) apiAllowed=0
-                  if ((crud.user==email && crud.table==table) || containsValue(crud.user,myGroups)) {
-                    if ((req.method=="GET" && crud.CRUD.indexOf('r')>=0)|| 
-                        (req.method=="PUT" && crud.CRUD.indexOf('u')>=0) || 
-                        (req.method=="POST" && crud.CRUD.indexOf('c')>=0) ||
-                        (req.method=="DELETE" && crud.CRUD.indexOf('d')>=0)) apiAllowed=1
-                  } 
-                })
-              if (apiAllowed==0){
-                 if (myOptions.logLevel>2) console.log("CRUD api rejected",req.method,req.url);
-                let status = 403;
-                let message = "API request refused by crudByApi";
-                return res.status(status).json({status,message})
-              }
-            }
-            
-            //check if the user is allowed to do action based on the table crud
-            if (myOptions.crudByTable){
-              let tableAllowed = false;
-              myOptions.crudByTable.forEach(function(crud){
-                  if ((crud.user==email && crud.table==table) || containsValue(crud.user,myGroups)) {
-                    if ((req.method=="GET" && crud.CRUD.indexOf('r')>=0)|| 
-                        (req.method=="PUT" && crud.CRUD.indexOf('u')>=0) || 
-                        (req.method=="POST" && crud.CRUD.indexOf('c')>=0) ||
-                        (req.method=="DELETE" && crud.CRUD.indexOf('d')>=0)) tableAllowed=true
-                  } 
-                })
-              if (tableAllowed) {
-                if (myOptions.logLevel>2) console.log("CRUD table",req.method,req.url);
-                next();
-                return;
-              }
-            }
-            
-            
-            //Check if we are allowed to access the database on user crud resulting in Adding filter createdby       
-            //Loop through the auth to see if there are rights given to me
-            db.auth.forEach(function(rec){
-              if (rec.crud) {
-                rec.crud.forEach(function(crud){
-                  if ((crud.user==email && crud.table==table) || containsValue(crud.user,myGroups)) {
-                    if (req.method=="GET" && crud.CRUD.indexOf('r')>=0) allowed.push(rec.id)
-                    else if (req.method=="PUT" && crud.CRUD.indexOf('u')>=0) allowed.push(rec.id)
-                    else if (req.method=="POST" && crud.CRUD.indexOf('c')>=0) allowed.push(rec.id)
-                    else if (req.method=="DELETE" && crud.CRUD.indexOf('d')>=0) allowed.push(rec.id)
-                  } 
-                })
-              }
-            })
-            
-            //Check if we are seatching for singular
-            if (path.length>2){
-               req.query = Object.assign(req.query,{createdBy_like:allowed,id:path[2]});
-               req.signular=true;
-               path.splice(2,1);
-               req.originalUrl=req.url=path.join('/');  
-            } else {
-               req.query = Object.assign(req.query,{createdBy_like:allowed});
-            }
-            if (myOptions.logLevel>2) console.log("CRUD",req.method,req.url+'?'+
-                    Object.keys(req.query).map(function(key) {return key + '=' + req.query[key];}).join('&'));
-          }
-        } else {
-          let status = 403;
-          let message = "Error in CRUD request";
-          res.status(status).json({status,message})
-          return; //CRUD will always exist
-        }
-      }
-      next(); 
-    }) 
-    
-    //Fix for crud to use singular, we catch the send
-    server.use((req, res, next) => {
-      const _send = res.send
-      res.send = function (body) {
-        var singular= require('url').parse(req.url, true).query['_singular'];
-        if (req.signular || singular=="1") {
-          try {
-            const json = JSON.parse(body)
-            if (Array.isArray(json)) {
-              if (json.length === 1) {
-                return _send.call(this, JSON.stringify(json[0]))
-              } else if (json.length === 0) {
-                return res.status(404).send('{}')
-              }
-            }
-          } catch (e) {}
-        }
-        return _send.call(this, body)
-      }
-      next()
-     });
-  }
+  //Load the core plugins
+  corePlugins.forEach(function(file){
+      let plugin = require('./'+ file);
+      if (plugin.length) server.use(plugin);
+      if (myOptions.logLevel>1) console.log('Adding core plugin',file);
+  }); 
   
   //TODO: Add Get Auth and Delete Auth --> they need role admin
-  
-  //Rule routes
-  Object.keys(rules).forEach(function(key) {
-    let val = rules[key];
-    let route = "/" + key;
-    let rl = (req, res, next) => {
-     try {
-      validationResult(req).throw();
-      next(); // handle the request as usual
-      } catch (err) {
-        // Oh error
-        res.status(422).json({"error":err});
-      }
-     }
-    //TODO check if val is a array, use options read and write
-    if (val.use) server.use(route,ruleJsonParse(val.use||'[]',server),rl);
-    if (val.put) server.put(route,ruleJsonParse(val.put||'[]',server),rl);
-    if (val.get) server.get(route,ruleJsonParse(val.get||'[]',server),rl);
-    if (val.post) server.post(route,ruleJsonParse(val.post||'[]',server),rl);
-    if (val.patch) server.patch(route,ruleJsonParse(val.patch||'[]',server),rl);
-    if (val.delete) server.delete(route,ruleJsonParse(val.delete||'[]',server),rl);
-    if (val.options) server.options(route,ruleJsonParse(val.options||'[]',server),rl);
-    if (myOptions.logLevel>1) console.log('Adding rule for',route);
-  });
-  
-  //Private Proxy routes
-  Object.keys(proxies).forEach(function(key) {
-    let val = proxies[key];
-    let route = "/" + key;
-    if (!val.public){
-      if (myOptions.logLevel>1) console.log('Adding private proxy route for',route);
-       server.use(route,proxy(val.host,Object.assign({
-         proxyReqPathResolver: function (req) {return (val.path||'') + req.url;}
-      },looseJsonParse(val.override||'{}',server))));
-    }
-  });
   
   //Private plugins
   plugins.forEach(function(file){
@@ -898,35 +668,24 @@ function build(restart,callback){
     console.log('Working Dir',path.join(process.cwd(), myOptions.watchedDir));
     console.log('Data Dir',path.join(process.cwd(), myOptions.dataDir));
   }
-  pluginList(path.join(process.cwd(), myOptions.watchedDir),function(plugins){
-   concatJson({ //DB
-      src:  path.join(process.cwd(), myOptions.watchedDir),
-      dest: path.join(process.cwd(),myOptions.dataDir,myOptions.dbName),
-      isJsonFile: isJSONDB,
-      reuseDB: !restart && myOptions.reuseDB
-    }, function(err,json){
-   concatJson({  //Rules
-      src:  path.join(process.cwd(), myOptions.watchedDir),
-      dest: path.join(process.cwd(),myOptions.dataDir,myOptions.dbRuleName),
-      isJsonFile: isRULE,
-      reuseDB: false, //Rules are always created at startup
-    },function(err,json){
-     concatJson({  //Proxy
-      src:  path.join(process.cwd(), myOptions.watchedDir),
-      dest: path.join(process.cwd(),myOptions.dataDir,myOptions.dbProxyName),
-      isJsonFile: isPROXY,
-      reuseDB: false, //Proxies are always created at startup
-    },function(err,json){ 
-      if (err || !json) console.log("Concat of json data had error",err); 
-      callback(err,json,plugins);
-    }
-    )})})})
+  pluginList('./core',function(corePlugins){
+    pluginList(path.join(process.cwd(), myOptions.watchedDir),function(plugins){
+     concatJson({ //DB
+        src:  path.join(process.cwd(), myOptions.watchedDir),
+        dest: path.join(process.cwd(),myOptions.dataDir,myOptions.dbName),
+        isJsonFile: isJSONDB,
+        reuseDB: !restart && myOptions.reuseDB
+      }, function(err,json){
+        if (err || !json) console.log("Concat of json data had error",err); 
+        callback(err,json,corePlugins,plugins);
+      }
+    )})
+  })  
 }
 
 //Start the server and check if files have changed
 function start(rebuild=0,callback=null){
-  if (myOptions.logLevel>2) console.log("Start called with ",rebuild);
-  build(rebuild>0,function(err,json,plugins){
+  build(rebuild>0,function(err,json,corePlugins,plugins){
     if (app) {
       if (myOptions.greenLockEnabled) 
         return; //Greenlock cannot be restarted
@@ -949,16 +708,17 @@ function start(rebuild=0,callback=null){
         console.log(chalk.gray(`  ${myOptions.dbName} has changed, reloading...`))
       } else {
         console.log(chalk.green(`  Database not changed :)`))
-        if (rebuild>=0) return;
+        if (rebuild<=1) return;
       }
     }
-      // clean the cache
-      Object.keys(require.cache).forEach((id) => {
-        if (id.indexOf(path.join(process.cwd(), myOptions.watchedDir))>=0) {
-          console.log('Reloading', id);
-          delete require.cache[id];
-        }
-      });
+    // clean the cache
+    Object.keys(require.cache).forEach((id) => {
+      if (id.indexOf(path.join(process.cwd(), myOptions.watchedDir))>=0 ||
+          id.indexOf('ngx-do-proxy/core')>=0) {
+        console.log('Reloading', id);
+        delete require.cache[id];
+      }
+    });
 
     app = jsonServer.create() //Create the app server
 
@@ -987,7 +747,7 @@ function start(rebuild=0,callback=null){
 
           },myOptions.greenLock));
       rootServer=rootServer.listen(80, 443,function(){
-        createServer(app,plugins);
+        createServer(app,corePlugins,plugins);
         console.log('ngx-do-proxy, Started secure on port: 443' , chalk.green(443))
         callback && callback();
       });
@@ -995,7 +755,7 @@ function start(rebuild=0,callback=null){
       rootServer && rootServer.destroy()
       const port = process.env.PORT || myOptions.port;
       rootServer=app.listen(port, () => {
-        createServer(app,plugins);
+        createServer(app,corePlugins,plugins);
         console.log('ngx-do-proxy, Started on port:' , chalk.green(port));
         callback && callback();
       })
@@ -1043,7 +803,8 @@ module.exports = {
       var log_file = rfs(path.join(process.cwd(),myOptions.dataDir,myOptions.logFile), Object.assign({
             size:    myOptions.logSize || '10M', // rotate every 10 MegaBytes written
             interval: myOptions.logInterval || '1d',  // rotate daily
-            maxFiles: myOptions.logMaxFiles || 5, //Max 5 Files
+            //maxFiles: myOptions.logMaxFiles || 5, //Max 5 Files
+            rotate: myOptions.logMaxFiles || 5, //Max 5 Files in unix rotation mode
         },myOptions.logCompress ? {compress:myOptions.logCompress}:{}));
 
       console.log = function() { //Append to logfile without locking
@@ -1078,6 +839,7 @@ module.exports = {
   get server(){return rootServer},
   get app(){return app},
   get plugin(){return server.router},//require('express').Router()},
-  get options(){return myOptions} 
+  get options(){return myOptions},
+  containsValue: containsValue
 }
 

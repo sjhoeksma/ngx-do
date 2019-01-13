@@ -1,7 +1,0 @@
-{
-  "todos" : {
-    public : true,
-    host: "https://jsonplaceholder.typicode.com",
-    path: "/todos"
-  }
-}

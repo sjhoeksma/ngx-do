@@ -24,13 +24,14 @@ My work list on activities to work on.
 1. Do not redirect to login if token is not valid on login of masl
 1. Create trafic light dash, not spinning
 1. Add option to use real database
+1. Transform CRUD, KeyVault and others into separated modules
 
 ## Widgets
 * BoxCard - Simple box card with options for zoom and close
 * Schedule - Create scheduler tool, allowing to create  tasks
 * Kabanboard - Simple way to prioritize work
 * Sparkline - 
-* Cloudability - As ipi or widget
+* Cloudability - As api or widget
 * DemoWdiget - widget for documentation and demo of widget
 
 ## Documentation

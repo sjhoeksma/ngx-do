@@ -1,6 +1,6 @@
 {
   "name": "ngx-do-proxy",
-  "version": "0.2.2-0",
+  "version": "0.2.4",
   "license": "MIT",
   "main": "ngx-do-proxy.js",
   "repository": {
@@ -17,7 +17,9 @@
   },
   "scripts": {
     "start": "node index.js",
-    "build": "rm -rf ../../dist/ngx-do-proxy && mkdir -p ../../dist/ngx-do-proxy && cp ./{package.json,package-lock.json,index.js,ngx-do-proxy.js,ngx-do-proxy-routes.json,README.md} ../../dist/ngx-do-proxy "
+    "build": "npm run inc_patch && rm -rf ../../dist/ngx-do-proxy && mkdir -p ../../dist/ngx-do-proxy && cp ./{package.json,package-lock.json,index.js,ngx-do-proxy.js,ngx-do-proxy-routes.json,README.md} ../../dist/ngx-do-proxy && cp -R ./core ../../dist/ngx-do-proxy ",
+    "inc_release": "npm version prerelease -f",
+    "inc_patch": "npm version patch -f"
   },
   "private": false,
   "dependencies": {
