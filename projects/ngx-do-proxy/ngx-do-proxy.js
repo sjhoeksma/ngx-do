@@ -444,8 +444,7 @@ function concatJson(userOptions, callback) {
 function createServer(server,corePlugins,plugins){
   const routes = myOptions.routes ? JSON.parse(fs.readFileSync(myOptions.routes, 'UTF-8')) : null;//Load the routes from json
   const router = jsonServer.router(path.join(process.cwd(),myOptions.dataDir,myOptions.dbName)) //Load the database
-  server.router = router;
-  
+
   server.db = router.db   //Add a reference to our router database to the server
   if (routes) server.use(jsonServer.rewriter(routes)) //Set the custom routes
   server.use(session({ 
@@ -604,17 +603,18 @@ function createServer(server,corePlugins,plugins){
     const db = server.db.getState() //Get the last active database
     let ret = {};
     //router.stack
-    router.stack.forEach(function(r) { 
-        if (r.route && r.route.path){
+    app._router.stack.forEach(function(r) { 
+      if (r.route && r.route.path){
         ret[r.route.path.substring(1)]=[];
-      }
+      } else if (r.regexp){
+        var s =r.regexp.toString().replace(/\\/g,'').replace('?(?=','').split('/');
+        if (s[1]=='^' && s[2]){
+          ret[s[2]]=[];
+        }
+      }    
     });
     Object.keys(db).forEach(function(key) {
        ret[key]=[];
-    });
-     //Add proxy routes to resource list
-    Object.keys(proxies).forEach(function(key) {
-      ret[key]=[];
     });
     return res.status(200).json(ret);
   })
@@ -659,7 +659,6 @@ function createServer(server,corePlugins,plugins){
   });
   
   server.use(router);
-
   return server;
 }
 
@@ -838,8 +837,9 @@ module.exports = {
   strToBool: strToBool,
   get server(){return rootServer},
   get app(){return app},
-  get plugin(){return server.router},//require('express').Router()},
+  get plugin(){return app._router},//require('express').Router()},
   get options(){return myOptions},
+  get db(){return rootServer.db},
   containsValue: containsValue,
   roles: roles
 }

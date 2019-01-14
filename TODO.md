@@ -25,6 +25,11 @@ My work list on activities to work on.
 1. Create trafic light dash, not spinning
 1. Add option to use real database
 1. Transform CRUD, KeyVault and others into separated modules
+1. Add plugin allowing Admin to import export data
+1. Standard page for keyvault entry in pages
+1. See if it is possible to move part of pages to core
+1. Create page allowing Admin to assign roles and reset passwords of users
+
 
 ## Widgets
 * BoxCard - Simple box card with options for zoom and close
