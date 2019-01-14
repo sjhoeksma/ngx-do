@@ -49,6 +49,11 @@ export class CoreBackend implements OnDestroy {
       if (loggedIn && !this.coreAuth.loggedIn) return observableOf([]);
       return this.rest.one(name,id).get(options);
     }
+  
+    public getBase(name:string,loggedIn:boolean=true):Observable<any>{
+      if (loggedIn && !this.coreAuth.loggedIn) return observableOf([]);
+      return this.rest.all(name);
+    }
 
   
   public getKeyVault(id: string):Observable<object>{
