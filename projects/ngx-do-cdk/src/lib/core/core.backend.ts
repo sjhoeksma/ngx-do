@@ -50,8 +50,8 @@ export class CoreBackend implements OnDestroy {
       return this.rest.one(name,id).get(options);
     }
   
-    public getBase(name:string,loggedIn:boolean=true):Observable<any>{
-      if (loggedIn && !this.coreAuth.loggedIn) return observableOf([]);
+    public getBase(name:string,loggedIn:boolean=true):any{
+      if (loggedIn && !this.coreAuth.loggedIn) return null;
       return this.rest.all(name);
     }
 
