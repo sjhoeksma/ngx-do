@@ -57,7 +57,7 @@ if (proxy.options.crudTables) plugin.use((req,res,next)=>{
           let apiAllowed=-1;
           proxy.options.crudByApi.forEach(function(crud){
               if (crud.table==table && apiAllowed==-1) apiAllowed=0
-              if ((crud.user==email && crud.table==table) || proxy.containsValue(crud.user,myGroups)) {
+              if (crud.table==table && (crud.user==email || proxy.containsValue(crud.user,myGroups))) {
                 if ((req.method=="GET" && crud.CRUD.indexOf('r')>=0)|| 
                     (req.method=="PUT" && crud.CRUD.indexOf('u')>=0) || 
                     (req.method=="POST" && crud.CRUD.indexOf('c')>=0) ||
@@ -76,7 +76,7 @@ if (proxy.options.crudTables) plugin.use((req,res,next)=>{
         if (proxy.options.crudByTable){
           let tableAllowed = false;
           proxy.options.crudByTable.forEach(function(crud){
-              if ((crud.user==email && crud.table==table) || proxy.containsValue(crud.user,myGroups)) {
+              if (crud.table==table && (crud.user==email || proxy.containsValue(crud.user,myGroups))) {
                 if ((req.method=="GET" && crud.CRUD.indexOf('r')>=0)|| 
                     (req.method=="PUT" && crud.CRUD.indexOf('u')>=0) || 
                     (req.method=="POST" && crud.CRUD.indexOf('c')>=0) ||
@@ -84,7 +84,7 @@ if (proxy.options.crudTables) plugin.use((req,res,next)=>{
               } 
             })
           if (tableAllowed) {
-            if (proxy.options.logLevel>2) console.log("CRUD table",req.method,req.url);
+            if (proxy.options.logLevel>2) console.log("CRUD table",table,myGroups,req.method,req.url);
             next();
             return;
           }
@@ -96,7 +96,7 @@ if (proxy.options.crudTables) plugin.use((req,res,next)=>{
         db.auth.forEach(function(rec){
           if (rec.crud) {
             rec.crud.forEach(function(crud){
-              if ((crud.user==email && crud.table==table) || proxy.containsValue(crud.user,myGroups)) {
+              if (crud.table==table && (crud.user==email || proxy.containsValue(crud.user,myGroups))) {
                 if (req.method=="GET" && crud.CRUD.indexOf('r')>=0) allowed.push(rec.id)
                 else if (req.method=="PUT" && crud.CRUD.indexOf('u')>=0) allowed.push(rec.id)
                 else if (req.method=="POST" && crud.CRUD.indexOf('c')>=0) allowed.push(rec.id)
