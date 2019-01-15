@@ -20,6 +20,12 @@ export class ToolbarComponent implements OnInit {
   @Input() securityRoute;
   @Input() helpRoute;
   @Input() logoutRoute =  '/logout';
+  @Input() tipSearch : string = "Search site";
+  @Input() tipFullscreen : string = "Full screen";
+  @Input() tipChatbot : string = "Interactive help";
+  @Input() tipNotifications : string = "Notifications";
+  @Input() tipShoppingBasket : string = "Shoppingbasket";
+  @Input() tipUserMenu : string = "User Menu";
   
 	searchOpen: boolean = false;
   aiChatbotOpen : boolean = false;
