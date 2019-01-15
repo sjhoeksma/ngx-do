@@ -683,7 +683,7 @@ function build(restart,callback){
 }
 
 //Start the server and check if files have changed
-function start(rebuild=0,callback=null){
+function start(rebuild=0,callback=null,startOptions={}){
   build(rebuild>0,function(err,json,corePlugins,plugins){
     if (app) {
       if (myOptions.greenLockEnabled) 
@@ -702,12 +702,27 @@ function start(rebuild=0,callback=null){
         return
       }
       
-      const isDatabaseDifferent = !_.isEqual(obj, app.db.getState())
-      if (isDatabaseDifferent) {
-        console.log(chalk.gray(`  ${myOptions.dbName} has changed, reloading...`))
+      if (startOptions.recreateTables){
+        let db = app.db.getState();
+        let changed=false;
+        startOptions.recreateTables.split(',').forEach(function (table){
+          if (obj[table]) {
+            db[table]=obj[table];
+            changed=true;
+          }
+        })
+        if (changed){
+          app.db.write();  
+          console.log(chalk.gray(` ${startOptions.recreateTables} has changed, reloading  ${myOptions.dbName} ...`))
+        }
       } else {
-        console.log(chalk.green(`  Database not changed :)`))
-        if (rebuild<=1) return;
+        const isDatabaseDifferent = !_.isEqual(obj, app.db.getState())
+        if (isDatabaseDifferent) {
+          console.log(chalk.gray(`  ${myOptions.dbName} has changed, reloading...`))
+        } else {
+          console.log(chalk.green(`  Database not changed :)`))
+          if (rebuild<=1) return;
+        }
       }
     }
     // clean the cache
@@ -824,9 +839,7 @@ module.exports = {
     server && server.destroy();
     server=null;
   },
-  restart:function(rebuild,callback){
-    start(rebuild,callback);
-  },
+  restart: start,
   watch: watch,
   static: function(url){return require('express').static(url)},
   decodeToken:decodeToken,
