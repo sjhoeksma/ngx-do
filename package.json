@@ -5,7 +5,7 @@
     "type": "git",
     "url": "git://github.com/sjhoeksma/ngx-do.git"
   },
-  "version": "0.2.0",
+  "version": "0.2.1-0",
   "scripts": {
     "ng": "ng",
     "proxy": "cd projects/ngx-do-proxy && node index.js",
@@ -16,13 +16,10 @@
     "build": "npm run inc_patch && ng build --prod ngx-do-cdk && cd projects/ngx-do-cdk && npm run scss_bundle",
     "pack": "npm run build && cd dist/ngx-do-cdk",
     "publish": "npm run pack && cd dist/ngx-do-cdk && npm publish",
-   
     "build_demo": "npm run inc_patch_demo && ng build ngx-do-demo --",
-    
     "build_proxy": "cd projects/ngx-do-proxy && npm run build",
     "pack_proxy": "npm run build_proxy && cd dist/ngx-do-proxy",
     "publish_proxy": "npm run pack_proxy && cd dist/ngx-do-proxy && npm publish",
-    
     "inc_patch": "cd projects/ngx-do-cdk && npm version patch -f",
     "inc_release_demo": "npm version prerelease -f",
     "inc_patch_demo": "npm version patch -f"
