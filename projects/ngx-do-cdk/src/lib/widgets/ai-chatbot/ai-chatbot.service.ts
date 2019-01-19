@@ -5,7 +5,8 @@ B. using the token property in the component
 */
 
 import { Injectable } from '@angular/core';
-import { ApiAiClient } from 'api-ai-javascript';
+//import { ApiAiClient } from 'api-ai-javascript';
+import { ApiAiClient } from 'api-ai-javascript/es6/ApiAiClient'
 import { Observable ,  BehaviorSubject } from 'rxjs';
 
 // Message class for displaying messages in the component

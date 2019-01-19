@@ -97,7 +97,7 @@ export class LoginComponent implements OnInit {
   
     //Change event of backend type
   backendChange(backend:any){
-    if (this.coreConfig.backendValue('silentLogin',false)==true){
+    if (this.coreConfig.backendValue('silentLogin',false)===true){
       this.coreAuth.refreshToken().then(token=>{
         if (token) {
           this.activatedRoute.queryParams.subscribe(params => {

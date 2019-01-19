@@ -9,7 +9,7 @@
       "projectType": "library",
       "prefix": "lib",
       "architect": {
-        "build": {
+        "build": {  
           "builder": "@angular-devkit/build-ng-packagr:build",
           "options": {
             "tsConfig": "projects/ngx-do-cdk/tsconfig.lib.json",
@@ -104,6 +104,7 @@
               "outputHashing": "all",
               "sourceMap": false,
               "extractCss": false,
+              "extractLicenses": true,
               "namedChunks": false,
               "aot": true,
               "extractLicenses": true,

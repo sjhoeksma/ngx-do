@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CoreConfig } from 'ngx-do-cdk';
+import { CoreConfig } from '../../core/core.config';
 
 @Component({
   selector: 'app-profile',
@@ -18,7 +18,6 @@ export class ProfileComponent implements OnInit {
   
   public editProfileCallback(){
     this.edit=!this.edit;
-    //console.log("Edit Profile",this.edit);
   }
 
 }

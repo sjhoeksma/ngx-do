@@ -111,7 +111,7 @@ export class MsalAuth extends BaseAuth {
   public logout(byUser:boolean = false):Promise<boolean>  {
     this._accessToken=null;
     this._groups=null;
-    if (this.coreConfig.backendEnv['fullLogout']==true){
+    if (this.coreConfig.backendValue('fullLogout',false)){
       super.logout(byUser); //No Routing
       this.msal.logout();
       return Promise.resolve(true)

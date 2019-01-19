@@ -38,12 +38,12 @@ export class IFrameComponent {
       }
     }
     let str: string='';
-    if (this.token==true){
+    if (this.token===true){
       str += "_!token="+this.coreAuth.authToken;
     } else if (this.token){
        str += this.token + "="+this.coreAuth.authToken;
     }
-    if (this.unique==true){
+    if (this.unique===true){
       if (str!='') str+='&';
       str+= 'u=' + Date.now();
     }

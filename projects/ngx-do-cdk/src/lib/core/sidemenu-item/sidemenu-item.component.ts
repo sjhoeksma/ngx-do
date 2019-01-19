@@ -44,7 +44,7 @@ export class SidemenuItemComponent implements OnInit {
     }
 
     clickLink(menu,event){
-      if (!(menu.link==false)) {
+      if (!(menu.link===false)) {
         if (menu.link instanceof Function) {
           menu.link() 
         } else if (menu.link.indexOf('/')==0) {

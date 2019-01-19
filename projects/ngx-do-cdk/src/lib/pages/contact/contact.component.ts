@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { CoreConfig } from 'ngx-do-cdk';
+import { CoreConfig } from '../../core/core.config';
 
 @Component({
   selector: 'app-contacts',

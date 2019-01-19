@@ -1,21 +1,19 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { PagesModule} from '../pages.module';
-import { AppModule} from '../../app.module';
 import { APP_BASE_HREF } from '@angular/common';
-import { ContactComponent } from './contact.component';
-import { environment } from '../../../environments/environment.spec';
+import { ProfileComponent } from './profile.component';
 
-describe('ContactComponent', () => {
-  let component: ContactComponent;
-  let fixture: ComponentFixture<ContactComponent>;
+
+describe('ProfileComponent', () => {
+  let component: ProfileComponent;
+  let fixture: ComponentFixture<ProfileComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [ 
-        AppModule,
+     imports: [ 
         PagesModule,
       ],providers: [
-        {provide: 'Environment', useValue: environment},
+        {provide: 'Environment', useValue: {} },
         {provide: APP_BASE_HREF, useValue: '/'}
       ],
     })
@@ -23,7 +21,7 @@ describe('ContactComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(ContactComponent);
+    fixture = TestBed.createComponent(ProfileComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

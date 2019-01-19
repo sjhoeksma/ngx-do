@@ -1,6 +1,6 @@
 
 <div class="toolbar-aichatbot-container">
-  <mat-form-field class="search"  [ngClass]="{'search-open': open == true}"> 
+  <mat-form-field class="search"  [ngClass]="{'search-open': open}"> 
   <input matInput #aiSearch placeholder="Ask a Question ?" autocomplete="off" (focus)="bigMenu = true" (focusout)="bigMenu = false" (keyup.enter)="sendMessage()" [(ngModel)]="question">
 </mat-form-field>
   

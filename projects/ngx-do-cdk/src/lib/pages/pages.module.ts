@@ -1,4 +1,5 @@
 import { NgModule } from '@angular/core';
+import { Routes, RouterModule } from '@angular/router';
 import { 
         MatCardModule,
         MatButtonModule,
@@ -8,25 +9,31 @@ import {
         MatIconModule,
         MatCheckboxModule,
         MatListModule,
-        MatSelectModule,
-        MatDialogModule,
        } from '@angular/material';
+import { NgxDatatableModule } from '@swimlane/ngx-datatable';
+import { MatTabsModule } from '@angular/material/tabs';
 import { MatChipsModule } from '@angular/material/chips';
 import { CommonModule } from '@angular/common';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { ShowdownModule, ConverterOptions, IConverterOptions } from 'ngx-showdown';
-
-import { WidgetsModule } from 'ngx-do-cdk';
-import { PagesRouterModule } from './pages.routes';
+import { FormsModule } from '@angular/forms';
+import { WidgetsModule } from '../widgets/widgets.module';
+import { CoreModule } from '../core/core.module';
 import { ContactComponent } from './contact/contact.component';
 import { AboutComponent } from './about/about.component';
 import { ErrorComponent } from './error/error.component';
+import { SecurityComponent } from './security/security.component'
 import { ProfileComponent } from './profile/profile.component';
 import { KeyVaultComponent } from './keyvault/keyvault.component';
-import { NgxDatatableModule } from '@swimlane/ngx-datatable';
-import { SecurityComponent } from './security/security.component'
+import { PerfectScrollbarModule , 
+        PERFECT_SCROLLBAR_CONFIG ,
+        PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
 
-import { CoreModule } from 'ngx-do-cdk';
+const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
+    suppressScrollX: true
+};
+
+import {pagesRoutes} from "./pages.routes";
 
 @NgModule({
     imports: [
@@ -42,25 +49,29 @@ import { CoreModule } from 'ngx-do-cdk';
         MatCheckboxModule,
         MatListModule,
         MatChipsModule,
+        FormsModule,
+        MatTabsModule,
         WidgetsModule,
-        MatSelectModule,
-        MatDialogModule,
+        PerfectScrollbarModule,
         CoreModule,
         ShowdownModule.forRoot({} as ConverterOptions | IConverterOptions),
-        PagesRouterModule ],
+        RouterModule.forChild(pagesRoutes)
+    ],
     declarations: [   
         ContactComponent,
         AboutComponent,
         ErrorComponent,
         ProfileComponent,
-        KeyVaultComponent,
         SecurityComponent,
+        KeyVaultComponent,
     ],
     exports: [
-      
     ],
     providers: [
-    ]
+        {
+            provide: PERFECT_SCROLLBAR_CONFIG,
+            useValue: DEFAULT_PERFECT_SCROLLBAR_CONFIG
+    }]
 })
 export class PagesModule {
 }

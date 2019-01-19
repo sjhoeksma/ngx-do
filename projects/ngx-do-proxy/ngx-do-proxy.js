@@ -703,9 +703,17 @@ function start(rebuild=0,callback=null,startOptions={}){
       }
       
       if (startOptions.recreateTables){
+        let tables;
+        try {
+          tables = jsonic(startOptions.recreateTables);
+          if (!Array.isArray(tables))
+            tables=[];//Error Got object
+        } catch(ex){
+           tables = startOptions.recreateTables.split(',')
+        }
         let db = app.db.getState();
         let changed=false;
-        startOptions.recreateTables.split(',').forEach(function (table){
+        tables.forEach(function (table){
           if (obj[table]) {
             db[table]=obj[table];
             changed=true;
@@ -714,6 +722,9 @@ function start(rebuild=0,callback=null,startOptions={}){
         if (changed){
           app.db.write();  
           console.log(chalk.gray(` ${startOptions.recreateTables} has changed, reloading  ${myOptions.dbName} ...`))
+        } else {
+          console.log(chalk.green(`  Database not changed ${startOptions.recreateTables} :)`))
+          if (rebuild<=1) return;
         }
       } else {
         const isDatabaseDifferent = !_.isEqual(obj, app.db.getState())

@@ -232,10 +232,12 @@ export class CoreConfig {
   }
 
   public get DEMO():boolean {
-    return this.backendValue('demo',false)!=false;
+    let isDemo : boolean = this.backendValue('demo',false);
+    return isDemo;
   }
   public get TEST():boolean {
-    return this.backendValue('test',false)!=false;
+    let isTest : boolean = this.backendValue('test',false);
+    return isTest;
   }
   
   public backendValue(key:string,defaultValue:any=null):any {

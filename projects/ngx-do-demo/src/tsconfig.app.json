@@ -10,12 +10,9 @@
     "../src/main.module.ts"
   ],
   "include": [
-    "../node_modules/api-ai-javascript/ts/**/*",
-    "../node_modules/api-ai-javascript/index.ts",
     "**/*.ts"
     ],
   "exclude": [
-    "../node_modules/api-ai-javascript/ts/Request/TTSRequest.ts",
     "test.ts",
     "**/*.spec.ts"
   ]

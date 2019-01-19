@@ -4,7 +4,7 @@ const plugin = proxy.app;
 
 
 // Domestic animals page
-if (proxy.strToBool(proxy.options['rebuild-db'])) plugin.use('/rebuild-db', function(req, res) {
+if (proxy.strToBool(proxy.options['rebuild-db'])) plugin.use('/rebuild-db', function(req, res,next) {
   if (req.method=="POST" && proxy.hasRole('admin',req)) {
     const {recreateTables} = req.body;
     let status = 200;

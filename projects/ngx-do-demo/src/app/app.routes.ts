@@ -1,12 +1,18 @@
+import { NgModule }              from '@angular/core';
 import { RouterModule, Routes } from '@angular/router';
 import { AppComponent } from './app.component';
-import { CoreAuth,LoginComponent,SignupComponent,LogoutComponent} from 'ngx-do-cdk';
+import { CorePreloadingStrategy,
+        CoreAuth,
+        LoginComponent,
+        SignupComponent,
+        LogoutComponent,
+       } from 'ngx-do-cdk';
 
-export const AppRoutes: Routes = [{
+export const appRoutes: Routes = [{
   path: 'app', component: AppComponent, children: [
     { path: 'dashboard', loadChildren: './dashboard/dashboard.module#DashboardModule'}, //Dashboard
 
-    { path: 'pages', loadChildren: './pages/pages.module#PagesModule' },  //Common pages
+    { path: 'pages', loadChildren: 'ngx-do-cdk#PagesModule' },  //Common pages
     { path: 'material-widgets', loadChildren: './material-widgets/material-widgets.module#MaterialWidgetsModule',
      data: { preload: true, delay: false }},  
     { path: 'widgets', loadChildren: './do-widgets/do-widgets.module#DoWidgetsModule' },  //Common pages
@@ -21,3 +27,16 @@ export const AppRoutes: Routes = [{
   {path:'error',redirectTo:'/app/error'}, //Error Route
   {path: '**', redirectTo: '/app'},
 ];
+
+@NgModule({
+  imports: [
+    RouterModule.forRoot(
+      appRoutes,
+      {preloadingStrategy:CorePreloadingStrategy}
+    )
+  ],
+  exports: [
+    RouterModule
+  ]
+})
+export class AppRoutesModule {}

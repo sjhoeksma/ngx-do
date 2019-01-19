@@ -7,6 +7,7 @@ export * from './lib/do/do.module';
 export * from './lib/core/core.module';
 export * from './lib/core/core.global.module';
 export * from './lib/widgets/widgets.module';
+export * from './lib/pages/pages.module';
 
 //The Global Services
 export * from './lib/core/core.config';
@@ -21,5 +22,4 @@ export * from './lib/core/signup/signup.component';
 export * from './lib/core/logout/logout.component';
 export * from './lib/core/iframe/iframe.component';
 export * from './lib/do/do.component';
-
 

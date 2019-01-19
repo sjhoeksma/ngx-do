@@ -10,10 +10,12 @@ import { PerfectScrollbarModule ,
 import { CoreGlobalModule, 
         DoModule, 
         DoComponent,
-        CorePreloadingStrategy} from 'ngx-do-cdk';
+        CorePreloadingStrategy, 
+       } from 'ngx-do-cdk';
 import { AppComponent } from './app.component';
 import { BackendService } from './backend/backend.service';
 import { RestangularModule, Restangular } from 'ngx-restangular';
+import { AppRoutesModule } from './app.routes';
 
 import { HighlightModule} from 'ngx-highlightjs';
 import xml from 'highlight.js/lib/languages/xml';
@@ -36,8 +38,6 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
 export function RestangularConfigFactory (RestangularProvider) {
 }
 
-import { AppRoutes } from './app.routes';
-
 @NgModule({
     imports: [
         CommonModule,
@@ -45,11 +45,11 @@ import { AppRoutes } from './app.routes';
         MatSnackBarModule,
         MatSidenavModule,
         PerfectScrollbarModule,
-        DoModule,
+        DoModule,   
         CoreGlobalModule,
-          HighlightModule.forRoot({ languages: hljsLanguages}),
+        HighlightModule.forRoot({ languages: hljsLanguages}),
         RestangularModule.forRoot(RestangularConfigFactory),
-        RouterModule.forRoot(AppRoutes, {preloadingStrategy:CorePreloadingStrategy}),
+        AppRoutesModule,
     ],
     declarations: [AppComponent],
     providers: [
