@@ -13,20 +13,21 @@ export class DoughnutGraphComponent implements OnInit {
   ngOnInit() {
       setTimeout(() => {
           this.createDoughnutGraph();
-      },500)
+      }, 500);
 
   }
-    randomNumber(min=0, max=0) {
-        if(min==0 || max== 0)
+    randomNumber(min= 0, max= 0) {
+        if (min === 0 || max === 0) {
             return Math.round(Math.random() * 100);
-        else
+        } else {
             return Math.random() * (max - min) + min;
-    };
+        }
+    }
     randomBar(date, lastClose) {
-        var open = this.randomNumber(lastClose * .95, lastClose * 1.05);
-        var close = this.randomNumber(open * .95, open * 1.05);
-        var high = this.randomNumber(Math.max(open, close), Math.max(open, close) * 1.1);
-        var low = this.randomNumber(Math.min(open, close) * .9, Math.min(open, close));
+        const open = this.randomNumber(lastClose * .95, lastClose * 1.05);
+        const close = this.randomNumber(open * .95, open * 1.05);
+      //  const high = this.randomNumber(Math.max(open, close), Math.max(open, close) * 1.1);
+      //  const low = this.randomNumber(Math.min(open, close) * .9, Math.min(open, close));
         return {
             t: date.valueOf(),
             y: close
@@ -34,7 +35,7 @@ export class DoughnutGraphComponent implements OnInit {
     }
 
     createDoughnutGraph() {
-        new Chart('doughnut-graph-graph', {
+      new Chart('doughnut-graph-graph', {
             type: 'doughnut',
             data: {
             labels: ['Data '],
@@ -75,7 +76,7 @@ export class DoughnutGraphComponent implements OnInit {
                 }
             }
 
-    })
+    });
   }
 
 }

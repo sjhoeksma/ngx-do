@@ -8,7 +8,7 @@ describe('ToolbarNotificationComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [ 
+      imports: [
         CoreModule,
       ]
     })

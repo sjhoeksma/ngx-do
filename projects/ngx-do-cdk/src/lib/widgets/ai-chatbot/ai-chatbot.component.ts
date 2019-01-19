@@ -1,7 +1,7 @@
 
 import {scan} from 'rxjs/operators';
 import { Component, OnInit, Input } from '@angular/core';
-import { Observable ,  BehaviorSubject } from 'rxjs';
+import { Observable } from 'rxjs';
 
 import { AiChatbotService, Message } from './ai-chatbot.service';
 
@@ -12,28 +12,28 @@ import { AiChatbotService, Message } from './ai-chatbot.service';
 })
 export class AiChatbotComponent implements OnInit {
   @Input() token;
-  @Input() question = "";
+  @Input() question = '';
   messages: Observable<Message[]>;
 
    constructor(public aiChatbot: AiChatbotService) {}
- 
+
   ngOnInit() {
   }
 
-  sendMessage(message:string) {
-    if (!this.aiChatbot.hasClient(this.token)){
+  sendMessage(message: string) {
+    if (!this.aiChatbot.hasClient(this.token)) {
       this.messages = this.aiChatbot.conversation(this.token).asObservable().pipe(
         scan((acc, val) => acc.concat(val) ));
     }
-    var msg = message || this.question;
-    if (msg) this.aiChatbot.converse(msg,this.token);
+    const msg = message || this.question;
+    if (msg) { this.aiChatbot.converse(msg, this.token); }
   }
-  
-  clear(){
+
+  clear() {
    this.aiChatbot.remove(this.token);
    this.messages = this.aiChatbot.conversation(this.token).asObservable().pipe(
-        scan((acc, val) => acc.concat(val)));  
-     
+        scan((acc, val) => acc.concat(val)));
+
   }
 
 }

@@ -2,7 +2,7 @@ export const AUTOCOMPLETE_HELPERS: any = {
 
 	tsSourceAutocomplete: `
 import { MatAutocompleteModule } from '@angular/material';
-  
+
     @NgModule({
       imports: [
        MatAutocompleteModule
@@ -21,7 +21,7 @@ import 'rxjs/add/operator/map';
 })
 export class AutocompleteComponent implements OnInit {
 
-  constructor() { 
+  constructor() {
   this.stateCtrl = new FormControl();
     this.filteredStates = this.stateCtrl.valueChanges
         .startWith(null)
@@ -64,7 +64,7 @@ export class AutocompleteComponent implements OnInit {
 		<mat-autocomplete #auto="matAutocomplete">
 			<mat-option *ngFor="let state of filteredStates | async" [value]="state.name">
 			<img style="vertical-align:middle;" aria-hidden src="{{state.flag}}" height="25" />
-			<span>{{ state.name }}</span> 
+			<span>{{ state.name }}</span>
 			</mat-option>
 		</mat-autocomplete>
 	</mat-form-field>

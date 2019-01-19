@@ -9,9 +9,9 @@ import { ICON_HELPERS } from './helpers.data';
 export class IconsComponent implements OnInit {
 
   constructor() { }
+  iconHelpers: any = ICON_HELPERS;
 
   ngOnInit() {
   }
-  iconHelpers: any = ICON_HELPERS;
 
 }

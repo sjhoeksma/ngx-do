@@ -9,7 +9,7 @@ import { Router } from '@angular/router';
 })
 export class ToolbarCartComponent implements OnInit {
 	  cssPrefix = 'toolbar-cart';
-  	isOpen: boolean = false;
+  	isOpen = false;
   	@Input() basket = [];
     @Input() checkoutRoute;
 
@@ -23,31 +23,31 @@ export class ToolbarCartComponent implements OnInit {
               this.isOpen = false;
          }
      }
-  	
-  	constructor(private elementRef: ElementRef,private coreEvent:CoreEvent,private router:Router) { }
+
+  	constructor(private elementRef: ElementRef, private coreEvent: CoreEvent, private router: Router) { }
 
   	ngOnInit() {
   	}
 
-    clearAll(){
+    clearAll() {
       this.isOpen = false;
-      this.coreEvent.send("cart.clear",CoreEvent.core_channel);
+      this.coreEvent.send('cart.clear', CoreEvent.core_channel);
     }
-  
-  	select(event: Event,article) {
+
+  	select(event: Event, article) {
       event.stopPropagation();
-      this.coreEvent.send({event:"cart.select",article:article},CoreEvent.core_channel);
+      this.coreEvent.send({event: 'cart.select', article: article}, CoreEvent.core_channel);
       this.isOpen = false;
   	}
 
-  	delete(event: Event,article) {
+  	delete(event: Event, article) {
       event.stopPropagation();
-      this.coreEvent.send({event:"cart.delete",article:article},CoreEvent.core_channel);
+      this.coreEvent.send({event: 'cart.delete', article: article}, CoreEvent.core_channel);
   	}
-  
-    checkout(){
-      this.coreEvent.send({event:"cart.checkout"},CoreEvent.core_channel);   
-      if (this.checkoutRoute) this.router.navigate([this.checkoutRoute]);
+
+    checkout() {
+      this.coreEvent.send({event: 'cart.checkout'}, CoreEvent.core_channel);
+      if (this.checkoutRoute) { this.router.navigate([this.checkoutRoute]); }
     }
 
 }

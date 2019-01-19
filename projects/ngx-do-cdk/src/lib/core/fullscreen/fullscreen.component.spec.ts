@@ -8,7 +8,7 @@ describe('FullscreenComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [ 
+      imports: [
         CoreModule,
       ]
     })

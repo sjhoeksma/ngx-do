@@ -8,16 +8,16 @@ import { CoreConfig } from '../../core/core.config';
 })
 export class ProfileComponent implements OnInit {
   public editProfile;
-  public edit: boolean = false;
-  constructor(public coreConfig:CoreConfig) {
+  public edit = false;
+  constructor(public coreConfig: CoreConfig) {
      this.editProfile = this.editProfileCallback.bind(this);
   }
 
   ngOnInit() {
   }
-  
-  public editProfileCallback(){
-    this.edit=!this.edit;
+
+  public editProfileCallback() {
+    this.edit = !this.edit;
   }
 
 }

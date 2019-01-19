@@ -2,10 +2,10 @@ export const CHECKBOX_HELPERS: any = {
 
 	tsSourceCheckbox: `
 import { MatCheckboxModule } from '@angular/material'
-	
+
 		@NgModule({
 		  imports: [
-		   MatCheckboxModule 
+		   MatCheckboxModule
 		})
 		export class AppModule { }
 
@@ -59,4 +59,4 @@ export class CheckboxComponent implements OnInit {
 	</mat-checkbox>
 </section>
 `.trim(),
-}
+};

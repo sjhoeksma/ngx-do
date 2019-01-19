@@ -7,7 +7,7 @@ import { CoreConfig } from '../core.config';
   styleUrls: ['./toolbar.component.scss']
 })
 export class ToolbarComponent implements OnInit {
-	
+
   @Input() sidenav;
 	@Input() sidebar;
 	@Input() drawer;
@@ -20,16 +20,16 @@ export class ToolbarComponent implements OnInit {
   @Input() securityRoute;
   @Input() helpRoute;
   @Input() logoutRoute =  '/logout';
-  @Input() tipSearch : string = "Search site";
-  @Input() tipFullscreen : string = "Full screen";
-  @Input() tipChatbot : string = "Interactive help";
-  @Input() tipNotifications : string = "Notifications";
-  @Input() tipShoppingBasket : string = "Shoppingbasket";
-  @Input() tipUserMenu : string = "User Menu";
-  
-	searchOpen: boolean = false;
-  aiChatbotOpen : boolean = false;
-  constructor(public coreConfig: CoreConfig) { 
+  @Input() tipSearch = 'Search site';
+  @Input() tipFullscreen = 'Full screen';
+  @Input() tipChatbot = 'Interactive help';
+  @Input() tipNotifications = 'Notifications';
+  @Input() tipShoppingBasket = 'Shoppingbasket';
+  @Input() tipUserMenu = 'User Menu';
+
+	searchOpen = false;
+  aiChatbotOpen = false;
+  constructor(public coreConfig: CoreConfig) {
   }
 
   ngOnInit() {

@@ -12,10 +12,10 @@ describe('SurveyEditorComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [ 
+      imports: [
         AppModule,
         WidgetsModule,
-      ],providers: [
+      ], providers: [
         {provide: 'Environment', useValue: environment },
         {provide: APP_BASE_HREF, useValue: '/'}
       ],

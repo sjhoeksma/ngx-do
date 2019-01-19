@@ -9,9 +9,9 @@ describe('ErrorComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-     imports: [ 
+     imports: [
         PagesModule,
-      ],providers: [
+      ], providers: [
         {provide: 'Environment', useValue: {}},
         {provide: APP_BASE_HREF, useValue: '/'}
       ],

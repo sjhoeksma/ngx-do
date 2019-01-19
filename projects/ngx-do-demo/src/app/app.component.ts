@@ -1,4 +1,4 @@
-import { Component, OnInit ,Input} from '@angular/core';
+import { Component, OnInit , Input} from '@angular/core';
 import { MediaChange, ObservableMedia } from '@angular/flex-layout';
 import { CoreConfig } from 'ngx-do-cdk';
 import { BackendService } from './backend/backend.service';
@@ -11,29 +11,29 @@ import { AppMenu } from './app.menu';
 
 })
 
-export class AppComponent implements OnInit{
+export class AppComponent implements OnInit {
 
-  @Input() isVisible : boolean = true;
-  aiToken : string = null;
-  profileRoute = "/app/pages/profile";
-  securityRoute = "/app/pages/security";
-  settingsRoute = "";;
-  helpRoute= "";
-  
+  @Input() isVisible = true;
+  aiToken: string = null;
+  profileRoute = '/app/pages/profile';
+  securityRoute = '/app/pages/security';
+  settingsRoute = '';
+  helpRoute = '';
+
   visibility = 'shown';
 
-  sideNavOpened: boolean = true;
-  matDrawerOpened: boolean = false;
-  matDrawerShow: boolean = true;
-  sideNavMode: string = 'side';
+  sideNavOpened = true;
+  matDrawerOpened = false;
+  matDrawerShow = true;
+  sideNavMode = 'side';
 
-	constructor(private media: ObservableMedia, 
+	constructor(private media: ObservableMedia,
               public coreConfig: CoreConfig,
-              protected backend: BackendService) { 
-    this.backend.getKeyVault('dialogflow').subscribe(rec=>{
-      this.aiToken=rec['key'];
+              protected backend: BackendService) {
+    this.backend.getKeyVault('dialogflow').subscribe(rec => {
+      this.aiToken = rec['key'];
     });
-    this.coreConfig.menus= AppMenu; //addMenu(goMenus);
+    this.coreConfig.menus = AppMenu; // addMenu(goMenus);
   }
 
 	ngOnInit() {
@@ -48,7 +48,7 @@ export class AppComponent implements OnInit{
 
   getRouteAnimation(outlet) {
    return outlet.activatedRouteData.animation;
-       //return outlet.isActivated ? outlet.activatedRoute : ''
+       // return outlet.isActivated ? outlet.activatedRoute : ''
   }
 
 	toggleView() {
@@ -57,7 +57,7 @@ export class AppComponent implements OnInit{
         this.sideNavOpened = true;
         this.matDrawerOpened = false;
         this.matDrawerShow = true;
-    } else if(this.media.isActive('gt-xs')) {
+    } else if (this.media.isActive('gt-xs')) {
         this.sideNavMode = 'side';
         this.sideNavOpened = false;
         this.matDrawerOpened = true;

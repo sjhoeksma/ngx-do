@@ -20,7 +20,7 @@ export class SelectComponent implements OnInit {
   SelectHelpers: any = select_HELPERS;
   links = Links;
   selectedValue;
-  showMultiListCode: boolean = false;
+  showMultiListCode = false;
   messages = Messages;
   select = 'option2';
   selected = new FormControl('valid', [

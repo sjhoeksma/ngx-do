@@ -9,12 +9,12 @@ import { DoComponent } from './do.component';
 describe('DoComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [ 
+      imports: [
         RouterModule.forRoot([]),
         DoModule,
         RestangularModule,
         BrowserAnimationsModule
-      ],providers: [
+      ], providers: [
         {provide: 'Environment', useValue: {}},
         {provide: APP_BASE_HREF, useValue: '/'}
       ],

@@ -11,11 +11,11 @@ describe('UserMenuComponent', () => {
 
  beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [ 
+      imports: [
         CoreModule,
         RouterModule.forRoot([]),
         RestangularModule,
-      ],providers: [
+      ], providers: [
         {provide: 'Environment', useValue: {}},
         {provide: APP_BASE_HREF, useValue: '/'}
       ],

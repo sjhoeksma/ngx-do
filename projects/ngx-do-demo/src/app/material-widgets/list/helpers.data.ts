@@ -1,13 +1,13 @@
 export const LIST_HELPERS: any = {
 
-	tsSourceSelectionList:`
+	tsSourceSelectionList: `
 		import { MatListModule } from '@angular/material';
 		@NgModule({
 		  imports: [
 		   MatListModule
 		})
 		export class AppModule { }
-		
+
 		import { Component, OnInit } from '@angular/core';
 		@Component({
 			  selector: 'cdk-list',
@@ -24,7 +24,7 @@ export const LIST_HELPERS: any = {
 	`.trim(),
 
 
-	htmlSourceSelectionList:`
+	htmlSourceSelectionList: `
 	<mat-selection-list #shoes>
 		<mat-list-option *ngFor="let shoe of ['Boots', 'Sneaker', 'Casual']">
 			{{shoe}}
@@ -34,8 +34,8 @@ export const LIST_HELPERS: any = {
 		Options selected: {{shoes.selectedOptions.selected.length}}
 	</p>
 	`.trim(),
-}
-	export const Messages: Array<any> =[
+};
+	export const Messages: Array<any> = [
 		{from: 'codetok', subject: 'client', content: 'hi there'},
 		{from: 'client', subject: 'codetok', content: 'yes'},
 		{from: 'jay', subject: 'tom', content: 'yes please'}
@@ -43,4 +43,4 @@ export const LIST_HELPERS: any = {
 
 	export const Links: Array<String> = ['/home', '/admin'];
 
-	//export const shoetypes: Array<any> = ['Boots', 'Sneaker', 'Casual'];
+	// export const shoetypes: Array<any> = ['Boots', 'Sneaker', 'Casual'];

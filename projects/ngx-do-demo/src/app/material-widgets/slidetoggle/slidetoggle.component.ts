@@ -8,14 +8,14 @@ import { SLIDETOGGLE_HELPERS } from './helpers.data';
 })
 export class SlidetoggleComponent implements OnInit {
 
+  constructor() { }
+
 	color = 'accent';
 	checked = false;
 	disabled = false;
 
-  constructor() { }
+  slidetoggleHelpers: any = SLIDETOGGLE_HELPERS;
 
   ngOnInit() {
   }
-
-  slidetoggleHelpers: any = SLIDETOGGLE_HELPERS;
 }

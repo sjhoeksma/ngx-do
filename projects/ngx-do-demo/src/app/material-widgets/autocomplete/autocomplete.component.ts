@@ -12,25 +12,16 @@ import { AUTOCOMPLETE_HELPERS } from './helpers.data';
   selector: 'cdk-autocomplete',
   templateUrl: './autocomplete.component.html',
   styleUrls: ['./autocomplete.component.scss'],
-  
+
 })
 export class AutocompleteComponent implements OnInit {
 
-  constructor() { 
+  constructor() {
   this.stateCtrl = new FormControl();
     this.filteredStates = this.stateCtrl.valueChanges.pipe(
         startWith(null),
-        map(state => state ? this.filterStates(state) : this.states.slice()),);
+        map(state => state ? this.filterStates(state) : this.states.slice()), );
     }
-    filterStates(name: string) {
-    return this.states.filter(state =>
-      state.name.toLowerCase().indexOf(name.toLowerCase()) === 0);
-}
-  public getRouterOutletState(outlet) {
-    return outlet.isActivated ? outlet.activatedRoute : '';
-  }
-  ngOnInit() {
-  }
 	stateCtrl: FormControl;
   	filteredStates: Observable<any[]>;
   	states: any[] = [
@@ -53,4 +44,13 @@ export class AutocompleteComponent implements OnInit {
   ];
 
   autocompleteHelpers: any = AUTOCOMPLETE_HELPERS;
+    filterStates(name: string) {
+    return this.states.filter(state =>
+      state.name.toLowerCase().indexOf(name.toLowerCase()) === 0);
+}
+  public getRouterOutletState(outlet) {
+    return outlet.isActivated ? outlet.activatedRoute : '';
+  }
+  ngOnInit() {
+  }
 }

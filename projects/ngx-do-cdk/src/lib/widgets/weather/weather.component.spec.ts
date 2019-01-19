@@ -8,13 +8,13 @@ describe('WeatherComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [ 
+      imports: [
         WidgetsModule,
       ]
     })
     .compileComponents();
   }));
-  
+
 
   beforeEach(() => {
     fixture = TestBed.createComponent(WeatherComponent);

@@ -8,7 +8,7 @@ describe('WorldMapComponent', () => {
 
    beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [ 
+      imports: [
         WidgetsModule,
       ]
     })

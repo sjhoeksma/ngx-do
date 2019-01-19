@@ -10,9 +10,9 @@ export class MenuComponent implements OnInit {
 
   constructor() { }
 
+  menuHelpers: any = MENU_HELPERS;
+
   ngOnInit() {
   }
-
-  menuHelpers: any = MENU_HELPERS;
 
 }

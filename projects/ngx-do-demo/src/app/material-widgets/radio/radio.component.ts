@@ -10,9 +10,6 @@ export class RadioComponent implements OnInit {
 
   constructor() { }
 
-  ngOnInit() {
-  }
-
 
   favoriteSeason: string;
 
@@ -24,6 +21,9 @@ export class RadioComponent implements OnInit {
   ];
 
   radioHelpers: any = RADIO_HELPERS;
+
+  ngOnInit() {
+  }
 }
 
 

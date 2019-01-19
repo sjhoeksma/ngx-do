@@ -9,22 +9,22 @@ import { CoreEvent } from '../core.event';
 
 export class SearchBarComponent implements OnInit {
 	public bigMenu;
-  @ViewChild("search") searchField : ElementRef;
+  @ViewChild('search') searchField: ElementRef;
   private _open: boolean;
   public searchValue;
- 
-  
-	constructor(private coreEvent:CoreEvent) { }
+
+
+	constructor(private coreEvent: CoreEvent) { }
 
 	ngOnInit() {}
-  
+
   @Input() set open(value: boolean) {
-   var $this = this;
-   if (!this._open && value){
-     this.searchValue='';
-     setTimeout(function(){
+   const $this = this;
+   if (!this._open && value) {
+     this.searchValue = '';
+     setTimeout(function() {
        $this.searchField.nativeElement.focus();
-     },50);
+     }, 50);
    }
    this._open = value;
   }
@@ -32,9 +32,9 @@ export class SearchBarComponent implements OnInit {
   get open(): boolean {
     return this._open;
   }
-  
-  public doSearch(value):void{
-    this.coreEvent.send({event:"search",value:value},CoreEvent.core_channel);
+
+  public doSearch(value): void {
+    this.coreEvent.send({event: 'search', value: value}, CoreEvent.core_channel);
   }
 
 }

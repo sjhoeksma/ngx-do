@@ -8,7 +8,7 @@ describe('PricingPlanComponent', () => {
 
    beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [ 
+      imports: [
         WidgetsModule,
       ]
     })

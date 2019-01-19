@@ -9,14 +9,14 @@ export * from './lib/core/core.global.module';
 export * from './lib/widgets/widgets.module';
 export * from './lib/pages/pages.module';
 
-//The Global Services
+// The Global Services
 export * from './lib/core/core.config';
 export * from './lib/core/core.event';
 export * from './lib/core/core.auth';
 export * from './lib/core/core.backend';
 export * from './lib/core/core.preloading.strategy';
 
-//Global Components
+// Global Components
 export * from './lib/core/login/login.component';
 export * from './lib/core/signup/signup.component';
 export * from './lib/core/logout/logout.component';

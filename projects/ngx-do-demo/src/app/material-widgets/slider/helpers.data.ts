@@ -31,8 +31,8 @@ export class SliderComponent implements OnInit {
 	vertical = false;
 }
 	`.trim(),
-	htmlSourceSlider:`
+	htmlSourceSlider: `
 <mat-slider></mat-slider>
 	`.trim(),
 
-}
+};

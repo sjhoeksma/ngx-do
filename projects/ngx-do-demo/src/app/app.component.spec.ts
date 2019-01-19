@@ -7,10 +7,10 @@ import { environment } from '../environments/environment.spec';
 describe('AppComponent', () => {
   let component: AppComponent;
   let fixture: ComponentFixture<AppComponent>;
-  
+
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [ 
+      imports: [
         AppModule
       ],
       providers: [

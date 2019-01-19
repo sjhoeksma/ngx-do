@@ -10,21 +10,21 @@ import { CorePreloadingStrategy,
 
 export const appRoutes: Routes = [{
   path: 'app', component: AppComponent, children: [
-    { path: 'dashboard', loadChildren: './dashboard/dashboard.module#DashboardModule'}, //Dashboard
+    { path: 'dashboard', loadChildren: './dashboard/dashboard.module#DashboardModule'}, // Dashboard
 
-    { path: 'pages', loadChildren: 'ngx-do-cdk#PagesModule' },  //Common pages
+    { path: 'pages', loadChildren: 'ngx-do-cdk#PagesModule' },  // Common pages
     { path: 'material-widgets', loadChildren: './material-widgets/material-widgets.module#MaterialWidgetsModule',
-     data: { preload: true, delay: false }},  
-    { path: 'widgets', loadChildren: './do-widgets/do-widgets.module#DoWidgetsModule' },  //Common pages
-    {path:'error',redirectTo:'pages/error'}, //Error Route
-    {path:'',redirectTo:'dashboard', pathMatch: 'full'}, //We show by default the dashboard
-   ],canActivate:[CoreAuth]
+     data: { preload: true, delay: false }},
+    { path: 'widgets', loadChildren: './do-widgets/do-widgets.module#DoWidgetsModule' },  // Common pages
+    {path: 'error', redirectTo: 'pages/error'}, // Error Route
+    {path: '', redirectTo: 'dashboard', pathMatch: 'full'}, // We show by default the dashboard
+   ], canActivate: [CoreAuth]
   },
   {path: 'login', component: LoginComponent },
   {path: 'logout', component: LogoutComponent},
   {path: 'signup', component: SignupComponent },
   {path: 'register', redirectTo: 'signup'},
-  {path:'error',redirectTo:'/app/error'}, //Error Route
+  {path: 'error', redirectTo: '/app/error'}, // Error Route
   {path: '**', redirectTo: '/app'},
 ];
 
@@ -32,7 +32,7 @@ export const appRoutes: Routes = [{
   imports: [
     RouterModule.forRoot(
       appRoutes,
-      {preloadingStrategy:CorePreloadingStrategy}
+      {preloadingStrategy: CorePreloadingStrategy}
     )
   ],
   exports: [

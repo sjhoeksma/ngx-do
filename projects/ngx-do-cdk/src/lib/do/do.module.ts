@@ -1,7 +1,7 @@
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { NgModule } from '@angular/core';
-import { Routes,RouterModule } from '@angular/router';
+import { RouterModule } from '@angular/router';
 import { DoComponent } from './do.component';
 
 
@@ -20,11 +20,11 @@ import { DoComponent } from './do.component';
   ]
 })
 export class DoModule {
-  
-  constructor(){
-    let hash = window.location.hash;
-    if (hash && hash.indexOf('#id_token=')==0) {
-      window['#id_token']=hash;
+
+  constructor() {
+    const hash = window.location.hash;
+    if (hash && hash.indexOf('#id_token=') === 0) {
+      window['#id_token'] = hash;
     }
   }
 }

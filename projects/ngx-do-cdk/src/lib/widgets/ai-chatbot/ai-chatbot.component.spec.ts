@@ -8,7 +8,7 @@ describe('AiChatbotComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [ 
+      imports: [
         WidgetsModule,
       ]
     })

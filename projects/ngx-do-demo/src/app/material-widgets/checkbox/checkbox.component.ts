@@ -10,13 +10,13 @@ export class CheckboxComponent implements OnInit {
 
   constructor() { }
 
-  ngOnInit() {
-  }
-
   	checked = false;
 	indeterminate = false;
 	align = 'start';
 	disabled = false;
 
 checkboxHelpers: any = CHECKBOX_HELPERS ;
+
+  ngOnInit() {
+  }
 }

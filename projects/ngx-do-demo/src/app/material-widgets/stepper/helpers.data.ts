@@ -8,7 +8,7 @@ export const STEPPER_HELPERS: any = {
 		    MatStepperModule,
 		})
 		export class AppModule { }
-		
+
 		import { Component, OnInit } from '@angular/core';
 
         @Component({
@@ -19,7 +19,7 @@ export const STEPPER_HELPERS: any = {
         export class CardsComponent implements OnInit {
         }`.trim(),
   	htmlSourceRaisedButton: `
-  		
+
 		  	<button mat-raised-button (click)="isLinear = true" id="toggle-linear">Enable linear mode</button>
 			<mat-horizontal-stepper [linear]="isLinear">
 			  <mat-step [stepControl]="firstFormGroup">
@@ -56,4 +56,4 @@ export const STEPPER_HELPERS: any = {
 		`.trim(),
 
  };
-	
+

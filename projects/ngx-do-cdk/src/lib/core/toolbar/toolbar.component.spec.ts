@@ -12,19 +12,19 @@ describe('ToolbarComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [ 
+      imports: [
         BrowserAnimationsModule,
         RouterModule.forRoot([]),
         CoreModule,
         RestangularModule,
-      ],providers: [
+      ], providers: [
         {provide: 'Environment', useValue: {}},
         {provide: APP_BASE_HREF, useValue: '/'}
       ],
     })
     .compileComponents();
   }));
-  
+
   beforeEach(() => {
     fixture = TestBed.createComponent(ToolbarComponent);
     component = fixture.componentInstance;

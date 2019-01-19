@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { CoreConfig } from '../core.config';
 
 @Component({
@@ -12,13 +12,13 @@ export class SidebarComponent implements OnInit {
     protected coreConfig: CoreConfig
   ) { }
 
-  ngOnInit() {
-  }
-
   today: number = Date.now();
   // public bufferValue;
 
   events = this.coreConfig.events;
   todoList = this.coreConfig.todoList;
   messages = this.coreConfig.messages;
+
+  ngOnInit() {
+  }
 }

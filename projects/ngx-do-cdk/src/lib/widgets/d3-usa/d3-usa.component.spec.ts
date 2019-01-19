@@ -8,7 +8,7 @@ describe('D3UsaComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [ 
+      imports: [
         WidgetsModule,
       ]
     })

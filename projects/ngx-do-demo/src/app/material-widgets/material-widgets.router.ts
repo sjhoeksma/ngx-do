@@ -23,26 +23,26 @@ import { MenuComponent } from './menu/menu.component';
 const materialWidgetRoutes: Routes = [
   	{ path: 'buttons', component:  ButtonsComponent , data: { animation: 'buttons' }},
     { path: 'list', component:  ListComponent , data: { animation: 'list' }},
-    { path: 'stepper', component: StepperComponent ,data: { animation: 'stepper' } },
+    { path: 'stepper', component: StepperComponent , data: { animation: 'stepper' } },
     { path: 'expansion', component: ExpansionPanelComponent , data: { animation: 'expansion' }},
-    { path: 'spinner', component: SpinnerComponent ,data: { animation: 'spinner' } },
-    { path: 'cards', component: CardsComponent ,data: { animation: 'cards' } },
+    { path: 'spinner', component: SpinnerComponent , data: { animation: 'spinner' } },
+    { path: 'cards', component: CardsComponent , data: { animation: 'cards' } },
     { path: 'icons', component: IconsComponent , data: { animation: 'icons' }},
     { path: 'autocomplete', component: AutocompleteComponent , data: { animation: 'autocomplete' }},
     { path: 'checkbox', component:  CheckboxComponent , data: { animation: 'checkbox' }},
-    
-    { path: 'select', component:  SelectComponent ,data: { animation: 'select' } },
+
+    { path: 'select', component:  SelectComponent , data: { animation: 'select' } },
     { path: 'input', component:  InputComponent , data: { animation: 'input' }},
     { path: 'radio', component:  RadioComponent , data: { animation: 'radio' }},
     { path: 'datepicker', component:  DatepickerComponent , data: { animation: 'datepicker' }},
     { path: 'slider', component:  SliderComponent , data: { animation: 'slider' }},
-    { path: 'slide-toggle', component:  SlidetoggleComponent ,data: { animation: 'slide-toggle' } },
+    { path: 'slide-toggle', component:  SlidetoggleComponent , data: { animation: 'slide-toggle' } },
 
 
     { path: 'progress-bar', component:  ProgressbarComponent , data: { animation: 'progress-bar' }},
-    { path: 'menu', component:  MenuComponent ,data: { animation: 'menu' } },
+    { path: 'menu', component:  MenuComponent , data: { animation: 'menu' } },
 
-    { path: '', redirectTo: '/buttons', pathMatch: 'full',}
+    { path: '', redirectTo: '/buttons', pathMatch: 'full', }
 ];
 
 @NgModule({

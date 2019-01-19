@@ -25,7 +25,7 @@ You have {{ basket?.length }} article(s) in your basket</div>
 
 <ng-template #thenBlock>
   <perfect-scrollbar class="content">
-    <div *ngFor="let article of basket; last as isLast" (click)="select($event,article)">
+    <div *ngFor="let article of basket;last as isLast" (click)="select($event,article)">
       <div class="article" fxLayout="row" fxLayoutAlign="start center" mat-ripple>
         <div class="title" fxLayout="column" >
           <div class="name">{{ article?.count }} {{ article?.title }}</div>

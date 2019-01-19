@@ -10,10 +10,10 @@ describe('ToolbarCartComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [ 
+      imports: [
         RouterModule.forRoot([]),
         CoreModule,
-      ],providers: [
+      ], providers: [
         {provide: 'Environment', useValue: {}},
         {provide: APP_BASE_HREF, useValue: '/'}
       ],

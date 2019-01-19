@@ -64,7 +64,7 @@ export class SpinnerComponent implements OnInit {
 <div fxFlex.xs="100" fxFlex.lg="50" fxFlex.md="50" fxFlex.sm="50" >
     <h4 class="mat-subheading-2 center-align">Result</h4>
     <mat-divider></mat-divider>
-        
+
     <mat-progress-spinner
         class="example-margin"
         [color]="color"

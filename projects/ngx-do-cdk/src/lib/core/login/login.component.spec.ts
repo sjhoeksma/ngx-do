@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { APP_BASE_HREF } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
-import { CoreGlobalModule} from '../core.global.module'
+import { CoreGlobalModule} from '../core.global.module';
 import { RestangularModule } from 'ngx-restangular';
 import { LoginComponent } from './login.component';
 
@@ -13,12 +13,12 @@ describe('LoginComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [ 
+      imports: [
         BrowserAnimationsModule,
         CoreGlobalModule,
         RouterModule.forRoot([]),
         RestangularModule,
-      ],providers: [
+      ], providers: [
         {provide: 'Environment', useValue: {}},
         {provide: APP_BASE_HREF, useValue: '/'}
       ],

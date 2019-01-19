@@ -9,10 +9,10 @@ describe('SidebarComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [ 
+      imports: [
         BrowserAnimationsModule,
         CoreModule,
-      ],providers: [
+      ], providers: [
         {provide: 'Environment', useValue: {}},
       ]
     })

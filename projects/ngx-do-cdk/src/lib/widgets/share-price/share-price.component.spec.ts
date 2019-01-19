@@ -8,13 +8,13 @@ describe('SharePriceComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [ 
+      imports: [
         WidgetsModule,
       ]
     })
     .compileComponents();
   }));
-  
+
   beforeEach(() => {
     fixture = TestBed.createComponent(SharePriceComponent);
     component = fixture.componentInstance;

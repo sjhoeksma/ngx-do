@@ -2,7 +2,7 @@ export const ICON_HELPERS: any = {
 
 	tsSourceIcons: `
 import { MatIconModule} from '@angular/material';
-	
+
 		@NgModule({
 		  imports: [
 		   MatIconModule
@@ -26,4 +26,4 @@ export class IconsComponent implements OnInit {
 	<mat-icon class="space">code</mat-icon>
 </mat-card>
 	`.trim(),
-}
+};

@@ -1,7 +1,7 @@
 import { trigger, animate, transition, style, query } from '@angular/animations';
 
 export const fadeAnimation =
-//trigger('fadeAnimation', [
+// trigger('fadeAnimation', [
         // route 'enter' transition
         // transition('* => *', [
 
@@ -16,29 +16,29 @@ export const fadeAnimation =
 
         transition( '* => *', [
 
-            query(':enter', 
+            query(':enter',
                 [
                     style({ opacity: 0 })
-                ], 
+                ],
                 { optional: true }
             ),
 
-            // query(':leave', 
+            // query(':leave',
             //     [
             //         style({ opacity: 1 }),
             //         animate('2s', style({ opacity: 0 }))
-            //     ], 
+            //     ],
             //     { optional: true }
             // ),
 
-            query(':enter', 
+            query(':enter',
                 [
                     style({ opacity: 0 }),
                     animate('2s', style({ opacity: 1 }))
-                ], 
+                ],
                 { optional: true }
             )
 
         ])
 
-    ])
+    ]);

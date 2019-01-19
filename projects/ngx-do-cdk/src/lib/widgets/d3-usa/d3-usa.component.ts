@@ -6,8 +6,8 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./d3-usa.component.scss']
 })
 export class D3UsaComponent implements OnInit {
-  ngOnInit(){
-    
+  ngOnInit() {
+
   }
-  
+
 }

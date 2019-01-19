@@ -133,7 +133,7 @@ export const AppMenu: Array<object> = [
             'open': false,
         },
     ]
-  },{
+  }, {
     'name': 'Do Widgets',
     'icon': 'view_quilt',
     'link': false,
@@ -145,7 +145,7 @@ export const AppMenu: Array<object> = [
             'icon': 'query_builder',
             'chip': false,
             'open': false,
-        },{
+        }, {
             'name': 'Survey Editor',
             'link': 'widgets/survey-editor',
             'icon': 'text_fields',
@@ -153,20 +153,20 @@ export const AppMenu: Array<object> = [
             'open': false,
         },
      ]
-  },{
+  }, {
       'name': 'Admin',
       'icon': 'fingerprint',
       'link': false,
       'open': false,
       'expectedRole': 'admin',
-      'sub':[
+      'sub': [
         {
             'name': 'KeyVault',
             'link': 'pages/keyvault',
             'icon': 'phonelink_lock',
             'chip': false,
             'open': false,
-        },{
+        }, {
             'name': 'Do Proxy',
             'link': 'pages/doproxy',
             'icon': 'build',

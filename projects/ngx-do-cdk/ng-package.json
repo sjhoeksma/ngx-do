@@ -4,7 +4,22 @@
   "deleteDestPath": false,
   "lib": {
     "entryFile": "src/public_api.ts",
-    "style":"scss"
+    "style":"scss",
+    "umdModuleIds": {
+      "crypto-js": "CryptoJS",
+      "msal" : "Msal",
+      "screenfull" : "Screenfull",
+      "chart.js" : "ChartJS",
+      "ng2-odometer": "Ng2Odometer",
+      "angular-svg-round-progressbar": "AngularSvgRoundProgressbar",
+      "api-ai-javascript/es6/ApiAiClient" : "ApiAiClient",
+      "survey-angular" : "Survey",
+      "surveyjs-editor": "SurveyEditor",
+      "ngx-restangular":"Restangular",
+      "@swimlane/ngx-datatable":"NgxDatatable",
+      "ngx-showdown": "Showdown",
+      "ngx-perfect-scrollbar": "PerfectScrollbar" 
+    }
   },
   "whitelistedNonPeerDependencies": [
     "."

@@ -9,8 +9,8 @@ import { CARDS_HELPERS } from './helpers.data';
 export class CardsComponent implements OnInit {
 
   constructor() { }
+cardsHelpers: any = CARDS_HELPERS;
 
   ngOnInit() {
   }
-cardsHelpers: any = CARDS_HELPERS;
 }

@@ -1,6 +1,6 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { APP_BASE_HREF } from '@angular/common';
-import { CoreGlobalModule} from '../core.global.module'
+import { CoreGlobalModule} from '../core.global.module';
 import { CRUDComponent } from './crud.component';
 
 describe('CRUDComponent', () => {
@@ -9,9 +9,9 @@ describe('CRUDComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [ 
+      imports: [
         CoreGlobalModule,
-      ],providers: [
+      ], providers: [
         {provide: 'Environment', useValue: {}},
         {provide: APP_BASE_HREF, useValue: '/'}
       ],

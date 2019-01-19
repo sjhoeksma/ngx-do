@@ -1,4 +1,4 @@
-import { Component,Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 
 @Component({
   selector: 'cdk-round-progressbar',
@@ -7,7 +7,7 @@ import { Component,Input, OnInit } from '@angular/core';
 })
 export class RoundProgressbarComponent implements OnInit {
 
-    
+
     @Input() current;
     @Input() max;
     @Input() background;
@@ -18,12 +18,12 @@ export class RoundProgressbarComponent implements OnInit {
 
 
     public radius       =    125  ;
-    public stroke       =    "20" ;
+    public stroke       =    '20' ;
     public semicircle   =    false;
     public rounded      =    true;
     public clockwise    =    false;
     public responsive   =    true;
-    public duration     =    "800";
+    public duration     =    '800';
     public animation    =    'easeInOutQuart';
 
     constructor() { }

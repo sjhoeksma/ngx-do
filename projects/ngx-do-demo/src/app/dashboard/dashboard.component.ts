@@ -25,11 +25,11 @@ export class DashboardComponent implements OnInit {
         { country: 'Brazil', sales: 100, percentage: '2.50%' },
     ];
 
-    constructor(public coreConfig:CoreConfig) { }
+    constructor(public coreConfig: CoreConfig) { }
 
     ngOnInit() {
     }
-  
-    public editProfile(){}
+
+    public editProfile() {}
 
 }

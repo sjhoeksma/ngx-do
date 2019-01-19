@@ -10,28 +10,28 @@ export class SharePriceComponent implements OnInit {
 
 
     public data = {
-        labels: ["A", "B", "C", "D", "E", "F"],
+        labels: ['A', 'B', 'C', 'D', 'E', 'F'],
         datasets: [{
-            label: "My First dataset",
+            label: 'My First dataset',
             fillColor: 'rgba(255, 255, 255, 1)',
-            strokeColor: "rgba(255, 255, 255, 1)',",
-            pointColor: "rgba(255, 255, 255, 1)'",
-            pointStrokeColor: "rgba(255, 255, 255, 1)'",
-            pointHighlightFill: "rgba(255, 255, 255, 1)'",
-            pointHighlightStroke: "rgba(220,220,220,1)",
+            strokeColor: 'rgba(255, 255, 255, 1)\',',
+            pointColor: 'rgba(255, 255, 255, 1)\'',
+            pointStrokeColor: 'rgba(255, 255, 255, 1)\'',
+            pointHighlightFill: 'rgba(255, 255, 255, 1)\'',
+            pointHighlightStroke: 'rgba(220,220,220,1)',
             data: [25, 29, 58, 50, 42, 65]
         }]
     };
 
     public  options = {
                     elements : {
-                        
+
                     },
                     scales: {
                         yAxes: [{
                             display : false,
                              ticks: {
-                                fontColor: "white",
+                                fontColor: 'white',
                                 fontSize: 18,
                                 stepSize: 1,
                                 beginAtZero: true
@@ -40,7 +40,7 @@ export class SharePriceComponent implements OnInit {
                         xAxes: [{
                            display : false,
                             ticks: {
-                                fontColor: "white",
+                                fontColor: 'white',
                                 fontSize: 18,
                                 stepSize: 1,
                                 beginAtZero: true
@@ -54,12 +54,12 @@ export class SharePriceComponent implements OnInit {
                     plugins: {
                         filler: {
                             propagate: false
-                        }    
+                        }
                     },
                     title: {
                         display: true,
                         text: 'Live Share Value',
-                        fontColor: "white",
+                        fontColor: 'white',
                         fontSize: 18
                     }
                 };
@@ -71,22 +71,22 @@ export class SharePriceComponent implements OnInit {
     }
 
     ngOnInit() {
-        setTimeout(()=>{
+        setTimeout(() => {
             this.drawGraph();
-        },500)
+        }, 500);
     }
     drawGraph() {
-        let graph =  new Chart('share-price', {
+        const graph =  new Chart('share-price', {
              type: 'line',
              data: this.data,
              options: this.options
          });
         setInterval(() => {
-            graph.data.datasets[0].data.map((p)=> {
+            graph.data.datasets[0].data.map((p) => {
                 p = this.getRandomInt(20, 60);
-            })
-        },2500)
-        
+            });
+        }, 2500);
+
 
     }
 

@@ -1,11 +1,11 @@
 export const DATEPICKER_HELPERS: any = {
 
-	tsSourceDatepicker:`
+	tsSourceDatepicker: `
 import { MatDatepickerModule } from '@angular/material';
-	
+
 		@NgModule({
 		  imports: [
-		   MatDatepickerModule  
+		   MatDatepickerModule
 		})
 		export class AppModule { }
 
@@ -28,12 +28,12 @@ export class DatepickerComponent implements OnInit {
 	events: string[] = [];
 	myFilter = (d: Date): boolean => {
 		const day = d.getDay();
-		
+
 		return day !== 0 && day !== 6;
 	}
 }
 `.trim(),
-	htmlSourceDatepicker:`
+	htmlSourceDatepicker: `
 <mat-form-field class="example-full-width">
 	<input matInput [matDatepicker]="picker7" placeholder="Choose a date">
 	<mat-datepicker-toggle matSuffix [for]="picker7"></mat-datepicker-toggle>
@@ -41,4 +41,4 @@ export class DatepickerComponent implements OnInit {
 </mat-form-field>
 	`.trim(),
 
-}
+};

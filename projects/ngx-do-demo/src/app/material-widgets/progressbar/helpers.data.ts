@@ -25,7 +25,7 @@ export class ProgressbarComponent implements OnInit {
   public mode;
   public value;
   public bufferValue;
-  
+
 
 }
 
@@ -44,7 +44,7 @@ export class ProgressbarComponent implements OnInit {
 			<mat-radio-button class="example-margin" value="warn">
 			Warn
 			</mat-radio-button>
-			
+
 		</mat-radio-group>
 	</section>
 
@@ -90,4 +90,4 @@ export class ProgressbarComponent implements OnInit {
 </section>
 	`.trim(),
 
-}
+};

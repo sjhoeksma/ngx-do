@@ -7,9 +7,9 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class ErrorComponent implements OnInit {
   constructor() { }
+  @Input() code = '404';
 
   ngOnInit() {
   }
-  @Input() code = "404";
 
 }

@@ -9,7 +9,7 @@ describe('SearchBarComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [ 
+      imports: [
         BrowserAnimationsModule,
         CoreModule,
       ]

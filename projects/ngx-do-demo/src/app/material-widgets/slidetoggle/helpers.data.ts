@@ -24,4 +24,4 @@ export class SlidetoggleComponent implements OnInit {
 	htmlSourceSlideToggle: `
 <mat-slide-toggle>Slide me!</mat-slide-toggle>
 	`.trim(),
-}
+};

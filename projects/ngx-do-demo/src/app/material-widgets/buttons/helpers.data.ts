@@ -22,7 +22,7 @@ export const BUTTON_HELPERS: any = {
 		`.trim(),
 
   	htmlSourceRaisedButton: `
-  		
+
 		  <button mat-raised-button>Basic</button>
 		  <button mat-button color="primary">Primary</button>
 		  <button mat-icon-button color="accent">
@@ -36,4 +36,4 @@ export const BUTTON_HELPERS: any = {
 		`.trim(),
 
  };
-	
+

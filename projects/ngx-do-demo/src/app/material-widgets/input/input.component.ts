@@ -19,7 +19,7 @@ export class InputComponent implements OnInit {
 	InputHelpers: any = input_HELPERS;
 	links = Links;
 	selectedValue;
-	showMultiListCode: boolean = false;
+	showMultiListCode = false;
 	messages = Messages;
 	value = 'Clear me';
 	emailFormControl = new FormControl('', [

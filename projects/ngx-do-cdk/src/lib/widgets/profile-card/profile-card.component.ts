@@ -9,7 +9,7 @@ export class ProfileCardComponent implements OnInit {
     @Input() profile;
     @Input() onClick;
     @Input() clickLabel;
-      
+
     constructor() { }
 
     ngOnInit() {

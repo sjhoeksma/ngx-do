@@ -1,5 +1,5 @@
 import { NgModule } from '@angular/core';
-import { 
+import {
         MatCardModule,
         MatButtonModule,
         MatButtonToggleModule,
@@ -35,7 +35,7 @@ import { SurveyEditorComponent } from './survey-editor/survey-editor.component';
         WidgetsModule,
         ShowdownModule.forRoot({} as ConverterOptions | IConverterOptions),
         DoWidgetsRouterModule ],
-    declarations: [   
+    declarations: [
         SurveyComponent,
         SurveyEditorComponent,
     ],

@@ -5,19 +5,19 @@ import { LIST_HELPERS,  Messages, Links} from './helpers.data';
   selector: 'cdk-list',
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.scss'],
-  //animations: [fadeAnimation]
+  // animations: [fadeAnimation]
 })
 export class ListComponent implements OnInit {
 
     listHelpers: any = LIST_HELPERS;
      links = Links;
 
-    showMultiListCode: boolean = false;
+    showMultiListCode = false;
      messages = Messages;
     constructor() { }
 
     ngOnInit() {
     }
-  
+
 
 }

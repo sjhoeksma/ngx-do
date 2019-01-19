@@ -8,13 +8,13 @@ describe('SurveyComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [ 
+      imports: [
         WidgetsModule,
       ]
     })
     .compileComponents();
   }));
-  
+
   beforeEach(() => {
     fixture = TestBed.createComponent(SurveyComponent);
     component = fixture.componentInstance;

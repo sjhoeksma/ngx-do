@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
-import { Routes, RouterModule } from '@angular/router';
-import { 
+import { RouterModule } from '@angular/router';
+import {
         MatCardModule,
         MatButtonModule,
         MatButtonToggleModule,
@@ -22,10 +22,10 @@ import { CoreModule } from '../core/core.module';
 import { ContactComponent } from './contact/contact.component';
 import { AboutComponent } from './about/about.component';
 import { ErrorComponent } from './error/error.component';
-import { SecurityComponent } from './security/security.component'
+import { SecurityComponent } from './security/security.component';
 import { ProfileComponent } from './profile/profile.component';
 import { KeyVaultComponent } from './keyvault/keyvault.component';
-import { PerfectScrollbarModule , 
+import { PerfectScrollbarModule ,
         PERFECT_SCROLLBAR_CONFIG ,
         PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
 
@@ -33,7 +33,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     suppressScrollX: true
 };
 
-import {pagesRoutes} from "./pages.routes";
+import {pagesRoutes} from './pages.routes';
 
 @NgModule({
     imports: [
@@ -57,7 +57,7 @@ import {pagesRoutes} from "./pages.routes";
         ShowdownModule.forRoot({} as ConverterOptions | IConverterOptions),
         RouterModule.forChild(pagesRoutes)
     ],
-    declarations: [   
+    declarations: [
         ContactComponent,
         AboutComponent,
         ErrorComponent,

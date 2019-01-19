@@ -37,7 +37,7 @@ import { CardsComponent } from './cards/cards.component';
 import { IconsComponent } from './icons/icons.component';
 import { AutocompleteComponent } from './autocomplete/autocomplete.component';
 import { CheckboxComponent } from './checkbox/checkbox.component';
-//import { SelectComponent } from './select/select.component';
+// import { SelectComponent } from './select/select.component';
 
 import { DatepickerComponent } from './datepicker/datepicker.component';
 import { SliderComponent } from './slider/slider.component';
@@ -110,11 +110,11 @@ export function hljsLanguages() {
     InputComponent,
     RadioComponent,
     SelectComponent,
-  
+
     ],
 
   exports: [
     ]
-      
+
 })
 export class MaterialWidgetsModule { }

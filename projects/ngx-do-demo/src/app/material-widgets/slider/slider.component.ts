@@ -7,6 +7,8 @@ import { SLIDER_HELPERS } from './helpers.data';
 })
 export class SliderComponent implements OnInit {
 
+  constructor() { }
+
 	autoTicks = false;
 	disabled = false;
 	invert = false;
@@ -19,11 +21,9 @@ export class SliderComponent implements OnInit {
 	vertical = false;
     tickInterval;
 
-  constructor() { }
+  sliderHelpers: any = SLIDER_HELPERS;
 
   ngOnInit() {
   }
-
-  sliderHelpers: any = SLIDER_HELPERS;
 
 }

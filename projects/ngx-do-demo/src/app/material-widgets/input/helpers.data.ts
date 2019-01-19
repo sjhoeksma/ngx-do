@@ -1,13 +1,13 @@
 export const input_HELPERS: any = {
 
-	tsSourceInput:`
+	tsSourceInput: `
 import { MatInputModule } from '@angular/material';
 		@NgModule({
 		  imports: [
 		   MatInputModule
 		})
 		export class AppModule { }
-		
+
 import { Component, OnInit } from '@angular/core';
 @Component({
   selector: 'cdk-input',
@@ -24,7 +24,7 @@ export class inputComponent implements OnInit {
 	`.trim(),
 
 
-	htmlSourceInput:`
+	htmlSourceInput: `
 	<form class="example-form">
 	  <mat-form-field class="example-full-width">
 	    <input matInput placeholder="Favorite food" value="Sushi">
@@ -32,8 +32,8 @@ export class inputComponent implements OnInit {
 	</form>
 
 	`.trim(),
-}
-	export const Messages: Array<any> =[
+};
+	export const Messages: Array<any> = [
 		{from: 'codetok', subject: 'client', content: 'hi there'},
 		{from: 'client', subject: 'codetok', content: 'yes'},
 		{from: 'jay', subject: 'tom', content: 'yes please'}

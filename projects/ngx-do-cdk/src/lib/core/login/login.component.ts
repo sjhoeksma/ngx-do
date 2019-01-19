@@ -1,8 +1,8 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { Router,ActivatedRoute } from '@angular/router';
+import { Component, OnInit } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
-import { CoreConfig } from '../core.config'
-import { CoreAuth } from '../core.auth'
+import { CoreConfig } from '../core.config';
+import { CoreAuth } from '../core.auth';
 
 @Component({
   selector: 'app-login',
@@ -12,11 +12,11 @@ import { CoreAuth } from '../core.auth'
 export class LoginComponent implements OnInit {
 
   userForm: FormGroup;
-  shake: boolean = false;
+  shake = false;
   formErrors = {
     'email': '',
     'password': '',
-    'remember' :''
+    'remember' : ''
   };
   validationMessages = {
     'email': {
@@ -34,13 +34,13 @@ export class LoginComponent implements OnInit {
 
   constructor(private fb: FormBuilder,
               public coreConfig: CoreConfig,
-              private router : Router,
-              private activatedRoute: ActivatedRoute, 
+              private router: Router,
+              private activatedRoute: ActivatedRoute,
               private coreAuth: CoreAuth) {
   }
 
   ngOnInit() {
-     this.backendChange(null); //Check if can re login
+     this.backendChange(null); // Check if can re login
      this.userForm = this.fb.group({
       'email': ['', [
         Validators.required,
@@ -48,16 +48,16 @@ export class LoginComponent implements OnInit {
       ]
       ],
       'password': ['', [
-        Validators.maxLength(this.coreConfig.backendValue('passwordMax',25))
+        Validators.maxLength(this.coreConfig.backendValue('passwordMax', 25))
       ]
       ],
       'remember': [this.coreConfig.remember]
     });
 
-    //this.userForm.valueChanges.subscribe(data => this.onValueChanged(data));
-    //this.onValueChanged();
+    // this.userForm.valueChanges.subscribe(data => this.onValueChanged(data));
+    // this.onValueChanged();
   }
-  
+
   onValueChanged(data?: any) {
     if (!this.userForm) {
        return;
@@ -78,33 +78,33 @@ export class LoginComponent implements OnInit {
        }
      }
   }
-  
+
   login() {
     this.coreAuth.login(this.userForm.get('email').value,
                         this.userForm.get('password').value,
                         this.userForm.get('remember').value)
-      .then((res)=>{
+      .then((res) => {
         if (res) {
           this.activatedRoute.queryParams.subscribe(params => {
              this.router.navigate([params['requestedUrl'] || '/app']);
           });
         } else {
-          this.shake=true;
-          setTimeout(()=>{this.shake=false},500);
+          this.shake = true;
+          setTimeout(() => {this.shake = false; }, 500);
         }
       });
   }
-  
-    //Change event of backend type
-  backendChange(backend:any){
-    if (this.coreConfig.backendValue('silentLogin',false)===true){
-      this.coreAuth.refreshToken().then(token=>{
+
+    // Change event of backend type
+  backendChange(backend: any) {
+    if (this.coreConfig.backendValue('silentLogin', false) === true) {
+      this.coreAuth.refreshToken().then(token => {
         if (token) {
           this.activatedRoute.queryParams.subscribe(params => {
              this.router.navigate([params['requestedUrl'] || '/app']);
           });
-        } 
-      })
+        }
+      });
     }
   }
 

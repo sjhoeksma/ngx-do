@@ -31,4 +31,4 @@ export class MenuComponent implements OnInit {
     </mat-menu>
 </div>
 	`.trim(),
-}
+};

@@ -9,14 +9,14 @@ describe('AiChatbotBarComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [ 
+      imports: [
         BrowserAnimationsModule,
         WidgetsModule,
       ]
     })
     .compileComponents();
   }));
-  
+
   beforeEach(() => {
     fixture = TestBed.createComponent(AiChatbotBarComponent);
     component = fixture.componentInstance;

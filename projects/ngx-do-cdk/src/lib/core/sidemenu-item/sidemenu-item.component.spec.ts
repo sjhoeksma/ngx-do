@@ -8,7 +8,7 @@ describe('SidemenuItemComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [ 
+      imports: [
         CoreModule,
       ]
     })

@@ -8,8 +8,8 @@ import * as screenfull from 'screenfull';
 })
 
 export class FullscreenComponent implements OnInit {
-	public isFullscreen: boolean = false;
-  	constructor() { 
+	public isFullscreen = false;
+  	constructor() {
     }
 
   	ngOnInit() {
@@ -17,8 +17,7 @@ export class FullscreenComponent implements OnInit {
 
   public toggleFullscreen() {
 	    if (screenfull.enabled) {
-        if (this.isFullscreen) screenfull.exit();
-        else screenfull.request();
+        if (this.isFullscreen) { screenfull.exit(); } else { screenfull.request(); }
 	     	this.isFullscreen = !this.isFullscreen;
 	    }
   	}

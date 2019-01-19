@@ -8,7 +8,7 @@ describe('RoundProgressbarComponent', () => {
 
    beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [ 
+      imports: [
         WidgetsModule,
       ]
     })

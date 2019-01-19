@@ -2,13 +2,13 @@ export const EXPANSION_HELPERS: any = {
 
  	tsSourceRaisedButton: `
  		import { MatExpansionModule } from '@angular/material/expansion';
-		
+
 	  	@NgModule({
 		  imports: [
 		    MatExpansionModule
 		})
 		export class AppModule { }
-		
+
 		import { Component, OnInit } from '@angular/core';
 		import { EXPANSION_HELPERS } from './helpers.data';
 
@@ -41,7 +41,7 @@ export const EXPANSION_HELPERS: any = {
 `.trim(),
 
   	htmlSourceRaisedButton: `
-  		
+
 		  <mat-accordion>
 				<mat-expansion-panel>
 					<mat-expansion-panel-header>
@@ -77,4 +77,4 @@ export const EXPANSION_HELPERS: any = {
 		`.trim(),
 
  };
-	
+

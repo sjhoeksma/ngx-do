@@ -1,16 +1,16 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterModule } from '@angular/router';
-import { MatSnackBarModule, 
-        MatToolbarModule, 
+import { MatSnackBarModule,
+        MatToolbarModule,
         MatSidenavModule} from '@angular/material';
-import { PerfectScrollbarModule , 
+import { PerfectScrollbarModule ,
         PERFECT_SCROLLBAR_CONFIG ,
         PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
-import { CoreGlobalModule, 
-        DoModule, 
+import { CoreGlobalModule,
+        DoModule,
         DoComponent,
-        CorePreloadingStrategy, 
+        CorePreloadingStrategy,
        } from 'ngx-do-cdk';
 import { AppComponent } from './app.component';
 import { BackendService } from './backend/backend.service';
@@ -41,11 +41,11 @@ export function RestangularConfigFactory (RestangularProvider) {
 @NgModule({
     imports: [
         CommonModule,
-        MatToolbarModule, 
+        MatToolbarModule,
         MatSnackBarModule,
         MatSidenavModule,
         PerfectScrollbarModule,
-        DoModule,   
+        DoModule,
         CoreGlobalModule,
         HighlightModule.forRoot({ languages: hljsLanguages}),
         RestangularModule.forRoot(RestangularConfigFactory),

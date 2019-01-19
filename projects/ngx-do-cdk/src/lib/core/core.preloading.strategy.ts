@@ -2,7 +2,7 @@
 import {mergeMap} from 'rxjs/operators';
 import { Injectable } from '@angular/core';
 import { PreloadingStrategy, Route } from '@angular/router';
-import { Observable,timer,of} from 'rxjs';
+import { Observable, timer, of} from 'rxjs';
 
 
 @Injectable()
@@ -17,5 +17,5 @@ export class CorePreloadingStrategy implements PreloadingStrategy {
       return of(null);
     }
   }
-} 
-  
+}
+

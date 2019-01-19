@@ -2,9 +2,9 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { SidemenuComponent } from './sidemenu/sidemenu.component';
 import { SidemenuItemComponent } from './sidemenu-item/sidemenu-item.component';
-import { MatDialogModule,MatCardModule , MatListModule , MatButtonModule ,MatInputModule ,MatIconModule, MatToolbarModule , MatChipsModule ,MatFormFieldModule, MatTabsModule, MatOptionModule,  MatSidenavModule, MatSliderModule, MatProgressBarModule, MatSelectModule, MatButtonToggleModule,MatCheckboxModule,MatSnackBarModule,MatTooltipModule} from '@angular/material';
+import { MatDialogModule, MatCardModule , MatListModule , MatButtonModule , MatInputModule , MatIconModule, MatToolbarModule , MatChipsModule , MatFormFieldModule, MatTabsModule, MatOptionModule,  MatSidenavModule, MatSliderModule, MatProgressBarModule, MatSelectModule, MatButtonToggleModule, MatCheckboxModule, MatSnackBarModule, MatTooltipModule} from '@angular/material';
 
-import { FormsModule,ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { RouterModule } from '@angular/router';
 import { PerfectScrollbarModule, PERFECT_SCROLLBAR_CONFIG , PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
@@ -60,8 +60,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
         MatIconModule,
         MatChipsModule,
         MatOptionModule,
-        MatSnackBarModule, 
-        MatToolbarModule, 
+        MatSnackBarModule,
+        MatToolbarModule,
         MatSidenavModule,
         MatTooltipModule,
         MatDialogModule,
@@ -97,7 +97,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
         CRUDComponent,
         CRUDComponentDialog,
     ],
-    entryComponents :[
+    entryComponents : [
      CRUDComponentDialog,
     ],
 
@@ -106,6 +106,6 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
             provide: PERFECT_SCROLLBAR_CONFIG,
             useValue: DEFAULT_PERFECT_SCROLLBAR_CONFIG
         }
-    ]   
+    ]
 })
 export class CoreModule {}

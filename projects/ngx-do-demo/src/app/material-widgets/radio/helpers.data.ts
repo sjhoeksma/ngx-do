@@ -42,4 +42,4 @@ export class RadioComponent implements OnInit {
 <div class="example-selected-value mat-title">Your favorite season is: {{favoriteSeason}}
 </div>
 	`.trim(),
-}
+};

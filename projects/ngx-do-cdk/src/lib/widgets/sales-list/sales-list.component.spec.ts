@@ -8,13 +8,13 @@ describe('SalesListComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [ 
+      imports: [
         WidgetsModule,
       ]
     })
     .compileComponents();
   }));
-  
+
   beforeEach(() => {
     fixture = TestBed.createComponent(SalesListComponent);
     component = fixture.componentInstance;

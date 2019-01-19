@@ -1,6 +1,6 @@
 export const select_HELPERS: any = {
 
-	tsSourceSelectionselect:`
+	tsSourceSelectionselect: `
 import { MatSelectModule } from '@angular/material';
 
 
@@ -26,7 +26,7 @@ export class selectComponent implements OnInit {
 	`.trim(),
 
 
-	htmlSourceSelectionselect:`
+	htmlSourceSelectionselect: `
 	<mat-form-field>
 	  <mat-select placeholder="Select an option" disableRipple>
 	    <mat-option value="1">Option 1</mat-option>
@@ -36,8 +36,8 @@ export class selectComponent implements OnInit {
 	</mat-form-field>
 
 	`.trim(),
-}
-	export const Messages: Array<any> =[
+};
+	export const Messages: Array<any> = [
 		{from: 'codetok', subject: 'client', content: 'hi there'},
 		{from: 'client', subject: 'codetok', content: 'yes'},
 		{from: 'jay', subject: 'tom', content: 'yes please'}

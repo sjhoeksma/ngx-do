@@ -10,10 +10,10 @@ describe('SidemenuComponent', () => {
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
-      imports: [ 
+      imports: [
         CoreModule,
         RouterModule.forRoot([]),
-      ],providers: [
+      ], providers: [
         {provide: 'Environment', useValue: []},
         {provide: APP_BASE_HREF, useValue: '/'}
       ],

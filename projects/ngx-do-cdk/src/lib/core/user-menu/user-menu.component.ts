@@ -8,7 +8,7 @@ import { Router} from '@angular/router';
   styleUrls: ['./user-menu.component.scss']
 })
 export class UserMenuComponent implements OnInit {
-	isOpen: boolean = false;
+	isOpen = false;
 
   	@Input() currentUser;
     @Input() settingsRoute;
@@ -16,11 +16,11 @@ export class UserMenuComponent implements OnInit {
     @Input() helpRoute;
     @Input() securityRoute;
     @Input() logoutRoute =  '/logout';
-  
-   
-  	constructor(private elementRef: ElementRef,private router: Router,
+
+
+  	constructor(private elementRef: ElementRef, private router: Router,
                 private coreAuth: CoreAuth) { }
-    
+
   	@HostListener('document:click', ['$event', '$event.target'])
   	onClick(event: MouseEvent, targetElement: HTMLElement) {
     	if (!targetElement) {
@@ -32,15 +32,15 @@ export class UserMenuComponent implements OnInit {
       		this.isOpen = false;
     	}
   	}
-  
-    close(){
+
+    close() {
       this.isOpen = false;
     }
 
   	ngOnInit() {
   	}
-  
-    logout(){
+
+    logout() {
       this.coreAuth.logout(true);
       this.router.navigate([this.logoutRoute || '/logout']);
     }

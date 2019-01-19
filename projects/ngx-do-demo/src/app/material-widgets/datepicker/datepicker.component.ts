@@ -10,15 +10,19 @@ import { DATEPICKER_HELPERS } from './helpers.data';
 })
 export class DatepickerComponent implements OnInit {
 
+  constructor() { }
+
 	startDate = new Date(1990, 0, 1);
 	date = new FormControl(new Date());
-	serializedDate = new FormControl((new Date()).toISOString())
+	serializedDate = new FormControl((new Date()).toISOString());
 	minDate = new Date(2000, 0, 1);
 	maxDate = new Date(2020, 0, 1);
 	events: string[] = [];
+
+ datepickerHelpers: any = DATEPICKER_HELPERS;
 	myFilter = (d: Date): boolean => {
 		const day = d.getDay();
-		
+
 		return day !== 0 && day !== 6;
 	}
 
@@ -26,10 +30,6 @@ export class DatepickerComponent implements OnInit {
 		this.events.push(`${type}: ${event.value}`);
 	}
 
-  constructor() { }
-
   ngOnInit() {
   }
-
- datepickerHelpers: any = DATEPICKER_HELPERS;
 }

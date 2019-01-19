@@ -21,7 +21,7 @@ import { MatListModule } from '@angular/material/list';
 import { WeatherComponent } from './weather/weather.component';
 import { Ng2OdometerModule } from 'ng2-odometer';
 import { SharePriceComponent } from './share-price/share-price.component';
-import { RoundProgressbarComponent } from './round-progressbar/round-progressbar.component'; 
+import { RoundProgressbarComponent } from './round-progressbar/round-progressbar.component';
 import { RoundProgressModule } from 'angular-svg-round-progressbar';
 import { SalesListComponent } from './sales-list/sales-list.component';
 import { D3UsaComponent } from './d3-usa/d3-usa.component';
@@ -67,10 +67,10 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     ShowdownModule.forRoot({} as ConverterOptions | IConverterOptions),
   ],
   declarations: [
-      DashcardComponent, 
-      LineGraphComponent, 
-      BarGraphComponent, 
-      DoughnutGraphComponent, 
+      DashcardComponent,
+      LineGraphComponent,
+      BarGraphComponent,
+      DoughnutGraphComponent,
       ProfileCardComponent,
       PricingPlanComponent,
       WeatherComponent,
@@ -91,10 +91,10 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
       SurveyEditorComponent,
       ],
   exports: [
-      DashcardComponent, 
-      LineGraphComponent, 
-      BarGraphComponent, 
-      DoughnutGraphComponent, 
+      DashcardComponent,
+      LineGraphComponent,
+      BarGraphComponent,
+      DoughnutGraphComponent,
       ProfileCardComponent,
       PricingPlanComponent,
       WeatherComponent,
