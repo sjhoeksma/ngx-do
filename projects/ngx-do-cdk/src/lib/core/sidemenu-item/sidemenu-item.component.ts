@@ -14,13 +14,14 @@ export class SidemenuItemComponent implements OnInit {
     @Input() secondaryMenu = false;
     @Input() onSelectedMenu;
     visibleRole = true;
+    visibleMenu = false;
 
     constructor(private coreAuth: CoreAuth, private router: Router, private route: ActivatedRoute) { }
 
     ngOnInit() {
       let role = this.menu ? this.menu.expectedRole : null;
       // Check if the role is protected by path
-      if (role === null && this.menu && this.menu.link) {
+      if ((role === null || typeof role === 'undefined') && this.menu && this.menu.link) {
         const routerRole = function(routes, link) {
           const links = link.split('/').splice(0, 1);
           routes.forEach(function(route) {
@@ -71,9 +72,12 @@ export class SidemenuItemComponent implements OnInit {
 
 
    public isVisible() {
-     if (!this.menu) { return false; }
-     if (typeof(this.menu.visible) === 'function') { return this.visibleRole && this.menu.visible() ; }
-     return this.visibleRole && this.menu.visible !== false;
+     let ret = true;
+     if (!this.menu) { ret = false; }
+     else if (typeof(this.menu.visible) === 'function') { ret = this.visibleRole && this.menu.visible() ; }
+     else {ret = this.visibleRole && (this.menu.visible !== false)};
+     if (ret!=this.visibleMenu) this.visibleMenu=ret;
+     return this.visibleMenu;
    }
 
    public chipValue() {

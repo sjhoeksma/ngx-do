@@ -122,7 +122,7 @@ export class BaseAuth implements AuthInterface {
       return reg.test(inb);
     };
     const roles = this.roles || [];
-     if (role === null) {
+     if (role === null || typeof role === 'undefined') {
        resolve(true);
      } else {
        if (typeof role === 'string') {

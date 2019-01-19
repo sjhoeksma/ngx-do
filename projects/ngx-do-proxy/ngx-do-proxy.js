@@ -133,7 +133,7 @@ function decodeToken(req){
        token[1]=req.session.access_token; 
      }
    }
-   if (token === null || token[0] !== 'Bearer') {
+   if (token === null || typeof token === 'undefined' || token[0] !== 'Bearer') {
       return 401;
     }
     try {

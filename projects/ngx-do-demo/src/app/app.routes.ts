@@ -6,13 +6,23 @@ import { CorePreloadingStrategy,
         LoginComponent,
         SignupComponent,
         LogoutComponent,
+        PagesModule,
+        pagesRoutes
        } from 'ngx-do-cdk';
+
+/**
+ There is a problem with Angular not allowing to lazyload modules from libraries
+ Therefor we included PagesModule and pagesRoutes from ngx
+ You can use the lazyload but then heeft to disable --aot == ng serve --aot
+*/ 
 
 export const appRoutes: Routes = [{
   path: 'app', component: AppComponent, children: [
     { path: 'dashboard', loadChildren: './dashboard/dashboard.module#DashboardModule'}, // Dashboard
 
-    { path: 'pages', loadChildren: 'ngx-do-cdk#PagesModule' },  // Common pages
+   //{ path: 'pages', loadChildren: 'ngx-do-cdk#PagesModule' },  // lazyloading of Common pages, require --aot
+    { path: 'pages', children: pagesRoutes },  // Work Account for lazyloading Common pages
+    
     { path: 'material-widgets', loadChildren: './material-widgets/material-widgets.module#MaterialWidgetsModule',
      data: { preload: true, delay: false }},
     { path: 'widgets', loadChildren: './do-widgets/do-widgets.module#DoWidgetsModule' },  // Common pages
@@ -30,6 +40,7 @@ export const appRoutes: Routes = [{
 
 @NgModule({
   imports: [
+    PagesModule,
     RouterModule.forRoot(
       appRoutes,
       {preloadingStrategy: CorePreloadingStrategy}

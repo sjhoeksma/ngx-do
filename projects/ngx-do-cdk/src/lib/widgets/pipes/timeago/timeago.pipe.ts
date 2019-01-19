@@ -6,7 +6,7 @@ import { Pipe, PipeTransform } from '@angular/core';
 export class TimeAgoPipe implements PipeTransform {
 
   transform(value: number): string {
-    if (value === null) { return ''; }
+    if (value === null || typeof value === 'undefined') { return ''; }
     const seconds = Math.floor((new Date().getTime() - value) / 1000);
     let interval = Math.floor(seconds / 31536000);
 

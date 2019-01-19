@@ -8,6 +8,7 @@ export * from './lib/core/core.module';
 export * from './lib/core/core.global.module';
 export * from './lib/widgets/widgets.module';
 export * from './lib/pages/pages.module';
+export * from './lib/pages/pages.routes';
 
 // The Global Services
 export * from './lib/core/core.config';

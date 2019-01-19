@@ -29,6 +29,7 @@ My work list on activities to work on.
 1. See if it is possible to move part of pages to core
 1. Create page allowing Admin to assign roles and reset passwords of users
 1. Extends Keyvault API to add options to inidcated encrypted data when not encrypted, use example using res.read
+1. Add loading spinners for long pages like surveyEditor
 
 
 ## Widgets
