@@ -5,7 +5,7 @@
     "type": "git",
     "url": "git://github.com/sjhoeksma/ngx-do.git"
   },
-  "version": "0.2.1-0",
+  "version": "0.2.1-1",
   "scripts": {
     "ng": "ng",
     "proxy": "cd projects/ngx-do-proxy && node index.js",
