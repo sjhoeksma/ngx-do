@@ -102,7 +102,10 @@ cdk-survey-editor{
 
 @include angular-material-theme($cdk-theme);
 @include app($cdk-theme);
-@include round-progressbar($cdk-theme);
+
+cdk-round-progressbar{
+  @include round-progressbar($cdk-theme);
+}
 @include sales-list($cdk-theme);
 .shake-rotate { @include do-shake('shake-rotate', 0, 0, 15); }
 
