@@ -11,7 +11,7 @@ import { MatProgressSpinnerModule } from '@angular/material';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'cdk-spinner',
+  selector: 'ngx-do-spinner',
   templateUrl: './spinner.component.html',
   styleUrls: ['./spinner.component.scss']
 })

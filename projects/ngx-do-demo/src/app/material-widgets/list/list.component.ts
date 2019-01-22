@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { LIST_HELPERS,  Messages, Links} from './helpers.data';
 
 @Component({
-  selector: 'cdk-list',
+  selector: 'ngx-do-list',
   templateUrl: './list.component.html',
   styleUrls: ['./list.component.scss'],
   // animations: [fadeAnimation]

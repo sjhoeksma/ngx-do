@@ -32,6 +32,7 @@ export class CoreAuth implements CanActivate , AuthInterface {
   constructor(protected coreConfig: CoreConfig, protected router: Router,
                 private activatedRoute: ActivatedRoute,
                protected rest: Restangular, protected coreEvent: CoreEvent) {
+    /*
     this.authService.isReady.then((ready)=>{ // Init the authService selected by default
       // Set the error handler for 403
       this.rest.provider.addErrorInterceptor((response, subject, responseHandler) => {
@@ -44,6 +45,7 @@ export class CoreAuth implements CanActivate , AuthInterface {
         return true; // error not handled
       });
     });
+    */
   }
   
   public connect(coreConfig: CoreConfig, rest: Restangular):Promise<boolean>{

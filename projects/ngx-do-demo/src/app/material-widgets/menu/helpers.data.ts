@@ -9,7 +9,7 @@ export class AppModule { }
 
 import { Component, OnInit } from '@angular/core';
 @Component({
-  selector: 'cdk-menu',
+  selector: 'ngx-do-menu',
   templateUrl: './menu.component.html',
   styleUrls: ['./menu.component.scss']
 })

@@ -1,15 +1,17 @@
 {
-  "license": "MIT",
   "name": "ngx-do",
-  "version": "0.0.1",
+  "version": "0.3.1",
+  "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git://github.com/sjhoeksma/ngx-do.git"
   },
   "scripts": {
     "scss_bundle": "node ../../node_modules/bundle-scss/dist/bin/bundle-scss --config",
-    "start": "npm run scss_bundle",
-    "inc_version": "npm version patch -f"
+    "start": "npm run build",
+    "build": "ng build --prod ngx-do && npm run scss_bundle",
+    "publish": "npm run patch && npm run build && cd ../../dist/ngx-do && npm publish",
+    "patch": "npm version patch -f"
   },
   "bundleStyle": {
     "dest": "../../dist/ngx-do/_theming.scss",

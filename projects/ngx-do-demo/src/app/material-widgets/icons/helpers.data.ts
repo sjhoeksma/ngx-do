@@ -11,7 +11,7 @@ import { MatIconModule} from '@angular/material';
 
 import { Component, OnInit } from '@angular/core';
 @Component({
-  selector: 'cdk-icons',
+  selector: 'ngx-do-icons',
   templateUrl: './icons.component.html',
   styleUrls: ['./icons.component.scss']
 })

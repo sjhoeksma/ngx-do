@@ -10,7 +10,7 @@ export const LIST_HELPERS: any = {
 
 		import { Component, OnInit } from '@angular/core';
 		@Component({
-			  selector: 'cdk-list',
+			  selector: 'ngx-do-list',
 			  templateUrl: './list.component.html',
 			  styleUrls: ['./list.component.scss']
 		})

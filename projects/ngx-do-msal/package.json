@@ -1,11 +1,18 @@
 {
   "name": "ngx-do-msal",
+  "version": "0.3.1",
   "license": "MIT",
+  "scripts": {
+    "scss_bundle": "node ../../node_modules/bundle-scss/dist/bin/bundle-scss --config",
+    "start": "npm run build",
+    "build": "ng build --prod ngx-do-msal && npm run scss_bundle",
+    "publish": "npm run patch && npm run build && cd ../../dist/ngx-do-msal && npm publish",
+    "patch": "npm version patch -f"
+  },
   "repository": {
     "type": "git",
     "url": "git://github.com/sjhoeksma/ngx-do.git"
   },
-  "version": "0.0.1",
   "peerDependencies": {
     "@angular/common": "^7.2.1 || ^7.0.0",
     "@angular/core": "^7.2.1  || ^7.0.0",
@@ -22,5 +29,10 @@
   },
   "dependencies": {
     "msal": "^0.2.4"
+  },
+  "bundleStyle": {
+    "dest": "../../dist/ngx-do-msal/_theming.scss",
+    "mask": "./src/lib/**/*.theme.scss",
+    "sort": []
   }
 }

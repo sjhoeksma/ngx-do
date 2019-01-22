@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ICON_HELPERS } from './helpers.data';
 
 @Component({
-  selector: 'cdk-icons',
+  selector: 'ngx-do-icons',
   templateUrl: './icons.component.html',
   styleUrls: ['./icons.component.scss']
 })

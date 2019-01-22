@@ -4,7 +4,7 @@ import { MatDatepickerInputEvent } from '@angular/material/datepicker';
 import { DATEPICKER_HELPERS } from './helpers.data';
 
 @Component({
-  selector: 'cdk-datepicker',
+  selector: 'ngx-do-datepicker',
   templateUrl: './datepicker.component.html',
   styleUrls: ['./datepicker.component.scss']
 })

@@ -9,7 +9,7 @@
             <div fxLayout="column" class="profile-details-holder" fxLayoutAlign="space-around center">
                 <h1 class="mat-headline center-align" >{{profile?.name}}</h1>
                 <h1 class="mat-subheading-1 center-align" >{{profile?.role}}{{profile?.role && profile?.company ? " at " : ""}}{{profile?.company}}</h1>
-                <button *ngIf="onClick" (click)="onClick()" class="Follow " mat-raised-button color="warn">{{clickLabel || 'Follow'}}</button>
+                <button *ngIf="doClick" (click)="doClick()" class="Follow " mat-raised-button color="warn">{{clickLabel || 'Follow'}}</button>
             </div>
         </div>
         

@@ -13,7 +13,7 @@ export const EXPANSION_HELPERS: any = {
 		import { EXPANSION_HELPERS } from './helpers.data';
 
 		@Component({
-		  selector: 'cdk-expansion-panel',
+		  selector: 'ngx-do-expansion-panel',
 		  templateUrl: './expansion-panel.component.html',
 		  styleUrls: ['./expansion-panel.component.scss']
 		})

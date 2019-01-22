@@ -22,7 +22,7 @@ export const environment = {
 
   'localhost' : {
      title: 'Localhost JSON',
-     type: 'do-proxy',
+     type: 'do-gateway',
      apiURL: 'http://localhost:3000', // We point default to the json-server
   },
 

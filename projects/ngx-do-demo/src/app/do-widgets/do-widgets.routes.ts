@@ -1,6 +1,6 @@
 import { NgModule } from '@angular/core';
 import { Routes, RouterModule } from '@angular/router';
-import { CoreAuth } from 'ngx-do-cdk';
+import { CoreAuth } from 'ngx-do';
 
 import { SurveyComponent } from './survey/survey.component';
 import { SurveyEditorComponent } from './survey-editor/survey-editor.component';

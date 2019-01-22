@@ -1,8 +1,20 @@
 {
   "name": "ngx-do-ai",
-  "version": "0.0.1",
+  "version": "0.3.1",
   "peerDependencies": {
     "@angular/common": "^7.2.0",
     "@angular/core": "^7.2.0"
+  },
+  "scripts": {
+    "scss_bundle": "node ../../node_modules/bundle-scss/dist/bin/bundle-scss --config",
+    "start": "npm run build",
+    "build": "ng build --prod ngx-do-ai && npm run scss_bundle",
+    "publish": "npm run patch && npm run build && cd ../../dist/ngx-do-ai && npm publish",
+    "patch": "npm version patch -f"
+  },
+  "bundleStyle": {
+    "dest": "../../dist/ngx-do-ai/_theming.scss",
+    "mask": "./src/lib/**/*.theme.scss",
+    "sort": []
   }
 }

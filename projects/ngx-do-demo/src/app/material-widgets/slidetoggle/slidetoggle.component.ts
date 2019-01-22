@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { SLIDETOGGLE_HELPERS } from './helpers.data';
 
 @Component({
-  selector: 'cdk-slidetoggle',
+  selector: 'ngx-do-slidetoggle',
   templateUrl: './slidetoggle.component.html',
   styleUrls: ['./slidetoggle.component.scss']
 })

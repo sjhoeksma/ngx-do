@@ -14,6 +14,7 @@ export * from './lib/core/core.auth';
 export * from './lib/core/core.backend';
 export * from './lib/core/core.preloading.strategy';
 export * from './lib/core/base.auth';
+export * from './lib/core/gateway.auth';
 
 
 // Global Components

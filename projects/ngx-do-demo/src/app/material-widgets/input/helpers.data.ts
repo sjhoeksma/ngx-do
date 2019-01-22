@@ -10,7 +10,7 @@ import { MatInputModule } from '@angular/material';
 
 import { Component, OnInit } from '@angular/core';
 @Component({
-  selector: 'cdk-input',
+  selector: 'ngx-do-input',
   templateUrl: './input.component.html',
   styleUrls: ['./input.component.scss']
 })

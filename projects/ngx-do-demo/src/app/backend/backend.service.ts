@@ -3,7 +3,7 @@ import { Router, ActivatedRoute, ParamMap } from '@angular/router';
 import { Observable, Subject, Subscription } from 'rxjs';
 
 import {Restangular } from 'ngx-restangular';
-import { CoreEvent, CoreAuth, CoreConfig, CoreBackend } from 'ngx-do-cdk';
+import { CoreEvent, CoreAuth, CoreConfig, CoreBackend } from 'ngx-do';
 import * as uuidv4 from 'uuid/v4';
 import { MatSnackBar } from '@angular/material';
 

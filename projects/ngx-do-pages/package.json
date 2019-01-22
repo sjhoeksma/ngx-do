@@ -1,11 +1,23 @@
 {
   "name": "ngx-do-pages",
+  "version": "0.3.1",
   "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git://github.com/sjhoeksma/ngx-do.git"
   },
-  "version": "0.0.1",
+  "scripts": {
+    "scss_bundle": "node ../../node_modules/bundle-scss/dist/bin/bundle-scss --config",
+    "start": "npm run build",
+    "build": "ng build --prod ngx-do-pages && npm run scss_bundle",
+    "publish": "npm run patch && npm run build && cd ../../dist/ngx-do-pages && npm publish",
+    "patch": "npm version patch -f"
+  },
+  "bundleStyle": {
+    "dest": "../../dist/ngx-do-pages/_theming.scss",
+    "mask": "./src/lib/**/*.theme.scss",
+    "sort": []
+  },
   "peerDependencies": {
     "@angular/common": "^7.2.1 || ^7.0.0",
     "@angular/core": "^7.2.1  || ^7.0.0",

@@ -18,7 +18,7 @@ export class GatewayAuth extends BaseAuth {
       this.rest
        .one('auth').customPOST({email: user,
             password: pwd,
-            type:  this.coreConfig.backendValue('type', 'do-proxy')}, '', {} ,
+            type:  this.coreConfig.backendValue('type', 'do-gateway')}, '', {} ,
             {ContentType: 'application/x-www-form-urlencoded'})
        .toPromise().then((obj) => {
           const data = obj.plain();
@@ -39,7 +39,7 @@ export class GatewayAuth extends BaseAuth {
        .one('auth').customPOST({email: user,
             password: pwd,
             signup: true,
-            type:  this.coreConfig.backendValue('type', 'do-proxy')}, '', {} ,
+            type:  this.coreConfig.backendValue('type', 'do-gateway')}, '', {} ,
             {ContentType: 'application/x-www-form-urlencoded'})
        .toPromise().then((obj) => {
           const data = obj.plain();
@@ -58,7 +58,7 @@ export class GatewayAuth extends BaseAuth {
       return new Promise<string>((resolve, reject) => {
        this.rest
          .one('auth').customPOST({email: this._user,
-                  type:  this.coreConfig.backendValue('type', 'do-proxy')}, '', {} ,
+                  type:  this.coreConfig.backendValue('type', 'do-gateway')}, '', {} ,
                   {ContentType: 'application/x-www-form-urlencoded'})
          .toPromise().then( (obj) => {
             const data = obj.plain();

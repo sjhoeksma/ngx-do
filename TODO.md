@@ -26,10 +26,31 @@ My work list on activities to work on.
 1. Add option to use real database
 1. Add plugin allowing Admin to import export data
 1. Standard page for keyvault entry in pages
-1. See if it is possible to move part of pages to core
 1. Create page allowing Admin to assign roles and reset passwords of users
 1. Extends Keyvault API to add options to inidcated encrypted data when not encrypted, use example using res.read
 1. Add loading spinners for long pages like surveyEditor
+1. Implement a proper in merory SQL
+1. Add module to routes pages and core, remove it form PagesModule, speratedImport
+1. Add login,register,... to a core.routes
+1. More pipes to core
+1. Profile-card to pages
+1. AddMonitoring of App: use example form insight: https://github.com/angulartics/angulartics2 / https://codeburst.io/using-google-analytics-with-angular-25c93bffaa18 https://geeklearning.io/monitor-your-angular-app-with-application-insights/
+
+
+## Rebuild of package structure
+```
+ngx-do = Main Library Packages
+ngx-do-msal = The Azure auth library and is registering it self to ngx-do
+ngx-do-gcli = The gateway client
+ngx-do-pages = The default pages
+ngx-do-widgets = All approved widgets
+ngx-do-ai = Contains the Dialog flow integration, register function into core 
+ngx-do-survey = Contains the survey+editor register function
+ngx-do-wip = All work in progress - should not be used for production
+ngx-do-gateway = The current ngx-do-proxy
+ngx-do-demo = The demo program
+ngx-do-app = Empty framework of app to be used when creating app
+```
 
 
 ## Widgets

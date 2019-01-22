@@ -4,7 +4,7 @@
             <img src="./assets/logo.png" width="48px">
               <h1 class="logo">&nbsp;{{coreConfig.environment['title']}}</h1>
         </mat-toolbar>
-        <cdk-sidemenu [profileRoute]="profileRoute" [currentUser]="coreConfig?.currentUser"></cdk-sidemenu>
+        <ngx-do-sidemenu [profileRoute]="profileRoute" [currentUser]="coreConfig?.currentUser"></ngx-do-sidemenu>
     </mat-sidenav>
     <mat-sidenav-content style="z-index: unset;overflow: hidden;">
         <mat-drawer-container fullscreen>
@@ -12,14 +12,17 @@
                 <mat-toolbar color="primary" class="mat-elevation-z4">
                     <img src="./assets/logo.png" width="48px">
                 </mat-toolbar>
-                <cdk-sidemenu [iconOnly]="true"></cdk-sidemenu>
+                <ngx-do-sidemenu [iconOnly]="true"></ngx-do-sidemenu>
             </mat-drawer>
             <mat-drawer-content style="overflow: hidden;">
-
-                 <cdk-toolbar [aiToken]="aiToken" [sidenav]="sidenav" [drawer]="drawer" [profileRoute]="profileRoute" aiChatbotShow="true" [securityRoute]="securityRoute" [helpRoute]="helpRoute" [settingsRoute]="settingsRoute"
+<!--
+                 <ngx-do-ai-toolbar [aiToken]="aiToken" [sidenav]="sidenav" [drawer]="drawer" [profileRoute]="profileRoute" aiChatbotShow="true" [securityRoute]="securityRoute" [helpRoute]="helpRoute" [settingsRoute]="settingsRoute"
                              [matDrawerShow]="matDrawerShow" style="z-index: 500">
-                 </cdk-toolbar>
-               
+                 </ngx-do-ai-toolbar>
+-->               
+                  <ngx-do-toolbar [sidenav]="sidenav" [drawer]="drawer" [profileRoute]="profileRoute" [securityRoute]="securityRoute" [helpRoute]="helpRoute" [settingsRoute]="settingsRoute"
+                             [matDrawerShow]="matDrawerShow" style="z-index: 500">
+                 </ngx-do-toolbar>
 
                 <perfect-scrollbar  style="height: calc(100% - 33px);" >
                     <router-outlet></router-outlet>
@@ -31,7 +34,7 @@
     </mat-sidenav-content>
 
     <mat-sidenav #sidenav2 position="end" mode="over">
-        <cdk-sidebar></cdk-sidebar>
+        <ngx-do-sidebar></ngx-do-sidebar>
     </mat-sidenav>
 
 </mat-sidenav-container>

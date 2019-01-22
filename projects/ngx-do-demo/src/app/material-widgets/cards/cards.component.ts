@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CARDS_HELPERS } from './helpers.data';
 
 @Component({
-  selector: 'cdk-cards',
+  selector: 'ngx-do-cards',
   templateUrl: './cards.component.html',
   styleUrls: ['./cards.component.scss']
 })

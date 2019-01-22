@@ -9,7 +9,7 @@ import { AUTOCOMPLETE_HELPERS } from './helpers.data';
 
 
 @Component({
-  selector: 'cdk-autocomplete',
+  selector: 'ngx-do-autocomplete',
   templateUrl: './autocomplete.component.html',
   styleUrls: ['./autocomplete.component.scss'],
 

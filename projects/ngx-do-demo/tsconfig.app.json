@@ -17,14 +17,6 @@
       "es2018",
       "dom"
     ]
-    ,"paths": {
-      "ngx-do-cdk": [
-        "dist/ngx-do-cdk",
-      ],
-      "ngx-do-cdk/*": [
-        "dist/ngx-do-cdk/*",
-      ]
-    }
   },
   "files" :[
     "./src/app/app.module.ts"

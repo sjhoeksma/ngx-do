@@ -52,6 +52,15 @@ import { CoreModule,UiModule } from 'ngx-do';
         ProfileComponent,
         SecurityComponent,
         KeyVaultComponent,
+    ],
+    exports:[
+      ContactComponent,
+        AboutComponent,
+        ErrorComponent,
+        ProfileCardComponent,
+        ProfileComponent,
+        SecurityComponent,
+        KeyVaultComponent,
     ]
 })
 export class PagesModule {

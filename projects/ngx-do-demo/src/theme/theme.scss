@@ -4,8 +4,10 @@
 @import '~@swimlane/ngx-datatable/release/themes/material.css';
 @import '~@swimlane/ngx-datatable/release/assets/icons.css';
 @import '~highlight.js/styles/github.css';
-@import 'dist/ngx-do-cdk/_theming.scss';
-//@import '~ngx-do-cdk/_theming';
+@import 'dist/ngx-do/_theming.scss';
+@import 'dist/ngx-do-pages/_theming.scss';
+@import 'dist/ngx-do-survey/_theming.scss';
+
 @import '../app/app.component.scss';
 
 $mat-custom-green: (
@@ -50,24 +52,24 @@ $warn    : $mat-red;
 $primary-app-primary: mat-palette($primary , 400);
 $primary-app-accent:  mat-palette($accent , 900);
 $primary-app-warn:    mat-palette($warn );
-$cdk-theme:   mat-light-theme($primary-app-primary, $primary-app-accent,$primary-app-warn);
+$ngx-do-theme:   mat-light-theme($primary-app-primary, $primary-app-accent,$primary-app-warn);
 $color__primary : $primary;
 
 
-cdk-sidemenu{
+ngx-do-sidemenu{
     $sidemenu-app-primary: mat-palette($primary , 400);
     $sidemenu-app-accent:  mat-palette($accent , 900);
     $sidemenu-app-warn:    mat-palette($warn );
-    $cdk-sidemenu-theme:   mat-dark-theme($sidemenu-app-primary, $sidemenu-app-accent,$sidemenu-app-warn);
-    @include mat-list-theme($cdk-sidemenu-theme);
+    $ngx-do-sidemenu-theme:   mat-dark-theme($sidemenu-app-primary, $sidemenu-app-accent,$sidemenu-app-warn);
+    @include mat-list-theme($ngx-do-sidemenu-theme);
   
 }
 
-cdk-sidemenu-item{
-    @include sidemenu-item($cdk-theme,26px)
+ngx-do-sidemenu-item{
+    @include sidemenu-item($ngx-do-theme,26px)
 }
 
-cdk-dashcard {
+ngx-do-dashcard {
     $dashcard-primary: mat-palette($primary);
     $dashcard-accent:  mat-palette($accent);
     $dashcard-warn:    mat-palette($warn);
@@ -75,38 +77,38 @@ cdk-dashcard {
     @include dashcard($dashcard-theme);
 }
 
-cdk-profile-card{
+ngx-do-profile-card{
   $dashboard-profile-primary: mat-palette($primary , 400);
     $dashboard-profile-accent:  mat-palette($accent , 900);
     $dashboard-profile-warn:    mat-palette($warn );
-    $cdk-dashboard-profile-theme:   mat-dark-theme($dashboard-profile-primary, $dashboard-profile-accent,$dashboard-profile-warn);
-    @include dashboard-profile($cdk-dashboard-profile-theme);
-    @include mat-tabs-theme($cdk-dashboard-profile-theme);
+    $ngx-do-dashboard-profile-theme:   mat-dark-theme($dashboard-profile-primary, $dashboard-profile-accent,$dashboard-profile-warn);
+    @include dashboard-profile($ngx-do-dashboard-profile-theme);
+    @include mat-tabs-theme($ngx-do-dashboard-profile-theme);
 }
 
-cdk-survey{
+ngx-do-survey{
   $survey-primary: mat-palette($primary , 400);
   $survey-accent:  mat-palette($accent , 900);
   $survey-warn:    mat-palette($warn );
-  $cdk-survey-theme:   mat-dark-theme($survey-primary, $survey-accent,$survey-warn);
-  @include survey($cdk-survey-theme);
+  $ngx-do-survey-theme:   mat-dark-theme($survey-primary, $survey-accent,$survey-warn);
+  @include survey($ngx-do-survey-theme);
 }
 
-cdk-survey-editor{
+ngx-do-survey-editor{
   $survey-primary: mat-palette($primary , 400);
   $survey-accent:  mat-palette($accent , 900);
   $survey-warn:    mat-palette($warn );
-  $cdk-survey-theme:   mat-dark-theme($survey-primary, $survey-accent,$survey-warn);
-  @include survey-editor($cdk-survey-theme);
+  $ngx-do-survey-theme:   mat-dark-theme($survey-primary, $survey-accent,$survey-warn);
+  @include survey-editor($ngx-do-survey-theme);
 }
 
-@include angular-material-theme($cdk-theme);
-@include app($cdk-theme);
+@include angular-material-theme($ngx-do-theme);
+@include app($ngx-do-theme);
 
-cdk-round-progressbar{
-  @include round-progressbar($cdk-theme);
+ngx-do-round-progressbar{
+  @include round-progressbar($ngx-do-theme);
 }
-@include sales-list($cdk-theme);
+@include sales-list($ngx-do-theme);
 .shake-rotate { @include do-shake('shake-rotate', 0, 0, 15); }
 
 html {

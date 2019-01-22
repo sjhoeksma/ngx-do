@@ -8,14 +8,18 @@ import { CoreAuth} from './core.auth';
 import { CoreConfig } from './core.config';
 import { MatSnackBar } from '@angular/material';
 
-
+@Injectable({providedIn: 'root'})
 export class CoreBackend implements OnDestroy {
    private subscription: Subscription;
    public taskCount: number;
    public tasks: any;
-   constructor(protected coreEvent: CoreEvent, protected rest: Restangular,
-                protected coreAuth: CoreAuth, protected coreConfig: CoreConfig,
-              protected router: Router, protected snackBar: MatSnackBar) {
+   constructor(protected coreEvent: CoreEvent,
+          protected coreAuth: CoreAuth,
+          protected coreConfig: CoreConfig,
+          protected router: Router, 
+          protected rest: Restangular,
+          protected snackBar: MatSnackBar
+      ) {
       this.subscription = this.coreEvent.get(CoreEvent.core_channel).subscribe(
           event => { this.processEvent(event); });
       this.loadCommonData();

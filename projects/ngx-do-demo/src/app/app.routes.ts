@@ -5,10 +5,9 @@ import { CorePreloadingStrategy,
         CoreAuth,
         LoginComponent,
         SignupComponent,
-        LogoutComponent,
-        PagesModule,
-        pagesRoutes
-       } from 'ngx-do-cdk';
+        LogoutComponent
+       } from 'ngx-do';
+import { pagesRoutes} from 'ngx-do-pages';
 
 /**
  There is a problem with Angular not allowing to lazyload modules from libraries
@@ -40,7 +39,6 @@ export const appRoutes: Routes = [{
 
 @NgModule({
   imports: [
-    PagesModule,
     RouterModule.forRoot(
       appRoutes,
       {preloadingStrategy: CorePreloadingStrategy}

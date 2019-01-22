@@ -13,7 +13,7 @@ export const CARDS_HELPERS: any = {
         import { Component, OnInit } from '@angular/core';
 
         @Component({
-          selector: 'cdk-cards',
+          selector: 'ngx-do-cards',
           templateUrl: './cards.component.html',
           styleUrls: ['./cards.component.scss']
         })

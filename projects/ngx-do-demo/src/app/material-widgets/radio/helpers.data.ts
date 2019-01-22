@@ -10,7 +10,7 @@ export class AppModule { }
 
 import { Component, OnInit } from '@angular/core';
 @Component({
-  selector: 'cdk-radio',
+  selector: 'ngx-do-radio',
   templateUrl: './radio.component.html',
   styleUrls: ['./radio.component.scss']
 })

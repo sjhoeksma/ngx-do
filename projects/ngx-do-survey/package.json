@@ -1,11 +1,18 @@
 {
   "name": "ngx-do-survey",
+  "version": "0.3.1",
   "license": "MIT",
   "repository": {
     "type": "git",
     "url": "git://github.com/sjhoeksma/ngx-do.git"
   },
-  "version": "0.0.1",
+  "scripts": {
+    "scss_bundle": "node ../../node_modules/bundle-scss/dist/bin/bundle-scss --config",
+    "start": "npm run build",
+    "build": "ng build --prod ngx-do-survey && npm run scss_bundle",
+    "publish": "npm run patch && npm run build && cd ../../dist/ngx-do-survey && npm publish",
+    "patch": "npm version patch -f"
+  },
   "peerDependencies": {
     "@angular/common": "^7.2.1 || ^7.0.0",
     "@angular/core": "^7.2.1  || ^7.0.0",
@@ -26,14 +33,9 @@
     "surveyjs-editor": "^1.0.64 || ^1.0.50",
     "@types/knockout": "^3.4.63"
   },
-  "scripts": {
-    "scss_bundle": "node ../../node_modules/bundle-scss/dist/bin/bundle-scss --config",
-    "start": "npm run scss_bundle"
-  },
   "bundleStyle": {
     "dest": "../../dist/ngx-do-survey/_theming.scss",
     "mask": "./src/lib/**/*.theme.scss",
-    "sort": [
-    ]
+    "sort": []
   }
 }

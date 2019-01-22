@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import {PROGRESSBAR_HELPERS } from './helpers.data';
 
 @Component({
-  selector: 'cdk-progressbar',
+  selector: 'ngx-do-progressbar',
   templateUrl: './progressbar.component.html',
   styleUrls: ['./progressbar.component.scss']
 })

@@ -13,7 +13,7 @@ import { MatSliderModule } from '@angular/material';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'cdk-slider',
+  selector: 'ngx-do-slider',
   templateUrl: './slider.component.html',
   styleUrls: ['./slider.component.scss']
 })

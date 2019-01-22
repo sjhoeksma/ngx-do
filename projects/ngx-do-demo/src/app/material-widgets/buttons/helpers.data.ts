@@ -12,7 +12,7 @@ export const BUTTON_HELPERS: any = {
 		import { Component, OnInit } from '@angular/core';
 
         @Component({
-          selector: 'cdk-buttons',
+          selector: 'ngx-do-buttons',
           templateUrl: './buttons.component.html',
           styleUrls: ['./buttons.component.scss']
         })

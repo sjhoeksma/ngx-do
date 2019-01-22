@@ -12,7 +12,7 @@ import { MatSelectModule } from '@angular/material';
 import { Component, OnInit } from '@angular/core';
 
 @Component({
-  selector: 'cdk-select',
+  selector: 'ngx-do-select',
   templateUrl: './select.component.html',
   styleUrls: ['./select.component.scss']
 })

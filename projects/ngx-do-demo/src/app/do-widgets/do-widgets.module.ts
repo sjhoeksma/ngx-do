@@ -13,7 +13,7 @@ import { MatChipsModule } from '@angular/material/chips';
 import { CommonModule } from '@angular/common';
 import { FlexLayoutModule } from '@angular/flex-layout';
 import { ShowdownModule, ConverterOptions, IConverterOptions } from 'ngx-showdown';
-import { WidgetsModule } from 'ngx-do-cdk';
+import { SurveyModule } from 'ngx-do-survey';
 
 import { DoWidgetsRouterModule } from './do-widgets.routes';
 import { SurveyComponent } from './survey/survey.component';
@@ -32,7 +32,7 @@ import { SurveyEditorComponent } from './survey-editor/survey-editor.component';
         MatCheckboxModule,
         MatListModule,
         MatChipsModule,
-        WidgetsModule,
+        SurveyModule,
         ShowdownModule.forRoot({} as ConverterOptions | IConverterOptions),
         DoWidgetsRouterModule ],
     declarations: [

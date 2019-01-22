@@ -1,6 +1,6 @@
 import { Component, OnInit , Input} from '@angular/core';
 import { MediaChange, ObservableMedia } from '@angular/flex-layout';
-import { CoreConfig } from 'ngx-do-cdk';
+import { CoreConfig,GatewayAuth } from 'ngx-do';
 import { BackendService } from './backend/backend.service';
 import { AppMenu } from './app.menu';
 

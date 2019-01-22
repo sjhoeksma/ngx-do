@@ -1,27 +1,21 @@
 import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
-import { DashcardComponent } from './dashcard/dashcard.component';
+
 import { FlexLayoutModule } from '@angular/flex-layout';
-import { MatButtonModule } from '@angular/material/button';
-import { MatInputModule } from '@angular/material/input';
-import { MatIconModule } from '@angular/material/icon';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatChipsModule} from '@angular/material/chips';
-import { MatFormFieldModule } from '@angular/material';
-import { MatProgressBarModule} from '@angular/material/progress-bar';
+import { MatButtonModule,MatInputModule ,MatIconModule , MatMenuModule ,
+        MatChipsModule, MatFormFieldModule,MatProgressBarModule,MatListModule,
+       MatToolbarModule,MatTabsModule} from '@angular/material';
+import { Ng2OdometerModule } from 'ng2-odometer';
+import { RoundProgressModule } from 'angular-svg-round-progressbar';
+import { DashcardComponent } from './dashcard/dashcard.component';
 import { LineGraphComponent } from './line-graph/line-graph.component';
 import { BarGraphComponent } from './bar-graph/bar-graph.component';
 import { DoughnutGraphComponent } from './doughnut-graph/doughnut-graph.component';
-import { MatTabsModule } from '@angular/material/tabs';
-import { MatToolbarModule } from '@angular/material/toolbar';
 import { PricingPlanComponent } from './pricing-plan/pricing-plan.component';
-import { MatListModule } from '@angular/material/list';
 import { WeatherComponent } from './weather/weather.component';
-import { Ng2OdometerModule } from 'ng2-odometer';
 import { SharePriceComponent } from './share-price/share-price.component';
 import { RoundProgressbarComponent } from './round-progressbar/round-progressbar.component';
-import { RoundProgressModule } from 'angular-svg-round-progressbar';
 import { SalesListComponent } from './sales-list/sales-list.component';
 import { D3UsaComponent } from './d3-usa/d3-usa.component';
 import { WorldMapComponent } from './world-map/world-map.component';
@@ -72,4 +66,4 @@ import { WorldMapComponent } from './world-map/world-map.component';
       WorldMapComponent,
   ]
 })
-export class WidgetsModule { }
+export class WipModule { }

@@ -21,14 +21,14 @@ export const environment = {
   //
   'remote' : {
      signup: false,
-     type: 'do-proxy',
+     type: 'do-gateway',
      title: 'Remote JSON',
      apiURL: 'https://docloud-proxy.now.sh', // We point default to the json-server
   },
 
   'localhost' : {
      title: 'Localhost JSON',
-     type: 'do-proxy',
+     type: 'do-gateway',
      apiURL: 'http://localhost:3000', // We point default to the json-server
   },
 

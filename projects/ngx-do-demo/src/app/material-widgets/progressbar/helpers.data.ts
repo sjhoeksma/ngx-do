@@ -10,7 +10,7 @@ export class AppModule { }
 
 import { Component, OnInit } from '@angular/core';
 @Component({
-  selector: 'cdk-progressbar',
+  selector: 'ngx-do-progressbar',
   templateUrl: './progressbar.component.html',
   styleUrls: ['./progressbar.component.scss']
 })

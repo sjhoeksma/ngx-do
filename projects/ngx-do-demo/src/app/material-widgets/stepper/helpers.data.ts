@@ -12,7 +12,7 @@ export const STEPPER_HELPERS: any = {
 		import { Component, OnInit } from '@angular/core';
 
         @Component({
-          selector: 'cdk-stepper',
+          selector: 'ngx-do-stepper',
           templateUrl: './stepper.component.html',
           styleUrls: ['./stepper.component.scss']
         })

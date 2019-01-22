@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { SPINNER_HELPERS } from './helpers.data';
 
 @Component({
-  selector: 'cdk-spinner',
+  selector: 'ngx-do-spinner',
   templateUrl: './spinner.component.html',
   styleUrls: ['./spinner.component.scss']
 })

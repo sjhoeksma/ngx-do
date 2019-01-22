@@ -7,7 +7,7 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class ProfileCardComponent implements OnInit {
     @Input() profile;
-    @Input() onClick;
+    @Input() doClick;
     @Input() clickLabel;
 
     constructor() { }

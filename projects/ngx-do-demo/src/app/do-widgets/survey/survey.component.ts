@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute, ParamMap } from '@angular/router';
-import { CoreConfig } from 'ngx-do-cdk';
+import { CoreConfig } from 'ngx-do';
 
 @Component({
   selector: 'app-survey',

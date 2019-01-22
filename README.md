@@ -1,6 +1,6 @@
 # ngx-do - An ADMIN PANEL for deploying cloud services.
 
-Based on [CK-Admin](https://github.com/codetok/cdk-admin)
+Based on [CK-Admin](https://github.com/codetok/ngx-do-admin)
 
 This project contains the library, proxy and demo, make sure you run `npm run build` to create library first before you run the demo `ng serve`. The because the demo project uses REST services, like security and user management, you also requires start the proxy service by using `npm run proxy`. 
 
@@ -40,7 +40,7 @@ If you have install phyton on your system you can validate a build by using
 To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI README](https://github.com/angular/angular-cli/blob/master/README.md).
 
 ## Links as Reference
-* [CDK Admin V2](https://github.com/codetok/cdk-admin)
+* [CDK Admin V2](https://github.com/codetok/ngx-do-admin)
 * [Material ICONS](https://material.io/tools/icons/?icon=local_laundry_service&style=baseline)
 * [Dialog Flow API - Demo](https://angularfirebase.com/lessons/chatbot-in-angular-with-dialogflow-api-ai/)
 * [Azure Chatbot](https://dev.botframework.com/)

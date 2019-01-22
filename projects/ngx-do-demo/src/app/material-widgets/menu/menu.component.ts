@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { MENU_HELPERS } from './helpers.data';
 
 @Component({
-  selector: 'cdk-menu',
+  selector: 'ngx-do-menu',
   templateUrl: './menu.component.html',
   styleUrls: ['./menu.component.scss']
 })
