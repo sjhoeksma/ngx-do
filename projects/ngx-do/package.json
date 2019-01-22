@@ -1,0 +1,51 @@
+{
+  "license": "MIT",
+  "name": "ngx-do",
+  "version": "0.0.1",
+  "repository": {
+    "type": "git",
+    "url": "git://github.com/sjhoeksma/ngx-do.git"
+  },
+  "scripts": {
+    "scss_bundle": "node ../../node_modules/bundle-scss/dist/bin/bundle-scss --config",
+    "start": "npm run scss_bundle",
+    "inc_version": "npm version patch -f"
+  },
+  "bundleStyle": {
+    "dest": "../../dist/ngx-do/_theming.scss",
+    "mask": "./src/lib/**/*.theme.scss",
+    "sort": [
+      "sidemenu",
+      "sidemenu-item",
+      "shake"
+    ]
+  },
+  "peerDependencies": {
+    "@angular/common": "^7.2.1 || ^7.0.0",
+    "@angular/core": "^7.2.1  || ^7.0.0",
+    "@angular/animations": "^7.2.1 || ^7.0.0",
+    "@angular/cdk": "^7.2.1 || ^7.0.0",
+    "@angular/compiler": "^7.2.1 || ^7.0.0",
+    "@angular/flex-layout": "^7.0.0-beta.22 || ^7.0.0",
+    "@angular/forms": "^7.2.1 || ^7.0.0",
+    "@angular/http": "^7.2.1 || ^7.0.0",
+    "@angular/material": "^7.2.1 || ^7.0.0",
+    "@angular/platform-browser": "^7.2.1 || ^7.0.0",
+    "@angular/platform-browser-dynamic": "^7.2.1 || ^7.0.0",
+    "@angular/router": "^7.2.1 || ^7.0.0",
+    "rxjs": "^6.3.3",
+    "rxjs-compat": "^6.3.3"
+  },
+  "dependencies": {
+    "@swimlane/ngx-datatable": "^14.0.0",
+    "crypto-js": "^3.1.9-1",
+    "screenfull": "^4.0.0",
+    "hammerjs": "^2.0.8",
+    "uuid": "^3.3.2"
+  },
+  "devDependencies": {
+    "@types/node": "^10.12.18",
+    "bundle-scss": "^1.3.4",
+    "copyfiles": "^2.1.0"
+  }
+}

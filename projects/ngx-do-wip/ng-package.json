@@ -1,0 +1,17 @@
+{
+  "$schema": "../../node_modules/ng-packagr/ng-package.schema.json",
+  "dest": "../../dist/ngx-do-wip",
+  "lib": {
+    "entryFile": "src/public_api.ts",
+    "style":"scss",
+    "umdModuleIds": {
+      "crypto-js": "CryptoJS",
+      "chart.js" : "ChartJS",
+      "ng2-odometer": "Ng2Odometer",
+      "angular-svg-round-progressbar": "AngularSvgRoundProgressbar"
+    }
+  },
+  "whitelistedNonPeerDependencies": [
+    "."
+  ]
+}

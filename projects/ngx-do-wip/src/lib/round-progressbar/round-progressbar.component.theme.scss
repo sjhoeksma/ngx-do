@@ -1,0 +1,58 @@
+
+@mixin round-progressbar($theme) {
+    .round-progressbar {
+      
+        .semi_on{
+          top:  auto;
+          bottom: 5%;
+          left: 50%;
+          transform: translateX(-50%);
+          -moz-transform: translateX(-50%);
+          -webkit-transform: translateX(-50%);
+          font-size: 250 / 7 px;
+        }
+
+        .semi_off{
+          top:  50%;
+          bottom: auto;
+          left: 50%;
+          transform: translateY(-50%) translateX(-50%);
+          -moz-transform: translateY(-50%) translateX(-50%);
+          -webkit-transform: translateY(-50%) translateX(-50%);
+          font-size: 250 / 7 px;
+
+        } 
+      
+         margin: 10px 5px;
+         padding: 10px;
+         background-color:white;
+         
+         & .header {
+            text-align: center;
+            color:white;
+         }
+         & .roundholder{
+            position: absolute;
+            
+            & .current{
+                position: relative;
+            }
+         }
+        .progress-wrapper {
+            position: relative;
+            margin: 20px auto;
+        }
+
+        .current {
+            position: absolute;
+            font-weight: 100;
+            line-height: 1;
+            font-size: 32px;
+            color: white;
+        }
+
+        round-progress {
+          margin: auto;
+        }
+    }
+}

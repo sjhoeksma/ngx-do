@@ -1,0 +1,15 @@
+{
+  "$schema": "../../node_modules/ng-packagr/ng-package.schema.json",
+  "dest": "../../dist/ngx-do-pages",
+  "lib": {
+    "entryFile": "src/public_api.ts",
+    "style":"scss",
+    "umdModuleIds": {
+      "@swimlane/ngx-datatable":"NgxDatatable",
+      "ngx-do": "ngxDo"
+    }
+  },
+  "whitelistedNonPeerDependencies": [
+    "."
+  ]
+}

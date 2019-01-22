@@ -1,0 +1,17 @@
+
+<div class="toolbar-aichatbot-container">
+  <mat-form-field class="search"  [ngClass]="{'search-open': open}"> 
+  <input matInput #aiSearch placeholder="Ask a Question ?" autocomplete="off" (focus)="bigMenu = true" (focusout)="bigMenu = false" (keyup.enter)="sendMessage()" [(ngModel)]="question">
+</mat-form-field>
+  
+
+  <div class="dropdown mat-elevation-z4" [class.open]="open">
+
+	 <div class="card">
+        <ngx-do-ai-chatbot #aiBot [token]="token" ></ngx-do-ai-chatbot>
+      	<div class="footer" fxLayout="row" fxLayoutAlign="center center" (click)="clear()">
+        	<div class="action">Clear all</div>
+    	  </div>
+	</div>
+</div>
+

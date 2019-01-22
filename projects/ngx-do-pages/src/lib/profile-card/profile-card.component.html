@@ -1,0 +1,17 @@
+<div  class="profile-card-holder "  >
+    <div fxLayout="column" >
+        <div fxLayout="row" fxLayoutAlign="space-around center"  >
+            <div  class="banner">
+                 <img width="100" [style.borderRadius]="'50%'" [src]="profile?.avatar_url || './assets/avatars/profile.jpg'">
+            </div>
+        </div>
+        <div   class="profile-details mat-elevation-z8" >
+            <div fxLayout="column" class="profile-details-holder" fxLayoutAlign="space-around center">
+                <h1 class="mat-headline center-align" >{{profile?.name}}</h1>
+                <h1 class="mat-subheading-1 center-align" >{{profile?.role}}{{profile?.role && profile?.company ? " at " : ""}}{{profile?.company}}</h1>
+                <button *ngIf="onClick" (click)="onClick()" class="Follow " mat-raised-button color="warn">{{clickLabel || 'Follow'}}</button>
+            </div>
+        </div>
+        
+    </div>
+</div>
