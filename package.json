@@ -14,9 +14,9 @@
     "test-single": "ng test ngx-do-cdk --watch=false --code-coverage",
     "lint": "ng lint",
     "build_pre": "npm run inc_release && ng build --prod ngx-do-cdk && cd projects/ngx-do-cdk && npm run scss_bundle",
-    "build": "npm run inc_patch && ng build --prod ngx-do-cdk && cd projects/ngx-do-cdk && npm run scss_bundle",
+    "build": "ng build --prod ngx-do-cdk && cd projects/ngx-do-cdk && npm run scss_bundle",
     "pack": "npm run build && cd dist/ngx-do-cdk",
-    "publish": "npm run pack && cd dist/ngx-do-cdk && npm publish",
+    "publish": "npm run inc_patch && npm run pack && cd dist/ngx-do-cdk && npm publish",
     "build_demo": "npm run inc_patch_demo && ng build ngx-do-demo --",
     "build_proxy": "cd projects/ngx-do-proxy && npm run build",
     "pack_proxy": "npm run build_proxy && cd dist/ngx-do-proxy",
@@ -75,7 +75,8 @@
     "surveyjs-editor": "^1.0.64",
     "uuid": "^3.3.2",
     "vued3tree": "^3.6.1",
-    "zone.js": "~0.8.28"
+    "zone.js": "~0.8.28",
+    "bootstrap": "^3.3.6"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.12.0",
@@ -105,7 +106,6 @@
     "protractor": "^5.4.2",
     "tslib": "^1.9.0",
     "tslint": "^5.12.1",
-    "typescript": "^3.2.4",
-    "bootstrap": "^3.3.6"
+    "typescript": "~3.2.4"
   }
 }
