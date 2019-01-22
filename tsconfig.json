@@ -17,6 +17,45 @@
     "lib": [
       "es2018",
       "dom"
-    ]
+    ],
+    "paths": {
+      "ngx-do": [
+        "dist/ngx-do"
+      ],
+      "ngx-do/*": [
+        "dist/ngx-do/*"
+      ],
+      "ngx-do-survey": [
+        "dist/ngx-do-survey"
+      ],
+      "ngx-do-survey/*": [
+        "dist/ngx-do-survey/*"
+      ],
+      "ngx-do-wip": [
+        "dist/ngx-do-wip"
+      ],
+      "ngx-do-wip/*": [
+        "dist/ngx-do-wip/*"
+      ],
+      "ngx-do-msal": [
+        "dist/ngx-do-msal"
+      ],
+      "ngx-do-msal/*": [
+        "dist/ngx-do-msal/*"
+      ],
+      "ngx-do-pages": [
+        "dist/ngx-do-pages"
+      ],
+      "ngx-do-pages/*": [
+        "dist/ngx-do-pages/*"
+      ],
+      "ngx-do-ai": [
+        "dist/ngx-do-ai"
+      ],
+      "ngx-do-ai/*": [
+        "dist/ngx-do-ai/*"
+      ],
+
+    }
   }
 }
