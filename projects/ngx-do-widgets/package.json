@@ -1,12 +1,12 @@
 {
-  "name": "ngx-do-wip",
+  "name": "ngx-do-widgets",
   "version": "0.3.2",
   "license": "MIT",
   "scripts": {
     "scss_bundle": "node ../../node_modules/bundle-scss/dist/bin/bundle-scss --config",
     "start": "npm run build",
-    "build": "ng build --prod ngx-do-wip && npm run scss_bundle",
-    "publish": "npm run patch && npm run build && cd ../../dist/ngx-do-wip && npm publish",
+    "build": "ng build --prod ngx-do-widgets && npm run scss_bundle",
+    "publish": "npm run patch && npm run build && cd ../../dist/ngx-do-widgets && npm publish",
     "patch": "npm version patch -f"
   },
   "repository": {
@@ -55,13 +55,8 @@
     "vued3tree": "^3.6.1"
   },
   "bundleStyle": {
-    "dest": "../../dist/ngx-do-wip/_theming.scss",
+    "dest": "../../dist/ngx-do-widgeets/_theming.scss",
     "mask": "./src/lib/**/*.theme.scss",
-    "sort": [
-      "dashcard",
-      "round-progressbar",
-      "sales-list",
-      "shake"
-    ]
+    "sort": []
   }
 }

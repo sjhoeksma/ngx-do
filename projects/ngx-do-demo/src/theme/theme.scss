@@ -7,6 +7,7 @@
 @import 'dist/ngx-do/_theming.scss';
 @import 'dist/ngx-do-pages/_theming.scss';
 @import 'dist/ngx-do-survey/_theming.scss';
+@import 'dist/ngx-do-wip/_theming.scss';
 
 @import '../app/app.component.scss';
 
@@ -135,7 +136,7 @@ body{
 }
 
 .custom-background {
-    background-image:url('../assets/login11.jpg');  
+    background-image:url('/assets/do/images/bg/login11.jpg');  
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;
@@ -227,7 +228,7 @@ body{
 .locked {
     display: none;
     background-color:#EFEFEF;
-    background-image:url('../assets/locked.jpg');  
+    background-image:url('/assets/do/images/bg/locked.jpg');  
     background-repeat: no-repeat;
     background-position: center;
     background-size: cover;

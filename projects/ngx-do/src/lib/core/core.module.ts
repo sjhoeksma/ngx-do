@@ -3,8 +3,6 @@ This packages should only be loaded ones, otherwise the providers are created mo
 */
 import { NgModule } from '@angular/core';
 import {  MatSnackBarModule} from '@angular/material';
-//import { RestangularModule } from 'ngx-restangular';
-//import { RouterModule } from '@angular/router';
 import { CoreConfig} from './core.config';
 import { CoreEvent} from './core.event';
 import { CoreAuth } from './core.auth';
@@ -15,8 +13,6 @@ import { GatewayAuth } from './gateway.auth';
 @NgModule({
     imports: [
       MatSnackBarModule,
- //     RestangularModule,
- //     RouterModule
     ],
     providers: [
        CoreConfig,
@@ -27,4 +23,4 @@ import { GatewayAuth } from './gateway.auth';
        GatewayAuth
     ]
 })
-export class CoreModule {}
+export class NgxDoCoreModule {}

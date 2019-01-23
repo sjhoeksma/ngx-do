@@ -29,7 +29,7 @@ export const CARDS_HELPERS: any = {
             <mat-card-title>Shiba Inu</mat-card-title>
             <mat-card-subtitle>Dog Breed</mat-card-subtitle>
         </mat-card-header>
-        <img mat-card-image src="/assets/220px-Taka_Shiba.jpg" alt="Photo of a Shiba Inu">
+        <img mat-card-image src="/assets/do/220px-Taka_Shiba.jpg" alt="Photo of a Shiba Inu">
 
         <mat-card-content>
             <p>

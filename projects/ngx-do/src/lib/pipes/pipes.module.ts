@@ -24,4 +24,4 @@ import { RemoveDuplicatesPipe } from './remove-duplicates/remove-duplicates.pipe
       RemoveDuplicatesPipe
   ]
 })
-export class PipesModule { }
+export class NgxDoPipesModule { }

@@ -1,0 +1,3 @@
+[submodule "projects/ngx-do-demo/src/assets/do"]
+	path = projects/ngx-do-demo/src/assets/do
+	url = https://sjhoeksma@github.com/sjhoeksma/ngx-do-assets.git

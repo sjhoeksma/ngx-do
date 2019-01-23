@@ -7,7 +7,10 @@ import { AiChatbotComponent } from './ai-chatbot/ai-chatbot.component';
 import { AiChatbotService } from './ai-chatbot/ai-chatbot.service';
 import { AiChatbotBarComponent } from './ai-chatbot-bar/ai-chatbot-bar.component';
 import { AiToolbarComponent } from './ai-toolbar/ai-toolbar.component';
-import { CoreModule,PipesModule,UiModule} from 'ngx-do';
+import { 
+ // NgxDoCoreModule,
+  NgxDoPipesModule,
+  NgxDoUiModule} from 'ngx-do';
 import { PerfectScrollbarModule, PERFECT_SCROLLBAR_CONFIG , PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     suppressScrollX: true
@@ -42,9 +45,9 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     MatSliderModule,
     MatProgressBarModule,
     PerfectScrollbarModule,
-    PipesModule,
-    CoreModule,
-    UiModule
+    NgxDoPipesModule,
+//    NgxDoCoreModule,
+    NgxDoUiModule
   ],
   declarations: [
     AiToolbarComponent,
@@ -64,4 +67,4 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
     }
     ]
 })
-export class AiModule { }
+export class NgxDoAiModule { }

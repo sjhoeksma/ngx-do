@@ -55,7 +55,7 @@ Detailed user info table, it can be edited by the user. Id is linked to the Auth
    "id": "223-334-2234",  //UUID linked to the Auth table
    "email": "admin@demo.com", //email address, when not set system assumes auth.login
    "name": "Mister Admin", //Name of the user
-   "avatar_url": "assets/avatars/user1-128x128.jpg", //URL to the avatar of the user
+   "avatar_url": "/assets/do/avatars/user1-128x128.jpg", //URL to the avatar of the user
    "orgGroup": "it", //Optional: Within demo, this is used to route request to a specific group
    ... //All other field are just for information 
 }

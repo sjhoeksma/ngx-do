@@ -19,7 +19,7 @@ import { DoComponent } from './do.component';
   providers: [
   ]
 })
-export class DoModule {
+export class NgxDoModule {
 
   constructor() {
     const hash = window.location.hash;

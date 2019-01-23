@@ -2,7 +2,7 @@
 <perfect-scrollbar style="height: calc(100% - 33px);">
     <div fxLayout="column">
         <div class="profile" *ngIf="!iconOnly && currentUser.avatar_url && profileRoute" fxLayoutAlign="space-around center" [style.margin]="'10px 0px'"   >
-          <img width="100" [style.borderRadius]="'50%'" [src]="currentUser?.avatar_url || 'assets/avatars/noavatar.png'" [routerLink]="[profileRoute]">
+          <img width="100" [style.borderRadius]="'50%'" [src]="currentUser?.avatar_url || '/assets/do/avatars/noavatar.png'" [routerLink]="[profileRoute]">
         </div>
         <cdk-sidemenu-item *ngIf="iconOnly && profileRoute" [menu]="profileMenu" [iconOnly]="iconOnly" [onSelectedMenu]="onSelectedMenu"> </cdk-sidemenu-item>
         <cdk-sidemenu-item *ngFor="let menu of menus" [menu]="menu" [iconOnly]="iconOnly" [onSelectedMenu]="onSelectedMenu"> </cdk-sidemenu-item>

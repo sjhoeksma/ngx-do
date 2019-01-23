@@ -21,7 +21,7 @@
        "location": "Amsterdam, Netherlands",
        "html_url": null,
        "createdAt": 1347185460001,
-       "avatar_url": "assets/avatars/user1-128x128.jpg",
+       "avatar_url": "/assets/do/avatars/user1-128x128.jpg",
        "createdBy":1
     },{ 
        "id": 2,   
@@ -37,7 +37,7 @@
        "location": "Hoofddorp, Netherlands",
        "html_url": null,
        "createdAt": 1347185460001,
-       "avatar_url": "assets/avatars/user5-128x128.jpg",
+       "avatar_url": "/assets/do/avatars/user5-128x128.jpg",
       "createdBy":2
     },{ 
        "id": 3,   
@@ -53,7 +53,7 @@
        "location": "Hoofddorp, Netherlands",
        "html_url": null,
        "createdAt": 1347185460001,
-       "avatar_url": "assets/avatars/user2-160x160.jpg",
+       "avatar_url": "/assets/do/avatars/user2-160x160.jpg",
        "createdBy":3
     },{ 
        "id": 4,   
@@ -69,7 +69,7 @@
        "location": "Hoofddorp, Netherlands",
        "html_url": null,
        "createdAt": 1347185460001,
-       "avatar_url": "assets/avatars/user4-128x128.jpg",
+       "avatar_url": "/assets/do/avatars/user4-128x128.jpg",
        "createdBy":4
     }
   ]

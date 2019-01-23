@@ -55,7 +55,12 @@
       "ngx-do-ai/*": [
         "dist/ngx-do-ai/*"
       ],
-
+      "ngx-do-widgets": [
+        "dist/ngx-do-widgets"
+      ],
+      "ngx-do-widgets/*": [
+        "dist/ngx-do-widgets/*"
+      ]
     }
   }
 }

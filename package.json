@@ -13,39 +13,29 @@
     "test": "ng test ngx-do-demo --code-coverage",
     "test-single": "ng test ngx-do-cdk --watch=false --code-coverage",
     "lint": "ng lint",
-    
     "build_cdk": "ng build --prod ngx-do-cdk && cd projects/ngx-do-cdk && npm run scss_bundle",
-    "publish_cdk": "npm run inc_patch_cdk && npm run build && cd dist/ngx-do-cdk && npm publish",    
+    "publish_cdk": "npm run inc_patch_cdk && npm run build && cd dist/ngx-do-cdk && npm publish",
     "inc_patch_cdk": "cd projects/ngx-do-cdk && npm version patch -f",
-
-    "build": "cd projects/ngx-do && npm run build",
-    "publish": "cd projects/ngx-do && npm run publish",
-    
+    "build_do": "cd projects/ngx-do && npm run build",
+    "publish_do": "cd projects/ngx-do && npm run publish",
     "build_pages": "cd projects/ngx-do-pages && npm run build",
     "publish_pages": "cd projects/ngx-do-pages && npm run publish",
-    
-    "build_wip": "cd projects/ngx-do-wip && npm run build",
-    "publish_wip": "cd projects/ngx-do-wip && npm run publish",
-    
+    "build_widgets": "cd projects/ngx-do-widgets && npm run build",
+    "publish_widgets": "cd projects/ngx-do-widgets && npm run publish",
     "build_ai": "cd projects/ngx-do-ai && npm run build",
     "publish_ai": "cd projects/ngx-do-ai && npm run publish",
-    
     "build_survey": "cd projects/ngx-do-survey && npm run build",
     "publish_survey": "cd projects/ngx-do-survey && npm run publish",
-    
     "build_msal": "cd projects/ngx-do-msal && npm run build",
     "publish_msal": "cd projects/ngx-do-msal && npm run publish",
-    
-    "build_all": "npm run build && npm run build_pages && npm run build_ai && npm run build_survey && npm run build_wip",
-    "publish_all": "npm run publish && npm run publish_pages && npm run publish_ai && npm run publish_survey && npm run publish_wip",
-    
-    
+    "build_wip": "cd projects/ngx-do-wip && npm run build",
+    "publish_wip": "cd projects/ngx-do-wip && npm run publish",
+    "build_all": "npm run build_do && npm run build_pages && npm run build_ai && npm run build_survey && npm run build_widgets && npm run build_wip",
+    "publish_all": "npm run publish_do && npm run publish_pages && npm run publish_ai && npm run publish_survey && npm run publish_widgets && npm run publish_wip",
     "build_demo": "npm run inc_patch_demo && ng build ngx-do-demo --",
-    
     "build_proxy": "cd projects/ngx-do-proxy && npm run build",
     "pack_proxy": "npm run build_proxy && cd dist/ngx-do-proxy",
     "publish_proxy": "npm run pack_proxy && cd dist/ngx-do-proxy && npm publish"
-
   },
   "private": false,
   "dependencies": {

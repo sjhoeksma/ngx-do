@@ -1,14 +1,14 @@
 import { NgModule } from '@angular/core';
-import { CoreModule} from 'ngx-do';
+//import { NgxDoCoreModule} from 'ngx-do';
 import { MsalAuth} from './msal.auth';
 
 
 @NgModule({
     imports: [
-      CoreModule
+ //     NgxDoCoreModule
     ],
     providers: [
       MsalAuth
     ]
 })
-export class MsalModule {}
+export class NgxDoMsalModule {}

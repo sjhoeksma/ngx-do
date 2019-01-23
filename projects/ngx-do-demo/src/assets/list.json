@@ -17,7 +17,7 @@
     ],
     "group": "promotions",
     "type": "sent",
-    "attachments": ["assets/avatars/profile.jpg"]
+    "attachments": ["/assets/do/avatars/profile.jpg"]
   },
   {
     "from": {
@@ -37,7 +37,7 @@
     ],
     "group": "promotions",
     "type": "sent",
-    "attachments": ["assets/avatars/profile.jpg"]
+    "attachments": ["/assets/do/avatars/profile.jpg"]
   },
   {
     "from": {

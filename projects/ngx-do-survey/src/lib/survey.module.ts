@@ -17,4 +17,4 @@ import { ShowdownModule, ConverterOptions, IConverterOptions } from 'ngx-showdow
       SurveyEditorComponent
   ]
 })
-export class SurveyModule { }
+export class NgxDoSurveyModule { }

@@ -5,7 +5,7 @@ import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { RouterModule } from '@angular/router';
 import { MatDialogModule, MatCardModule , MatListModule , MatButtonModule , MatInputModule , MatIconModule, MatToolbarModule , MatChipsModule , MatFormFieldModule, MatTabsModule, MatOptionModule,  MatSidenavModule, MatSliderModule, MatProgressBarModule, MatSelectModule, MatButtonToggleModule, MatCheckboxModule, MatSnackBarModule, MatTooltipModule} from '@angular/material';
 
-import { PipesModule} from '../pipes/pipes.module';
+import { NgxDoPipesModule} from '../pipes/pipes.module';
 import { SidemenuComponent } from './sidemenu/sidemenu.component';
 import { SidemenuItemComponent } from './sidemenu-item/sidemenu-item.component';
 import { ToolbarNotificationComponent } from './toolbar-notification/toolbar-notification.component';
@@ -76,7 +76,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
         MatTabsModule,
         MatSliderModule,
         MatProgressBarModule,
-        PipesModule,
+        NgxDoPipesModule,
     ],
     exports: [
         SidemenuComponent,
@@ -103,4 +103,4 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
         }
     ]
 })
-export class UiModule {}
+export class NgxDoUiModule {}

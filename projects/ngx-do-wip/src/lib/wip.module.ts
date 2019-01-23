@@ -66,4 +66,4 @@ import { WorldMapComponent } from './world-map/world-map.component';
       WorldMapComponent,
   ]
 })
-export class WipModule { }
+export class NgxDoWipModule { }

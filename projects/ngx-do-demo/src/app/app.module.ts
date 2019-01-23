@@ -7,15 +7,15 @@ import { MatSnackBarModule,
 import { PerfectScrollbarModule ,
         PERFECT_SCROLLBAR_CONFIG ,
         PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
-import { CoreModule,
-        DoModule,
-        UiModule,
+import { NgxDoCoreModule,
+        NgxDoModule,
+        NgxDoUiModule,
         DoComponent,
         GatewayAuth
        } from 'ngx-do';
-import { PagesModule } from 'ngx-do-pages'
-import { WipModule } from 'ngx-do-wip';
-import { SurveyModule } from 'ngx-do-survey'
+import { NgxDoPagesModule } from 'ngx-do-pages'
+import { NgxDoWipModule } from 'ngx-do-wip';
+import { NgxDoSurveyModule } from 'ngx-do-survey'
 import { AppComponent } from './app.component';
 import { BackendService } from './backend/backend.service';
 import { RestangularModule, Restangular } from 'ngx-restangular';
@@ -50,12 +50,12 @@ export function RestangularConfigFactory (RestangularProvider) {
         PerfectScrollbarModule,
         HighlightModule.forRoot({ languages: hljsLanguages}),
         RestangularModule.forRoot(RestangularConfigFactory),
-        CoreModule,
-        DoModule,
-        UiModule,
-        PagesModule,
-        WipModule,
-        SurveyModule,
+        NgxDoModule,
+        NgxDoCoreModule,
+        NgxDoUiModule,
+        NgxDoPagesModule,
+        NgxDoWipModule,
+        NgxDoSurveyModule,
         AppRoutesModule,
     ],
     declarations: [AppComponent],
