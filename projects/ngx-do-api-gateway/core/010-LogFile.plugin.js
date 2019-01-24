@@ -1,4 +1,4 @@
-const proxy = require('../ngx-do-proxy')
+const proxy = require('../ngx-do-api-gateway')
 const plugin = proxy.app;
 const path = require('path')
 

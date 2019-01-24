@@ -1,8 +1,8 @@
 {
-  "name": "ngx-do-proxy",
-  "version": "0.2.11",
+  "name": "ngx-do-api-ateway",
+  "version": "0.3.0",
   "license": "MIT",
-  "main": "ngx-do-proxy.js",
+  "main": "ngx-do-api-gateway.js",
   "repository": {
     "type": "git",
     "url": "git://github.com/sjhoeksma/ngx-do.git"
@@ -17,8 +17,7 @@
   },
   "scripts": {
     "start": "node index.js",
-    "build": "npm run inc_patch && rm -rf ../../dist/ngx-do-proxy && mkdir -p ../../dist/ngx-do-proxy && cp ./{package.json,package-lock.json,index.js,ngx-do-proxy.js,ngx-do-proxy-routes.json,README.md} ../../dist/ngx-do-proxy && cp -R ./core ../../dist/ngx-do-proxy ",
-    "inc_release": "npm version prerelease -f",
+    "build": "npm run inc_patch && rm -rf ../../dist/ngx-do-api-gateway && mkdir -p ../../dist/ngx-do-api-gateway && cp ./{package.json,package-lock.json,index.js,ngx-do-api-gateway.js,ngx-do-api-gateway-routes.json,README.md} ../../dist/ngx-do-api-gateway && cp -R ./core ../../dist/ngx-do-api-gateway ",
     "inc_patch": "npm version patch -f"
   },
   "private": false,

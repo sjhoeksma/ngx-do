@@ -8,6 +8,6 @@
         <mat-icon *ngIf="checkForChildMenu()" class="sidenav-dropdown-indicator rotate " [ngClass]="{'indicateOpen':menu.open}"  (click)="clickMenu(menu,$event)"> expand_more</mat-icon>
     </mat-list-item>
 
-    <ngx-do-sidemenu-item *ngFor="let submenu of menu?.sub" [menu]="submenu" [iconOnly]="iconOnly" [secondaryMenu]="true"  [onSelectedMenu]="onSelectedMenu"> </ngx-do-sidemenu-item>
+    <ngx-do-sidemenu-item *ngFor="let submenu of menu?.sub" [menu]="submenu" [iconOnly]="iconOnly" [secondaryMenu]="true"  [selectedMenu]="selectedMenu"> </ngx-do-sidemenu-item>
 
 </mat-nav-list>

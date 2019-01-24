@@ -4,8 +4,8 @@
         <div class="profile" *ngIf="!iconOnly && currentUser.avatar_url && profileRoute" fxLayoutAlign="space-around center" [style.margin]="'10px 0px'"   >
           <img width="100" [style.borderRadius]="'50%'" [src]="currentUser?.avatar_url || '/assets/do/avatars/noavatar.png'" [routerLink]="[profileRoute]">
         </div>
-        <ngx-do-sidemenu-item *ngIf="iconOnly && profileRoute" [menu]="profileMenu" [iconOnly]="iconOnly" [onSelectedMenu]="onSelectedMenu"> </ngx-do-sidemenu-item>
-        <ngx-do-sidemenu-item *ngFor="let menu of menus" [menu]="menu" [iconOnly]="iconOnly" [onSelectedMenu]="onSelectedMenu"> </ngx-do-sidemenu-item>
+        <ngx-do-sidemenu-item *ngIf="iconOnly && profileRoute" [menu]="profileMenu" [iconOnly]="iconOnly" [selectedMenu]="selectedMenu"> </ngx-do-sidemenu-item>
+        <ngx-do-sidemenu-item *ngFor="let menu of menus" [menu]="menu" [iconOnly]="iconOnly" [selectedMenu]="selectedMenu"> </ngx-do-sidemenu-item>
     </div>
     
 </perfect-scrollbar>

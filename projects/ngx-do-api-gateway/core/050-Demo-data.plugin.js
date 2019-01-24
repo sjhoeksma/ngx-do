@@ -1,4 +1,4 @@
-const proxy = require('../ngx-do-proxy');
+const proxy = require('../ngx-do-api-gateway');
 const http_proxy = require('express-http-proxy');
 const plugin = proxy.app;
 //Add your custom code here

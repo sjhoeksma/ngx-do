@@ -1,4 +1,4 @@
-import { Component, OnInit , Input} from '@angular/core';
+import { Component, OnInit , Input,ViewChild} from '@angular/core';
 import { MediaChange, ObservableMedia } from '@angular/flex-layout';
 import { CoreConfig,GatewayAuth } from 'ngx-do';
 import { BackendService } from './backend/backend.service';
@@ -26,10 +26,14 @@ export class AppComponent implements OnInit {
   matDrawerOpened = false;
   matDrawerShow = true;
   sideNavMode = 'side';
+  @ViewChild("sidenav") sidenav;
+  @ViewChild("drawer") drawer;
+  public selectedMenu;
 
 	constructor(private media: ObservableMedia,
               public coreConfig: CoreConfig,
               protected backend: BackendService) {
+    this.selectedMenu=this._selectedMenu.bind(this);
     this.backend.getKeyVault('dialogflow').subscribe(rec => {
       this.aiToken = rec['key'];
     });
@@ -51,13 +55,34 @@ export class AppComponent implements OnInit {
        // return outlet.isActivated ? outlet.activatedRoute : ''
   }
 
+ sideMenu(state){
+    setTimeout(()=>{  
+       switch (state){
+         case "hide":
+           this.drawer.close();
+           this.sidenav.close();
+           this.matDrawerShow=false;
+           break; 
+         case "full":
+           this.drawer.close();
+           this.sidenav.open();
+           //this.matDrawerShow=false;
+           break;    
+         case "none": break;   
+         default: //"collapse"
+           this.drawer.open();
+           this.sidenav.close();
+       }
+     },0);
+  }
+
 	toggleView() {
 		if (this.media.isActive('gt-md')) {
         this.sideNavMode = 'side';
         this.sideNavOpened = true;
         this.matDrawerOpened = false;
         this.matDrawerShow = true;
-    } else if (this.media.isActive('gt-xs')) {
+    } else if(this.media.isActive('gt-xs')) {
         this.sideNavMode = 'side';
         this.sideNavOpened = false;
         this.matDrawerOpened = true;
@@ -69,5 +94,11 @@ export class AppComponent implements OnInit {
         this.matDrawerShow = false;
     }
 	}
+  
+  _selectedMenu(menu){
+    if (this.sideNavMode=='over') this.sidenav.close();
+    if (menu.menu){this.sideMenu(menu)}
+  };
+
 
 }

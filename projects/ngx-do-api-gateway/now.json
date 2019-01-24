@@ -1,5 +1,5 @@
 {
-  "alias": ["do-proxy.now.sh"], 
+  "alias": ["ngx-do-api-gateway.now.sh"], 
   "github": {
     "autoAlias": true
   }

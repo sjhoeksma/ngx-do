@@ -47,7 +47,7 @@ ngx-do-widgets = All approved widgets
 ngx-do-ai = Contains the Dialog flow integration, register function into core 
 ngx-do-survey = Contains the survey+editor register function
 ngx-do-wip = All work in progress - should not be used for production
-ngx-do-gateway = The current ngx-do-proxy
+ngx-do-api-gateway = The current ngx-do-proxy
 ngx-do-demo = The demo program
 ngx-do-app = Empty framework of app to be used when creating app
 ```

@@ -12,7 +12,7 @@ export class SidemenuItemComponent implements OnInit {
     @Input() menu;
     @Input() iconOnly: boolean;
     @Input() secondaryMenu = false;
-    @Input() onSelectedMenu;
+    @Input() selectedMenu;
     visibleRole = true;
     visibleMenu = false;
 
@@ -52,8 +52,8 @@ export class SidemenuItemComponent implements OnInit {
         } else {
           this.router.navigate([menu.link], {relativeTo: this.route});
         }
-        if (this.onSelectedMenu instanceof Function) {
-          this.onSelectedMenu(menu);
+        if (this.selectedMenu instanceof Function) {
+          this.selectedMenu(menu);
         }
       } else {
          menu.open = !menu.open;

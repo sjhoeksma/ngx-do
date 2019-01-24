@@ -1,6 +1,6 @@
 {
   "name": "ngx-do-wip",
-  "version": "0.3.2",
+  "version": "0.3.4",
   "license": "MIT",
   "scripts": {
     "scss_bundle": "node ../../node_modules/bundle-scss/dist/bin/bundle-scss --config",
@@ -41,7 +41,7 @@
     "angular2-chartjs": "^0.5.1",
     "chart.js": "^2.7.3",
     "core-js": "^2.6.2",
-    "d3": "^3.5.17",
+    "d3": "^4.13.0",
     "hammerjs": "^2.0.8",
     "highlight.js": "^9.13.1",
     "ng2-nvd3": "^2.0.0",

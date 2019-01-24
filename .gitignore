@@ -62,3 +62,4 @@ node_modules
 /projects/ngx-do-proxy/ngx-do-proxy.log.3
 /projects/ngx-do-proxy/ngx-do-proxy.log.4
 /projects/ngx-do-proxy/ngx-do-proxy.log.5
+/projects/ngx-do-api-gateway/ngx-do-api-gateway.db.json

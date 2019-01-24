@@ -14,7 +14,7 @@ export class SurveyComponent implements OnDestroy, OnInit   {
     @Input() json;
     @Input() surveyJson;
     @Input() surveyData;
-    @Input() onComplete;
+    @Input() complete;
     @Input() themeCss;
     @Input() readonly = false;
     @Input() widgets;
@@ -71,11 +71,11 @@ export class SurveyComponent implements OnDestroy, OnInit   {
             // set html
             options.html = str;
       });
-      this.survey.onComplete.add(this.onComplete);
+      this.survey.onComplete.add(this.complete);
       if (d) { this.survey.data = d; }
       this.survey.render('surveyElement');
-      if (this.survey.isEmpty && this.onComplete) {
-        this.onComplete(this.survey.data);
+      if (this.survey.isEmpty && this.complete) {
+        this.complete(this.survey.data);
       }
     }
 

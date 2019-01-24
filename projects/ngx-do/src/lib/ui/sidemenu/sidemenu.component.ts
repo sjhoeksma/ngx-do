@@ -13,7 +13,7 @@ export class SidemenuComponent implements OnInit {
     @Input() currentUser;
     profileMenu: object ;
     @Input() menus;
-    @Input() onSelectedMenu;
+    @Input() selectedMenu;
 
     constructor(public coreConfig: CoreConfig ) {
 

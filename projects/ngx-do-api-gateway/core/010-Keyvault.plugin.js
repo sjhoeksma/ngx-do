@@ -1,4 +1,4 @@
-const proxy = require('../ngx-do-proxy')
+const proxy = require('../ngx-do-api-gateway')
 const plugin = proxy.app;
 
 //We want to validate if user is requesting a keyvault he is allowed

@@ -1,7 +1,7 @@
 import { Injectable} from '@angular/core';
 import {Restangular } from 'ngx-restangular';
 import * as Msal from 'msal';
-import { CoreConfig,BaseAuth,CoreAuth} from 'ngx-do';
+import { CoreConfig ,BaseAuth, CoreAuth} from 'ngx-do';
 
 @Injectable({providedIn: 'root'})
 export class MsalAuth extends BaseAuth {

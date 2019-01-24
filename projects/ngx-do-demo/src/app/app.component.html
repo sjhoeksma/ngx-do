@@ -4,7 +4,7 @@
             <img src="/assets/do/logo.png" width="48px">
               <h1 class="logo">&nbsp;{{coreConfig.environment['title']}}</h1>
         </mat-toolbar>
-        <ngx-do-sidemenu [profileRoute]="profileRoute" [currentUser]="coreConfig?.currentUser"></ngx-do-sidemenu>
+        <ngx-do-sidemenu [selectedMenu]="selectedMenu" [profileRoute]="profileRoute" [currentUser]="coreConfig?.currentUser"></ngx-do-sidemenu>
     </mat-sidenav>
     <mat-sidenav-content style="z-index: unset;overflow: hidden;">
         <mat-drawer-container fullscreen>
@@ -12,7 +12,7 @@
                 <mat-toolbar color="primary" class="mat-elevation-z4">
                     <img src="/assets/do/logo.png" width="48px">
                 </mat-toolbar>
-                <ngx-do-sidemenu [iconOnly]="true"></ngx-do-sidemenu>
+                <ngx-do-sidemenu [selectedMenu]="selectedMenu" [iconOnly]="true"></ngx-do-sidemenu>
             </mat-drawer>
             <mat-drawer-content style="overflow: hidden;">
 <!--

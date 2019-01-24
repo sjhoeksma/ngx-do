@@ -8,7 +8,7 @@
   "version": "0.2.1-1",
   "scripts": {
     "ng": "ng",
-    "proxy": "cd projects/ngx-do-proxy && node index.js",
+
     "start": "npm run inc_release_demo && npm run build && ng serve ngx-do-demo",
     "test": "ng test ngx-do-demo --code-coverage",
     "test-single": "ng test ngx-do-cdk --watch=false --code-coverage",
@@ -33,25 +33,26 @@
     "build_all": "npm run build_do && npm run build_pages && npm run build_ai && npm run build_survey && npm run build_widgets && npm run build_wip",
     "publish_all": "npm run publish_do && npm run publish_pages && npm run publish_ai && npm run publish_survey && npm run publish_widgets && npm run publish_wip",
     "build_demo": "npm run inc_patch_demo && ng build ngx-do-demo --",
-    "build_proxy": "cd projects/ngx-do-proxy && npm run build",
-    "pack_proxy": "npm run build_proxy && cd dist/ngx-do-proxy",
-    "publish_proxy": "npm run pack_proxy && cd dist/ngx-do-proxy && npm publish"
+
+    "gateway": "cd projects/ngx-do-api-gateway && node index.js",
+    "build_gateway": "cd projects/ngx-do-api-gateway && npm run build",
+    "publish_gateway": "npm run build_gateway && cd dist/ngx-do-api-gateway && npm publish"
   },
   "private": false,
   "dependencies": {
+    "@agm/core": "^1.0.0-beta.5",
     "@angular/animations": "^7.2.1",
     "@angular/cdk": "^7.2.1",
     "@angular/common": "^7.2.1",
     "@angular/compiler": "^7.2.1",
     "@angular/core": "^7.2.1",
+    "@angular/flex-layout": "^7.0.0-beta.22",
     "@angular/forms": "^7.2.1",
     "@angular/http": "^7.2.1",
     "@angular/material": "^7.2.1",
     "@angular/platform-browser": "^7.2.1",
     "@angular/platform-browser-dynamic": "^7.2.1",
     "@angular/router": "^7.2.1",
-    "@angular/flex-layout": "^7.0.0-beta.22",
-    "@agm/core": "^1.0.0-beta.5",
     "@swimlane/ngx-charts": "^10.0.0",
     "@swimlane/ngx-datatable": "^14.0.0",
     "@types/knockout": "^3.4.63",
@@ -62,10 +63,11 @@
     "angular-svg-round-progressbar": "^2.0.0",
     "angular2-chartjs": "^0.5.1",
     "api-ai-javascript": "^2.0.0-beta.21",
+    "bootstrap": "^3.3.6",
     "chart.js": "^2.7.3",
     "core-js": "^2.6.2",
     "crypto-js": "^3.1.9-1",
-    "d3": "^3.5.17",
+    "d3": "^4.13.0",
     "hammerjs": "^2.0.8",
     "highlight.js": "^9.13.1",
     "msal": "^0.2.4",
@@ -86,8 +88,7 @@
     "surveyjs-editor": "^1.0.64",
     "uuid": "^3.3.2",
     "vued3tree": "^3.6.1",
-    "zone.js": "~0.8.28",
-    "bootstrap": "^3.3.6"
+    "zone.js": "~0.8.28"
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.12.0",

@@ -21,13 +21,13 @@ var session = require('express-session');
 
 var myOptions = Object.assign({
   port : 3000, //The port number to use
-  dbName : 'ngx-do-proxy.db.json', //The file name where json data is stored
+  dbName : 'ngx-do-api-gateway.db.json', //The file name where json data is stored
   watchedDir:  './api',
   dataDir: './', //The directory where the data will be stored
   watch: true, //Should we watch for database changes
-  routes: 'ngx-do-proxy-routes.json',
+  routes: 'ngx-do-api-gateway-routes.json',
   jwtValidation: 'key',  //Set this to your 'key' == secretKey or "azure-aad" to use a azure-aad token
-  secretKey : "do-proxy",
+  secretKey : "ngx-do-api-gateway",
   expiresIn : '8h',
   logLevel : 1, //0=No log at all, 1=Info, 2=Info,Requests
   logSize : '5K', // For Demo we rotate every 5K written
@@ -739,7 +739,7 @@ function start(rebuild=0,callback=null,startOptions={}){
     // clean the cache
     Object.keys(require.cache).forEach((id) => {
       if (id.indexOf(path.join(process.cwd(), myOptions.watchedDir))>=0 ||
-          id.indexOf('ngx-do-proxy/core')>=0) {
+          id.indexOf('ngx-do-api-gateway/core')>=0) {
         console.log('Reloading', id);
         delete require.cache[id];
       }
@@ -773,7 +773,7 @@ function start(rebuild=0,callback=null,startOptions={}){
           },myOptions.greenLock));
       rootServer=rootServer.listen(80, 443,function(){
         createServer(app,corePlugins,plugins);
-        console.log('ngx-do-proxy, Started secure on port: 443' , chalk.green(443))
+        console.log('ngx-do-api-gateway, Started secure on port: 443' , chalk.green(443))
         callback && callback();
       });
     } else {
@@ -781,7 +781,7 @@ function start(rebuild=0,callback=null,startOptions={}){
       const port = process.env.PORT || myOptions.port;
       rootServer=app.listen(port, () => {
         createServer(app,corePlugins,plugins);
-        console.log('ngx-do-proxy, Started on port:' , chalk.green(port));
+        console.log('ngx-do-api-gateway, Started on port:' , chalk.green(port));
         callback && callback();
       })
       enableDestroy(rootServer)
@@ -838,7 +838,7 @@ module.exports = {
         process.stdout.write(s);
       }
     }
-    if (myOptions.logLevel>0) console.log("ngx-do-proxy "+require('./package.json').version);
+    if (myOptions.logLevel>0) console.log("ngx-do-api-gateway "+require('./package.json').version);
     
     myOptions.greenLockEnabled=(strToBool(myOptions.greenLock.agreeTos) 
         && myOptions.greenLock.approveDomains.length>0 

@@ -12,7 +12,7 @@ export class SurveyEditorComponent implements OnInit, OnDestroy {
   @Input() json;
   @Input() surveyJson;
   @Input() surveyData;
-  @Input() onSave;
+  @Input() save;
   @Input() options;
   @Input() licensed;
   private editor: any;
@@ -37,8 +37,8 @@ export class SurveyEditorComponent implements OnInit, OnDestroy {
     this.editor = new SurveyEditor.SurveyEditor('surveyEditorContainer', editorOptions);
     this.editor.text = (data === 'string') ? data : JSON.stringify(data);
      this.editor.saveSurveyFunc = function() {
-      if (this.onSave) {
-        this.onSave(JSON.parse(this.editor.text));
+      if (this.save) {
+        this.save(JSON.parse(this.editor.text));
       } else {
         this.surveyJson = JSON.parse(this.editor.text);
       }
