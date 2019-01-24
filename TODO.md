@@ -35,7 +35,7 @@ My work list on activities to work on.
 1. More pipes to core
 1. Profile-card to pages
 1. AddMonitoring of App: use example form insight: https://github.com/angulartics/angulartics2 / https://codeburst.io/using-google-analytics-with-angular-25c93bffaa18 https://geeklearning.io/monitor-your-angular-app-with-application-insights/
-
+1. ApiManager plugin on /api based on swagger
 
 ## Rebuild of package structure
 ```

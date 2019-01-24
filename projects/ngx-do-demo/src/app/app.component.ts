@@ -68,10 +68,12 @@ export class AppComponent implements OnInit {
            this.sidenav.open();
            //this.matDrawerShow=false;
            break;    
-         case "none": break;   
-         default: //"collapse"
+         
+         case "collapse": //"collapse"
            this.drawer.open();
            this.sidenav.close();
+         case "none": 
+         default:   
        }
      },0);
   }
@@ -97,7 +99,7 @@ export class AppComponent implements OnInit {
   
   _selectedMenu(menu){
     if (this.sideNavMode=='over') this.sidenav.close();
-    if (menu.menu){this.sideMenu(menu)}
+    if (menu.menu){this.sideMenu(menu.menu)}
   };
 
 
