@@ -1,6 +1,6 @@
 {
   "name": "ngx-do-widgets",
-  "version": "0.3.2",
+  "version": "0.3.3",
   "license": "MIT",
   "scripts": {
     "scss_bundle": "node ../../node_modules/bundle-scss/dist/bin/bundle-scss --config",
@@ -27,10 +27,9 @@
     "@angular/platform-browser-dynamic": "^7.2.1 || ^7.0.0",
     "@angular/router": "^7.2.1 || ^7.0.0"
   },
-  "dependencies": {
-  },
+  "dependencies": {},
   "bundleStyle": {
-    "dest": "../../dist/ngx-do-widgeets/_theming.scss",
+    "dest": "../../dist/ngx-do-widgets/_theming.scss",
     "mask": "./src/lib/**/*.theme.scss",
     "sort": []
   }
