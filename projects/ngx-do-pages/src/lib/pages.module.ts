@@ -23,6 +23,7 @@ import { SecurityComponent } from './security/security.component';
 import { ProfileComponent } from './profile/profile.component';
 import { ProfileCardComponent } from './profile-card/profile-card.component';
 import { KeyVaultComponent } from './keyvault/keyvault.component';
+import { UserGroupsComponent } from './usergroups/usergroups.component';
 import { 
  // NgxCoreModule,
   NgxDoUiModule } from 'ngx-do';
@@ -44,7 +45,7 @@ import {
         FormsModule,
         MatTabsModule,
         NgxDoUiModule,
-   //     NgxCoreModule,
+
     ],
     declarations: [
         ContactComponent,
@@ -54,6 +55,7 @@ import {
         ProfileComponent,
         SecurityComponent,
         KeyVaultComponent,
+        UserGroupsComponent,
     ],
     exports:[
       ContactComponent,
@@ -63,6 +65,7 @@ import {
         ProfileComponent,
         SecurityComponent,
         KeyVaultComponent,
+        UserGroupsComponent,
     ]
 })
 export class NgxDoPagesModule {

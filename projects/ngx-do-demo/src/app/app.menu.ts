@@ -173,6 +173,12 @@ export const AppMenu: Array<object> = [
             'chip': false,
             'open': false,
         }, {
+            'name': 'UserGroups',
+            'link': 'pages/usergroups',
+            'icon': 'verified_user',
+            'chip': false,
+            'open': false,
+        }, {
             'name': 'Do Proxy',
             'link': 'pages/doproxy',
             'icon': 'build',

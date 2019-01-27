@@ -6,6 +6,8 @@ import { ErrorComponent } from './error/error.component';
 import { SecurityComponent } from './security/security.component';
 import { ProfileComponent } from './profile/profile.component';
 import { KeyVaultComponent } from './keyvault/keyvault.component';
+import { UserGroupsComponent } from './usergroups/usergroups.component';
+
 import { CoreAuth} from 'ngx-do';
 
 export const pagesRoutes: Routes = [
@@ -26,5 +28,7 @@ export const pagesRoutes: Routes = [
     { path: 'keyvault', component: KeyVaultComponent , data: { animation: 'keyvault', expectedRole:'admin'  }, canActivate: [CoreAuth]
     },
      { path: 'keyvault/:id', component: KeyVaultComponent , data: { animation: 'keyvault', expectedRole:'admin'  }, canActivate: [CoreAuth]
+    },
+    { path: 'usergroups', component: UserGroupsComponent , data: { animation: 'usergroups', expectedRole:'admin'  }, canActivate: [CoreAuth]
     },
 ];
