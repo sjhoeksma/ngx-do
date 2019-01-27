@@ -73,10 +73,8 @@ export class SidemenuItemComponent implements OnInit {
 
    public isVisible() {
      let ret = true;
-     if (!this.menu) { ret = false; }
-     else if (typeof(this.menu.visible) === 'function') { ret = this.visibleRole && this.menu.visible() ; }
-     else {ret = this.visibleRole && (this.menu.visible !== false)};
-     if (ret!=this.visibleMenu) this.visibleMenu=ret;
+     if (!this.menu) { ret = false; } else if (typeof(this.menu.visible) === 'function') { ret = this.visibleRole && this.menu.visible() ; } else {ret = this.visibleRole && (this.menu.visible !== false); }
+     if (ret !== this.visibleMenu) { this.visibleMenu = ret; }
      return this.visibleMenu;
    }
 

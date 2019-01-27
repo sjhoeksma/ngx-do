@@ -1,0 +1,52 @@
+<div class="ngx-do-usergroups">
+<ngx-datatable 
+      #mydatatable
+      class="material"
+      [headerHeight]="40"
+      [rowHeight]="40"       
+      [columnMode]="'force'"
+      [footerHeight]="0"
+      [rowHeight]="'auto'"
+      [rows]="rows"
+      >
+      <ngx-datatable-column name="user" [draggable]="false" >
+        <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+          <div class="usergroups_field"
+            (dblclick)="editing[rowIndex + '-user']= !(value)"
+            *ngIf="!editing[rowIndex + '-user']">
+            {{(value ? value : "dbClick to edit")}}
+          </div>
+           <input
+            matInput
+            autofocus
+            (blur)="updateValue($event, 'user', rowIndex)"
+            *ngIf="editing[rowIndex+ '-user']"
+            type="text"
+            [value]="value"
+          />
+        </ng-template>
+      </ngx-datatable-column>
+  
+      <ngx-datatable-column name="groups" [draggable]="false" >
+        <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">  
+          <div class="usergroups_field"
+            (dblclick)="editing[rowIndex + '-groups'] = true"
+            *ngIf="!editing[rowIndex + '-groups']">
+            {{(value ? value : "dbClick to edit")}}
+          </div>
+           <mat-select 
+               placeholder="select group"           
+               *ngIf="editing[rowIndex + '-groups']"
+              (selectionChange)="updateMatValue($event, 'groups', rowIndex)"
+              (openedChange)="openedMatValue($event,'groups',rowIndex)"
+              [value]="value"
+              multiple         
+              >
+            <mat-option *ngFor="let group of groups" [value]="group">{{group}}</mat-option>
+          </mat-select>
+        </ng-template>
+      </ngx-datatable-column>
+
+  
+  </ngx-datatable>
+</div>

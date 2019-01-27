@@ -1,20 +1,18 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { APP_BASE_HREF } from '@angular/common';
-import { NgxDoCoreModule } from '../../core/core.module';
-import { RouterModule } from '@angular/router';
-import { SidemenuComponent } from './sidemenu.component';
+import { NgxDoCoreModule} from '../../core/core.module';
+import { AuthGroupsComponent } from './authgroups.component';
 
-describe('SidemenuComponent', () => {
-  let component: SidemenuComponent;
-  let fixture: ComponentFixture<SidemenuComponent>;
+describe('AuthGroupsComponent', () => {
+  let component: AuthGroupsComponent;
+  let fixture: ComponentFixture<AuthGroupsComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
         NgxDoCoreModule,
-        RouterModule.forRoot([]),
       ], providers: [
-        {provide: 'Environment', useValue: []},
+        {provide: 'Environment', useValue: {}},
         {provide: APP_BASE_HREF, useValue: '/'}
       ],
     })
@@ -22,7 +20,7 @@ describe('SidemenuComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(SidemenuComponent);
+    fixture = TestBed.createComponent(AuthGroupsComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

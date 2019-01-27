@@ -60,11 +60,11 @@ export class CRUDComponent {
    openedMatValue(event, cell, rowIndex) {
     if (!event) { this.editing[rowIndex + '-' + cell] = false; }
   }
-  
+
 
   deleteCRUD(rowIndex) {
-    let dialogRef = this.dialog.open(ConfirmDialog, 
-        {data: {text:"You want to remove the rights"}});
+    const dialogRef = this.dialog.open(ConfirmDialog,
+        {data: {text: 'You want to remove the rights'}});
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {

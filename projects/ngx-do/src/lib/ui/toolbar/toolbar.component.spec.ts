@@ -1,7 +1,7 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { APP_BASE_HREF } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
-import { CoreModule } from '../../core/core.module';
+import { NgxDoCoreModule } from '../../core/core.module';
 import { RouterModule } from '@angular/router';
 import { RestangularModule } from 'ngx-restangular';
 import { ToolbarComponent } from './toolbar.component';
@@ -15,7 +15,7 @@ describe('ToolbarComponent', () => {
       imports: [
         BrowserAnimationsModule,
         RouterModule.forRoot([]),
-        CoreModule,
+        NgxDoCoreModule,
         RestangularModule,
       ], providers: [
         {provide: 'Environment', useValue: {}},

@@ -100,7 +100,7 @@ export class CoreConfig {
      this._backendList = [];
      if (this.environment['backendList']) {
         this.environment['backendList'].forEach(function(id) {
-         this._backendList.push({id: id, title: this.environment[id]['title'] || id, 
+         this._backendList.push({id: id, title: this.environment[id]['title'] || id,
                                  signup: this.environment[id]['signup'],
                                  type: this.environment[id]['type']});
         }, this);

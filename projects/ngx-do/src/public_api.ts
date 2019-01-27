@@ -23,6 +23,8 @@ export * from './lib/ui/signup/signup.component';
 export * from './lib/ui/logout/logout.component';
 export * from './lib/ui/iframe/iframe.component';
 export * from './lib/ui/crud/crud.component';
+export * from './lib/ui/authgroups/authgroups.component';
+export * from './lib/ui/keyvault/keyvault.component';
 export * from './lib/ui/fullscreen/fullscreen.component';
 export * from './lib/ui/search-bar/search-bar.component';
 export * from './lib/ui/sidemenu/sidemenu.component';

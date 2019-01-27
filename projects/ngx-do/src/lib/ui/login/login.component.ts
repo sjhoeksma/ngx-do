@@ -12,7 +12,7 @@ import { CoreAuth } from '../../core/core.auth';
 export class LoginComponent implements OnInit {
 
   userForm: FormGroup;
-  backendList =[];
+  backendList = [];
   shake = false;
   formErrors = {
     'email': '',
@@ -38,9 +38,9 @@ export class LoginComponent implements OnInit {
               private router: Router,
               private activatedRoute: ActivatedRoute,
               private coreAuth: CoreAuth) {
-    //Filter available backends
-    this.coreConfig.backendList.forEach(backend=>{
-      if (this.coreAuth.authServiceEnabled(backend.type)){
+    // Filter available backends
+    this.coreConfig.backendList.forEach(backend => {
+      if (this.coreAuth.authServiceEnabled(backend.type)) {
           this.backendList.push(backend);
       }
     });

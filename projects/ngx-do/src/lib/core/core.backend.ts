@@ -16,7 +16,7 @@ export class CoreBackend implements OnDestroy {
    constructor(protected coreEvent: CoreEvent,
           protected coreAuth: CoreAuth,
           protected coreConfig: CoreConfig,
-          protected router: Router, 
+          protected router: Router,
           protected rest: Restangular,
           protected snackBar: MatSnackBar
       ) {

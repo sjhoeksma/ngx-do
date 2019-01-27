@@ -1,5 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { CoreModule } from '../../core/core.module';
+import { NgxDoCoreModule } from '../../core/core.module';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { SearchBarComponent } from './search-bar.component';
 
@@ -11,7 +11,7 @@ describe('SearchBarComponent', () => {
     TestBed.configureTestingModule({
       imports: [
         BrowserAnimationsModule,
-        CoreModule,
+        NgxDoCoreModule,
       ]
     })
     .compileComponents();

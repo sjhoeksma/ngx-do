@@ -1,5 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { CoreModule } from '../../core/core.module';
+import { NgxDoCoreModule } from '../../core/core.module';
 import { ToolbarNotificationComponent } from './toolbar-notification.component';
 
 describe('ToolbarNotificationComponent', () => {
@@ -9,7 +9,7 @@ describe('ToolbarNotificationComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
-        CoreModule,
+        NgxDoCoreModule,
       ]
     })
     .compileComponents();

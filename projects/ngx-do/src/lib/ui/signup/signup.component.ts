@@ -32,10 +32,11 @@ export class SignupComponent implements OnInit {
               public coreConfig: CoreConfig,
               private router: Router,
               private activatedRoute: ActivatedRoute,
-              private coreAuth: CoreAuth) { 
-      this.coreConfig.backendList.forEach(backend=>{
-      if (this.coreAuth.authServiceEnabled(backend.type))
+              private coreAuth: CoreAuth) {
+      this.coreConfig.backendList.forEach(backend => {
+      if (this.coreAuth.authServiceEnabled(backend.type)) {
           this.backendList.push(backend);
+      }
     });
   }
 

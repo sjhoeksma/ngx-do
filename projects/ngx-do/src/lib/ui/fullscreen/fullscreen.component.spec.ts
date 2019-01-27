@@ -1,5 +1,5 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
-import { CoreModule } from '../../core/core.module';
+import { NgxDoCoreModule } from '../../core/core.module';
 import { FullscreenComponent } from './fullscreen.component';
 
 describe('FullscreenComponent', () => {
@@ -9,7 +9,7 @@ describe('FullscreenComponent', () => {
   beforeEach(async(() => {
     TestBed.configureTestingModule({
       imports: [
-        CoreModule,
+        NgxDoCoreModule,
       ]
     })
     .compileComponents();

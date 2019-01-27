@@ -6,17 +6,17 @@ import { CoreConfig } from './core.config';
 import { CoreEvent } from './core.event';
 import { BaseAuth } from './base.auth';
 
-//TODO: Add Register function to create clear
+// TODO: Add Register function to create clear
 
 
 export interface AuthInterface {
-  connect(coreConfig: CoreConfig, rest: Restangular):Promise<boolean>; //Connect/Create the service
   roles: Array<string>; // The roles set in the JWT token and mapped based on <env>groupMap
   authToken: string; // JWT access token
   accessToken: string; // Encrypted access token
   loggedIn:  boolean; // Is user logged in
   authUser: string; // The name of the authenticated user
   isReady: Promise<boolean>; // Make sure the class is ready to be used
+  connect(coreConfig: CoreConfig, rest: Restangular): Promise<boolean>; // Connect/Create the service
   login(user: string, pass: string, remember: boolean): Promise<boolean> ; // Login
   signup(user: string, pass: string, remember: boolean):  Promise<boolean>; // Create account
   logout(byUser: boolean): Promise<boolean>; // Logout
@@ -27,8 +27,6 @@ export interface AuthInterface {
 
 @Injectable({providedIn: 'root'})
 export class CoreAuth implements CanActivate , AuthInterface {
-
-  private services : object = {};
   constructor(protected coreConfig: CoreConfig, protected router: Router,
                 private activatedRoute: ActivatedRoute,
                protected rest: Restangular, protected coreEvent: CoreEvent) {
@@ -47,17 +45,6 @@ export class CoreAuth implements CanActivate , AuthInterface {
     });
     */
   }
-  
-  public connect(coreConfig: CoreConfig, rest: Restangular):Promise<boolean>{
-    return this.authService.isReady;
-  }
-  
-  public registerAuthService(name:string,service:AuthInterface){
-    console.log("Registered AuthService",name);
-    this.services[name]=service;
-  }
-  
-  public authServiceEnabled(name:string):boolean {return name ?  this.services[name] : false;}
 
   public get authService(): AuthInterface { // Create authentication service on the fly
     if (!this._authService || this._authBackend !== this.coreConfig.backend) {
@@ -68,7 +55,7 @@ export class CoreAuth implements CanActivate , AuthInterface {
                        this.coreConfig.backendEnv['type']);
          this._authService = new BaseAuth();
       }
-      this.isReady = this._authService.connect(this.coreConfig,this.rest);
+      this.isReady = this._authService.connect(this.coreConfig, this.rest);
 
       // Wait till the new _authService is ready to see if user info should be loaded
       this.isReady.then(loggedIn => {
@@ -118,6 +105,8 @@ export class CoreAuth implements CanActivate , AuthInterface {
     return this.authService ? this._authService.authUser : null;
   }
 
+  private services: object = {};
+
   /* Implementation of the AuthInterface implementing redirect to real implementation */
   private _authService: AuthInterface;
   private _authBackend: String;
@@ -126,6 +115,17 @@ export class CoreAuth implements CanActivate , AuthInterface {
 
   // On lock is called when none active timeout is reached
   private _lockLogout;
+
+  public connect(coreConfig: CoreConfig, rest: Restangular): Promise<boolean> {
+    return this.authService.isReady;
+  }
+
+  public registerAuthService(name: string, service: AuthInterface) {
+    console.log('Registered AuthService', name);
+    this.services[name] = service;
+  }
+
+  public authServiceEnabled(name: string): boolean {return name ?  this.services[name] : false; }
 
   /* Refresh timer forcing background refresh of token */
   public refresh(now: boolean= true) {

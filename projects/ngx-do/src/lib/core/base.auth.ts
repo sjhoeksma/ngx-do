@@ -5,7 +5,7 @@ import {Restangular } from 'ngx-restangular';
 export class BaseAuth implements AuthInterface {
   public static sessionKey = 'session_key';
   public static accessKey = 'access_key';
-  protected rest : Restangular;
+  protected rest: Restangular;
   protected coreConfig: CoreConfig;
   protected _isReady: Promise<boolean>;
 
@@ -18,13 +18,13 @@ export class BaseAuth implements AuthInterface {
     this._token = null;
     return Promise.resolve(this.loggedIn);
   }
-  
-  public connect(coreConfig: CoreConfig, rest: Restangular):Promise<boolean>{
+
+  public connect(coreConfig: CoreConfig, rest: Restangular): Promise<boolean> {
     this.coreConfig = coreConfig;
-    this.rest=rest;
+    this.rest = rest;
     this._isReady = null;
     this.rest.provider.setBaseUrl(this.coreConfig.backendValue('apiURL'));
-    return this.isReady
+    return this.isReady;
   }
 
   public userData(): Promise<object> {
@@ -113,7 +113,7 @@ export class BaseAuth implements AuthInterface {
   public get roles(): Array<string> {
     const token = this.coreConfig.decodeJWT(this._token);
     const groups = ((token) ? token['groups'] : ['default']) || ['default'];
-//TODO: include from Auth    
+// TODO: include from Auth
     if (this._groups) { groups.concat(this._groups); }
     const groupMap = this.coreConfig.backendValue('groupMap', {});
     groups.forEach(group => {

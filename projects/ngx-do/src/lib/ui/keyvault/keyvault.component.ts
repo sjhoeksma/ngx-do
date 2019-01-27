@@ -8,50 +8,50 @@ import { Restangular } from 'ngx-restangular';
   templateUrl: './keyvault.component.html',
   styleUrls: ['./keyvault.component.scss']
 })
-export class KeyvaultComponent {  
+export class KeyVaultComponent {
   editing = {};
   rows = [];
   groups = [];
   keyvault;
 
-  constructor(public dialog: MatDialog,private restangular:Restangular) {
-    this.restangular.all('groups').getList().subscribe(data=>{
-      let grps = [];
+  constructor(public dialog: MatDialog, private restangular: Restangular) {
+    this.restangular.all('groups').getList().subscribe(data => {
+      const grps = [];
       data.forEach(function(obj) {
          grps.push(obj.group);
       });
-      this.groups =grps;
+      this.groups = grps;
     });
     this.keyvault = this.restangular.all('keyvault');
-    this.keyvault.getList().subscribe(data=>{
+    this.keyvault.getList().subscribe(data => {
       this.rows = data;
     });
-    
+
   }
 
 
   updateValue(event, cell, rowIndex) {
     this.editing[rowIndex + '-' + cell] = false;
     this.rows[rowIndex][cell] = event.target.value;
-    if (this.rows[rowIndex].save){
-      this.rows[rowIndex].save(); //Save the key
+    if (this.rows[rowIndex].save) {
+      this.rows[rowIndex].save(); // Save the key
     } else {
-      let rec =this.keyvault.post(this.rows[rowIndex]).subscribe((data) => {
-         this.rows[rowIndex]=data;
+      this.keyvault.post(this.rows[rowIndex]).subscribe((data) => {
+         this.rows[rowIndex] = data;
        });
     }
     this.rows = [...this.rows];
   }
-  
+
   updateMatValue(event, cell, rowIndex) {
     this.editing[rowIndex + '-' + cell] = false;
     this.rows[rowIndex][cell] = event.value;
-    if (this.rows[rowIndex].save){
-      this.rows[rowIndex].save(); //Save the key
+    if (this.rows[rowIndex].save) {
+      this.rows[rowIndex].save(); // Save the key
     } else {
       this.keyvault.post(this.rows[rowIndex]).subscribe((data) => {
-         this.rows[rowIndex]=data;
-       })
+         this.rows[rowIndex] = data;
+       });
     }
     this.rows = [...this.rows];
   }
@@ -59,14 +59,14 @@ export class KeyvaultComponent {
    openedMatValue(event, cell, rowIndex) {
     if (!event) { this.editing[rowIndex + '-' + cell] = false; }
   }
-  
+
   delete(rowIndex) {
-    let dialogRef = this.dialog.open(ConfirmDialog, 
-        {data: {text:"You want to remove the key"}});
+    const dialogRef = this.dialog.open(ConfirmDialog,
+        {data: {text: 'You want to remove the key'}});
 
       dialogRef.afterClosed().subscribe(result => {
         if (result) {
-          if (this.rows[rowIndex].remove){
+          if (this.rows[rowIndex].remove) {
             this.rows[rowIndex].remove();
           }
           const rows = [...this.rows];

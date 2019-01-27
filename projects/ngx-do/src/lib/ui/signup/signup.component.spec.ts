@@ -2,7 +2,7 @@ import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { APP_BASE_HREF } from '@angular/common';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { RouterModule } from '@angular/router';
-import { CoreModule} from '../../core/core.module';
+import { NgxDoCoreModule} from '../../core/core.module';
 import { RestangularModule } from 'ngx-restangular';
 import { SignupComponent } from './signup.component';
 
@@ -14,7 +14,7 @@ describe('SignupComponent', () => {
     TestBed.configureTestingModule({
       imports: [
         BrowserAnimationsModule,
-        CoreModule,
+        NgxDoCoreModule,
         RouterModule.forRoot([]),
         RestangularModule,
       ], providers: [

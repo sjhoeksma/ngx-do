@@ -1,5 +1,5 @@
-import { Component,Inject,OnInit } from '@angular/core';
-import { MatDialogRef,MAT_DIALOG_DATA } from "@angular/material";
+import { Component, Inject, OnInit } from '@angular/core';
+import { MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 
 @Component({
   selector: 'ngx-do-confirm-dialog',
@@ -17,15 +17,15 @@ import { MatDialogRef,MAT_DIALOG_DATA } from "@angular/material";
   `
 })
 export class ConfirmDialog implements OnInit {
- title : string = "Please Confirm";
- question  : string = "Are your sure ?";
- text  : string = "You want to perform the action";
+ title = 'Please Confirm';
+ question = 'Are your sure ?';
+ text = 'You want to perform the action';
  constructor(
   @Inject(MAT_DIALOG_DATA) private data: any,
-  public  dialogRef: MatDialogRef<ConfirmDialog>){}
+  public  dialogRef: MatDialogRef<ConfirmDialog>) {}
   public ngOnInit() {
-    if (this.data.title) this.title = this.data.title;
-    if (this.data.question) this.question = this.data.question;
-    if (this.data.text) this.text = this.data.text;
+    if (this.data.title) { this.title = this.data.title; }
+    if (this.data.question) { this.question = this.data.question; }
+    if (this.data.text) { this.text = this.data.text; }
   }
 }
