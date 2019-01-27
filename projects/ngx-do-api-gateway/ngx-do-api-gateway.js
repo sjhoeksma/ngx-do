@@ -1,6 +1,7 @@
 const fs = require('fs');
 var Request = require('request');
 const bodyParser = require('body-parser')
+const express = require('express')
 const jsonServer = require('json-server')
 const jwt = require('jsonwebtoken')
 const path = require('path')
@@ -65,7 +66,8 @@ var myOptions = Object.assign({
       // You MUST NOT build clients that accept the ToS without asking the user
     , agreeTos: false  //Needs to be set by user to true
     , communityMember: false // Communitymember gets notified of important updates
-  }
+  },
+  dbDriver : 'json-server' //The database server to use , 'json-server', 'mongodb', 'tingodb'
 });
 
 var readError = false, app,rootServer
@@ -448,10 +450,15 @@ function concatJson(userOptions, callback) {
 //Create the api-proxy server, with memory and persistent to file based json-server
 function createServer(server,corePlugins,plugins){
   const routes = myOptions.routes ? JSON.parse(fs.readFileSync(myOptions.routes, 'UTF-8')) : null;//Load the routes from json
-  const router = jsonServer.router(path.join(process.cwd(),myOptions.dataDir,myOptions.dbName)) //Load the database
-
-  server.db = router.db   //Add a reference to our router database to the server
-  if (routes) server.use(jsonServer.rewriter(routes)) //Set the custom routes
+  let router;
+  if (myOptions.dbDriver=='json-server'){
+     router = jsonServer.router(path.join(process.cwd(),myOptions.dataDir,myOptions.dbName)) //Load the database
+     server.db = router.db   //Add a reference to our router database to the server
+     if (routes) server.use(jsonServer.rewriter(routes)) //Set the custom routes
+//TODO: Remove the db router
+  }
+  
+ 
   server.use(session({ 
     secret: myOptions.secretKey, 
     resave: true,
@@ -753,7 +760,7 @@ function start(rebuild=0,callback=null,startOptions={}){
       }
     });
 
-    app = jsonServer.create() //Create the app server
+    app = (myOptions.dbDriver=='json-server' ? jsonServer : express).create() //Create the app server
 
     //Check if we should create a greenlock wrapper
     if (myOptions.greenLockEnabled) {

@@ -73,7 +73,7 @@ if (proxy.options.crudTables || proxy.options.systemCrudTables) plugin.use((req,
             return res.status(status).json({status,message})
           }
         }
-        let crudByTable = (proxy.options.crudByTable || {}).assign(proxy.options.systemCrudByTable);
+        let crudByTable = (proxy.options.crudByTable || []).concat(proxy.options.systemCrudByTable);
         //check if the user is allowed to do action based on the table crud
         if (crudByTable){
           let tableAllowed = false;

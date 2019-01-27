@@ -29,6 +29,8 @@ My work list on activities to work on.
 1. ApiManager plugin on /api based on swagger
 1. Run basic auth when not authorized using 
 1. Spinner to widgets, also add to main page of demo so you can use overall
+1. User info is loaded 3 times on startup, also it loads before auth
+1. Implement in memory db: http://www.tingodb.com/
 
 
 ## Rebuild of package structure

@@ -1,6 +1,6 @@
 {
   "name": "ngx-do-api-gateway",
-  "version": "0.3.4",
+  "version": "0.3.5",
   "license": "MIT",
   "main": "ngx-do-api-gateway.js",
   "repository": {
@@ -42,6 +42,7 @@
     "request": "^2.88.0",
     "rotating-file-stream": "^1.3.9",
     "server-destroy": "^1.0.1",
-    "uuid": "^3.3.2"
+    "uuid": "^3.3.2",
+    "tingodb": "^0.6.1"
   }
 }

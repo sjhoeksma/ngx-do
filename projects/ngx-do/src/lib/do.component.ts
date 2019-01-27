@@ -15,7 +15,7 @@ export class DoComponent implements OnInit {
 
 
  constructor(protected coreAuth: CoreAuth, public coreConfig: CoreConfig, @Inject('Environment') private env: any) {
-   console.log((this.env.title || this.env.name) + ' v' + this.env.version);
+   console.log((this.env.title || this.env.name) + ': ' + this.env.version);
    let title = this.env.title;
    if (title) {
      if (this.coreConfig.DEMO) { title = title + ' ' + 'DEMO'; }

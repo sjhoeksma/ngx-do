@@ -8,7 +8,6 @@
   "version": "0.2.1-1",
   "scripts": {
     "ng": "ng",
-
     "start": "npm run inc_release_demo && npm run build && ng serve ngx-do-demo",
     "test": "ng test ngx-do-demo --code-coverage",
     "test-single": "ng test ngx-do-cdk --watch=false --code-coverage",
@@ -33,7 +32,6 @@
     "build_all": "npm run build_do && npm run build_pages && npm run build_ai && npm run build_survey && npm run build_widgets && npm run build_wip",
     "publish_all": "npm run publish_do && npm run publish_pages && npm run publish_ai && npm run publish_survey && npm run publish_widgets && npm run publish_wip",
     "build_demo": "npm run inc_patch_demo && ng build ngx-do-demo --",
-
     "gateway": "cd projects/ngx-do-api-gateway && node index.js",
     "build_gateway": "cd projects/ngx-do-api-gateway && npm run build",
     "publish_gateway": "npm run build_gateway && cd dist/ngx-do-api-gateway && npm publish"
