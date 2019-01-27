@@ -15,6 +15,7 @@ export class SurveyEditorComponent implements OnInit, OnDestroy {
   @Input() save;
   @Input() options;
   @Input() licensed;
+  loading : boolean = true;
   private editor: any;
   constructor() {
   }
@@ -32,9 +33,14 @@ export class SurveyEditorComponent implements OnInit, OnDestroy {
      // Auto Save the editor
      isAutoSave: true,
      // Remove the license header
-     haveCommercialLicense: this.licensed
+     haveCommercialLicense: this.licensed,
+
+    
     }, this.options);
     this.editor = new SurveyEditor.SurveyEditor('surveyEditorContainer', editorOptions);
+     this.editor.onDesignerSurveyCreated.add(function(sender, options){
+       this.loading=false;
+    }.bind(this));
     this.editor.text = (data === 'string') ? data : JSON.stringify(data);
      this.editor.saveSurveyFunc = function() {
       if (this.save) {
@@ -46,6 +52,7 @@ export class SurveyEditorComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+     setTimeout(()=>{
      if (this.surveyJson) {
         const jsonSubject: Subject<object> = new Subject<object>();
         this.json = jsonSubject.asObservable();
@@ -58,6 +65,7 @@ export class SurveyEditorComponent implements OnInit, OnDestroy {
            if (update) { this.updateJson(update); }
          });
       }
+     },0);
   }
 
   ngOnDestroy() {
