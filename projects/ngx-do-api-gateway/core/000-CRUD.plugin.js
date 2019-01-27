@@ -26,8 +26,8 @@ plugin.use("/CRUD",(req,res,next)=>{
        rec['updatedAt']=req.body.updatedAt;
        rec['updatedBy']=req.body.updatedBy;
        db.auth[index]=rec;
-       proxy.server.db.write();
-       let message = {id:rec.id,crud:rec.crud || [],tables:myOptions.crudTables};
+       plugin.db.write();
+       let message = {id:rec.id,crud:rec.crud || [],tables:proxy.options.crudTables};
        res.status(status).json(message) 
        return;
      }
@@ -38,11 +38,13 @@ plugin.use("/CRUD",(req,res,next)=>{
 }) 
 
 //Main CRUD plugin to load when there are crudTables enables
-if (proxy.options.crudTables) plugin.use((req,res,next)=>{
+if (proxy.options.crudTables || proxy.options.systemCrudTables) plugin.use((req,res,next)=>{
   let path = req.url.split('/');
   let table = path[1];
-  let admin = proxy.hasRole(proxy.options.crudBypass || 'admin',req),index;
-  if (!admin && proxy.options.crudTables.indexOf(table)>=0){
+  let crudTables = (proxy.options.crudTables || []).concat(proxy.options.systemCrudTables);
+  let crudBypass = (proxy.options.crudBypass  || []).concat(proxy.options.systemCrudBypass ||['admin']);
+  let index;
+  if (!proxy.hasRole(crudBypass,req) && crudTables.indexOf(table)>=0){
     //Load the crud assigned to me
     let decode = proxy.decodeToken(req);
     if (decode && isNaN(decode)){ 
@@ -71,11 +73,11 @@ if (proxy.options.crudTables) plugin.use((req,res,next)=>{
             return res.status(status).json({status,message})
           }
         }
-
+        let crudByTable = (proxy.options.crudByTable || {}).assign(proxy.options.systemCrudByTable);
         //check if the user is allowed to do action based on the table crud
-        if (proxy.options.crudByTable){
+        if (crudByTable){
           let tableAllowed = false;
-          proxy.options.crudByTable.forEach(function(crud){
+          crudByTable.forEach(function(crud){
               if (crud.table==table && (crud.user==email || proxy.containsValue(crud.user,myGroups))) {
                 if ((req.method=="GET" && crud.CRUD.indexOf('r')>=0)|| 
                     (req.method=="PUT" && crud.CRUD.indexOf('u')>=0) || 

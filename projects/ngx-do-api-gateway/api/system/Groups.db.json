@@ -1,0 +1,11 @@
+{
+  groups:[
+    { id: 1 ,group: 'admin', description: 'Group with no restrictions'},
+    { id: 2 ,group: 'default', description: 'Group without any additional rights'},
+    { id: 3 ,group: 'order', description: 'Group of user who can order stuff'},
+    { id: 4 ,group: 'approve', description: 'Group who can approve'},
+    { id: 5, group: 'backend', description: 'Backend group for processing'},
+    { id: 6, group: 'catalogue', description: 'Group with rights to manage catalogue'},
+    { id: 7, group: 'node_red', description: 'Group allowed to do node_red modeling'}
+  ]
+}

@@ -48,9 +48,14 @@ var myOptions = Object.assign({
   adminList: [], //List with users which have by default admin rights
   encryptSystem: false, //Should we encrypt,decrypt system values
   allowAccessToken: ['admin'], //List with roles allowed to use access_token
-  crudTables: ['users'], //Array with crud Protected tables, or null when disabled
-  crudBypass: ['admin'], //Which groups are allowed to by pass crud
+  crudTables: [], //Array with crud Protected tables, or null when disabled
+  crudBypass: [], //Which groups are allowed to by pass crud
   crudByTable: null, //Crud object with tables and there with groups/users having general rights
+  systemCrudByPass: ['admin'], //System group to bypass crud
+  systemCrudTables: ['groups','users'], //System tables
+  systemCrudByTable: [
+      {user:'default',table:'groups',CRUD:'r'},
+  ],
   crudByApi: null, //Crud object api and there cruds with groups/users having general rights
   'demo-data': true, //Should demo data api be loaded
   logFile: null, //When set with name the console log will be written here
@@ -562,14 +567,16 @@ function createServer(server,corePlugins,plugins){
         return 
       }
       //create a JWT token with ID, email and roles
-      const groups = db.auth[index].groups || ['default'];
-      if (myOptions.adminList.indexOf(email)>=0 
-          && groups.indexOf('admin')<0) 
+      let groups = (decode.groups || []).concat(db.auth[index].groups || ['default']).filter(
+        function(value, index, self) { 
+            return self.indexOf(value) === index;
+      });
+      if (myOptions.adminList.indexOf(email)>=0 && groups.indexOf('admin')<0) 
         groups.push('admin');
       const id = db.auth[index].id;
       const access_token = createToken({id,email, groups })
       req.session.access_token = access_token;
-      req.session.client_token = req.headers.ClientAuthorization;
+      req.session.client_token = req.headers.client_authorization;
       res.status(200).json({access_token})
     }
     return //No Next
@@ -863,7 +870,7 @@ module.exports = {
   get app(){return app},
   get plugin(){return app._router},//require('express').Router()},
   get options(){return myOptions},
-  get db(){return rootServer.db},
+  get db(){return app.db},
   containsValue: containsValue,
   roles: roles
 }
