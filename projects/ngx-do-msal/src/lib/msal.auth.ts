@@ -9,7 +9,7 @@ export class MsalAuth extends BaseAuth {
 
   constructor(protected coreAuth:CoreAuth){
     super();
-    coreAuth.registerAuthSerice("msal",this);
+    coreAuth.registerAuthService("msal",this);
   }
   
   public connect(coreConfig: CoreConfig, rest: Restangular):Promise<boolean>{
@@ -24,12 +24,12 @@ export class MsalAuth extends BaseAuth {
    */
   private workAround = true; // workaround for session cookie in localstorage and reloading after login
 
-
+  private keys = ['msal.authority', 'msal.acquireTokenUser', 'msal.client.info', 'msal.error', 'msal.error.description', 'msal.session.state', 'msal.token.keys', 'msal.access.token.key', 'msal.expiration.key', 'msal.state.login', 'msal.state.acquireToken', 'msal.state.renew', 'msal.nonce.idtoken', 'msal.username', 'msal.idtoken', 'msal.login.request', 'msal.login.error', 'msal.token.renew.status', 'adal.idtoken'];
   private copyMsal(toLocal: boolean) {
     if (!this.coreConfig.remember) { return; }
-    const keys = ['msal.authority', 'msal.acquireTokenUser', 'msal.client.info', 'msal.error', 'msal.error.description', 'msal.session.state', 'msal.token.keys', 'msal.access.token.key', 'msal.expiration.key', 'msal.state.login', 'msal.state.acquireToken', 'msal.state.renew', 'msal.nonce.idtoken', 'msal.username', 'msal.idtoken', 'msal.login.request', 'msal.login.error', 'msal.token.renew.status', 'adal.idtoken'];
+    
     if (toLocal) {
-      keys.forEach(function(k) {
+      this.keys.forEach(function(k) {
         const v = sessionStorage.getItem(k);
         if (v) {
           localStorage.setItem(k, v);
@@ -38,7 +38,7 @@ export class MsalAuth extends BaseAuth {
         }
       });
     } else {
-      keys.forEach(function(k) {
+      this.keys.forEach(function(k) {
         const v = localStorage.getItem(k);
         if (v &&  !sessionStorage.getItem(k)) {
           sessionStorage.setItem(k, v);
@@ -46,6 +46,13 @@ export class MsalAuth extends BaseAuth {
       });
     }
   }
+  private clearMsal() {
+    this.keys.forEach(function(k) {
+      sessionStorage.removeItem(k);
+      localStorage.removeItem(k);
+    });
+  }
+  
 
   public get isReady(): Promise<boolean> {
     if (!this._isReady) {
@@ -116,11 +123,13 @@ export class MsalAuth extends BaseAuth {
   public logout(byUser: boolean = false): Promise<boolean>  {
     this._accessToken = null;
     this._groups = null;
-    if (this.coreConfig.backendValue('fullLogout', false)) {
+    //Remove WorkArround
+    if (byUser && this.coreConfig.backendValue('fullLogout', false)) {
       super.logout(byUser); // No Routing
       this.msal.logout();
+      this.clearMsal();
       return Promise.resolve(true);
-    }
+    } else if (byUser) this.clearMsal();
     return super.logout(byUser);
   }
 
@@ -138,7 +147,7 @@ export class MsalAuth extends BaseAuth {
           ContentType: 'application/x-www-form-urlencoded'};
         const decoded = this.coreConfig.decodeJWT(token);
         if ( token) { head['Authorization'] = `Bearer ${token}`; }
-        if ( this._accessToken) { head['ClientAuthorization'] = this._accessToken; }
+        if ( this._accessToken) { head['client_authorization'] = this._accessToken; }
         this.rest.one('auth')
            .customPOST({email: decoded['preferred_username'] || decoded['email'],
               signup: this.coreConfig.backendValue('signup', false),
