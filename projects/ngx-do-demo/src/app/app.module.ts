@@ -15,6 +15,7 @@ import { NgxDoCoreModule,
        } from 'ngx-do';
 import { NgxDoPagesModule } from 'ngx-do-pages'
 import { NgxDoWipModule } from 'ngx-do-wip';
+import { NgxDoAiModule } from 'ngx-do-ai';
 import { NgxDoSurveyModule } from 'ngx-do-survey'
 import { AppComponent } from './app.component';
 import { BackendService } from './backend/backend.service';
@@ -56,6 +57,7 @@ export function RestangularConfigFactory (RestangularProvider) {
         NgxDoPagesModule,
         NgxDoWipModule,
         NgxDoSurveyModule,
+        NgxDoAiModule,
         AppRoutesModule,
     ],
     declarations: [AppComponent],

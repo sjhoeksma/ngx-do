@@ -15,15 +15,15 @@
                 <ngx-do-sidemenu [selectedMenu]="selectedMenu" [iconOnly]="true"></ngx-do-sidemenu>
             </mat-drawer>
             <mat-drawer-content style="overflow: hidden;">
-<!--
+
                  <ngx-do-ai-toolbar [aiToken]="aiToken" [sidenav]="sidenav" [drawer]="drawer" [profileRoute]="profileRoute" aiChatbotShow="true" [securityRoute]="securityRoute" [helpRoute]="helpRoute" [settingsRoute]="settingsRoute"
                              [matDrawerShow]="matDrawerShow" style="z-index: 500">
                  </ngx-do-ai-toolbar>
--->               
+<!--              
                   <ngx-do-toolbar [sidenav]="sidenav" [drawer]="drawer" [profileRoute]="profileRoute" [securityRoute]="securityRoute" [helpRoute]="helpRoute" [settingsRoute]="settingsRoute"
-                             [matDrawerShow]="matDrawerShow" style="z-index: 500">
+                    [searchShow]="true" [matDrawerShow]="matDrawerShow" style="z-index: 500">
                  </ngx-do-toolbar>
-
+-->
                 <perfect-scrollbar  style="height: calc(100% - 33px);" >
                     <router-outlet></router-outlet>
                 </perfect-scrollbar>
