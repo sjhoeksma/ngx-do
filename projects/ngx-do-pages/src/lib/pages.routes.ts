@@ -23,8 +23,8 @@ export const pagesRoutes: Routes = [
     },
      { path: 'profile/:id', component: ProfileComponent , data: { animation: 'profile'  }, canActivate: [CoreAuth]
     },
-    { path: 'keyvault', component: KeyVaultComponent , data: { animation: 'keyvault'  }, canActivate: [CoreAuth]
+    { path: 'keyvault', component: KeyVaultComponent , data: { animation: 'keyvault', expectedRole:'admin'  }, canActivate: [CoreAuth]
     },
-     { path: 'keyvault/:id', component: KeyVaultComponent , data: { animation: 'keyvault'  }, canActivate: [CoreAuth]
+     { path: 'keyvault/:id', component: KeyVaultComponent , data: { animation: 'keyvault', expectedRole:'admin'  }, canActivate: [CoreAuth]
     },
 ];
