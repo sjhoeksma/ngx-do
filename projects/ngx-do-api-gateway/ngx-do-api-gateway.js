@@ -494,7 +494,7 @@ function createServer(server,corePlugins,plugins){
 
   
   // We should check auth before we start accessing api services
-  server.all('/auth', (req, res) => {
+  server.all('/auth', (req, res,next) => {
     const db = server.db.getState() //Get the last active database
     const {email, password,signup,type } = req.body
     
@@ -523,6 +523,7 @@ function createServer(server,corePlugins,plugins){
        return index;
     }
     
+    
     if (req.method == 'DELETE') {
         const status=200;
         let message = "Logout";
@@ -541,9 +542,9 @@ function createServer(server,corePlugins,plugins){
         req.session.access_token=null;
         res.status(status).json({status, message})
       } else {
-        const status=200;
-        let message = "Authenticated";
-        res.status(200).json({status, message})
+          const status=200;
+          let message = "Authenticated";
+          res.status(200).json({status, message})
       }
       return //No Next
       
@@ -564,7 +565,7 @@ function createServer(server,corePlugins,plugins){
         req.session.access_token=null;
         req.session.client_token=null;
         res.status(status).json({status, message})
-        return 
+        return; 
       }
       //create a JWT token with ID, email and roles
       let groups = (decode.groups || []).concat(db.auth[index].groups || ['default']).filter(
