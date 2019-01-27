@@ -2,19 +2,15 @@
 My work list on activities to work on.
 
 ## Bugs & Enhancements
-1. Split widgets and core+do
 1. Add all other CDK components to demo project 
-1. Split ngx-do-proxy in multiple modules making it more readable
-1. Add empty base project you could use with ng create
+1. Add empty base project you could use with ng create ngx-do-app
 1. Make function to add/Remove AppMenu  
-1. Rename ngx-do-cdk to ngx-do-lib + all tags do-
 1. Create widget for document and demo ing of widget
 1. Add loading spinner on login and loading modules
 1. Lets encrypt for Proxy: https://git.coolaj86.com/coolaj86/greenlock-express.js
 1. Fix problem if proxy not available
 1. Audience for jwttoken azure should be web side 
 1. Encrypt doProxy auth data with jwt key
-1. Edit table for databases (KeyVault)
 1. Add option to register a function which will be called be fore a restart (plugins)
 1. Session of ngx-proxy should be stored in db (now single node)
 1. Avatar as function
@@ -25,23 +21,20 @@ My work list on activities to work on.
 1. Create trafic light dash, not spinning
 1. Add option to use real database
 1. Add plugin allowing Admin to import export data
-1. Standard page for keyvault entry in pages
 1. Create page allowing Admin to assign roles and reset passwords of users
+1. Create page for admin to assign role to a user
 1. Extends Keyvault API to add options to inidcated encrypted data when not encrypted, use example using res.read
-1. Add loading spinners for long pages like surveyEditor
 1. Implement a proper in merory SQL
-1. Add module to routes pages and core, remove it form PagesModule, speratedImport
-1. Add login,register,... to a core.routes
-1. More pipes to core
-1. Profile-card to pages
 1. AddMonitoring of App: use example form insight: https://github.com/angulartics/angulartics2 / https://codeburst.io/using-google-analytics-with-angular-25c93bffaa18 https://geeklearning.io/monitor-your-angular-app-with-application-insights/
 1. ApiManager plugin on /api based on swagger
+1. Run basic auth when not authorized using 
+1. Spinner to widgets, also add to main page of demo so you can use overall
+
 
 ## Rebuild of package structure
 ```
 ngx-do = Main Library Packages
 ngx-do-msal = The Azure auth library and is registering it self to ngx-do
-ngx-do-gcli = The gateway client
 ngx-do-pages = The default pages
 ngx-do-widgets = All approved widgets
 ngx-do-ai = Contains the Dialog flow integration, register function into core 
