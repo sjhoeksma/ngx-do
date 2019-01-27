@@ -151,6 +151,12 @@ export const AppMenu: Array<object> = [
             'icon': 'text_fields',
             'chip': false,
             'open': false,
+        }, {
+            'name': 'KeyVault',
+            'link': 'widgets/survey-editor',
+            'icon': 'text_fields',
+            'chip': false,
+            'open': false,
         },
      ]
   }, {
