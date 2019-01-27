@@ -52,10 +52,12 @@ export class CoreAuth implements CanActivate , AuthInterface {
     return this.authService.isReady;
   }
   
-  public registerAuthSerice(name:string,service:AuthInterface){
+  public registerAuthService(name:string,service:AuthInterface){
     console.log("Registered AuthService",name);
     this.services[name]=service;
   }
+  
+  public authServiceEnabled(name:string):boolean {return name ?  this.services[name] : false;}
 
   public get authService(): AuthInterface { // Create authentication service on the fly
     if (!this._authService || this._authBackend !== this.coreConfig.backend) {

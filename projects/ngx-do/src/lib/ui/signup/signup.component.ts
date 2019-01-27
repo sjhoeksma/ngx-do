@@ -27,11 +27,17 @@ export class RegistrationValidator {
 })
 export class SignupComponent implements OnInit {
 
+  backendList = [];
   constructor(private fb: FormBuilder,
               public coreConfig: CoreConfig,
               private router: Router,
               private activatedRoute: ActivatedRoute,
-              private coreAuth: CoreAuth) { }
+              private coreAuth: CoreAuth) { 
+      this.coreConfig.backendList.forEach(backend=>{
+      if (this.coreAuth.authServiceEnabled(backend.type))
+          this.backendList.push(backend);
+    });
+  }
 
   userForm: FormGroup;
   shake = false;

@@ -1,0 +1,76 @@
+<div class="ngx-do-keyvault">
+<div><button mat-button color="primary" (click)="addRow()"><mat-icon>add</mat-icon>Add</button></div>  
+<ngx-datatable 
+      #mydatatable
+      class="material"
+      [headerHeight]="40"
+      [rowHeight]="40"       
+      [columnMode]="'force'"
+      [footerHeight]="0"
+      [rowHeight]="'auto'"
+      [rows]="rows"
+      >
+      <ngx-datatable-column prop="id" name="key" [draggable]="false" >
+        <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+          <div class="keyvault_field"
+            (dblclick)="editing[rowIndex + '-id']= !(value)"
+            *ngIf="!editing[rowIndex + '-id']">
+            {{(value ? value : "dbClick to edit")}}
+          </div>
+           <input
+            matInput
+            autofocus
+            (blur)="updateValue($event, 'id', rowIndex)"
+            *ngIf="editing[rowIndex+ '-id']"
+            type="text"
+            [value]="value"
+          />
+        </ng-template>
+      </ngx-datatable-column>
+  
+        <ngx-datatable-column prop="key" name="value" [draggable]="false" >
+        <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
+          <div class="keyvault_field"
+            (dblclick)="editing[rowIndex + '-key']= !(value)"
+            *ngIf="!editing[rowIndex + '-key']">
+            {{(value ? value : "dbClick to edit")}}
+          </div>
+           <input
+            matInput
+            autofocus
+            (blur)="updateValue($event, 'key', rowIndex)"
+            *ngIf="editing[rowIndex+ '-key']"
+            type="text"
+            [value]="value"
+          />
+        </ng-template>
+      </ngx-datatable-column>
+  
+      <ngx-datatable-column name="groups" [draggable]="false" >
+        <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">  
+          <div class="keyvault_field"
+            (dblclick)="editing[rowIndex + '-groups'] = true"
+            *ngIf="!editing[rowIndex + '-groups']">
+            {{(value ? value : "dbClick to edit")}}
+          </div>
+           <mat-select 
+               placeholder="select group"           
+               *ngIf="editing[rowIndex + '-groups']"
+              (selectionChange)="updateMatValue($event, 'groups', rowIndex)"
+              (openedChange)="openedMatValue($event,'groups',rowIndex)"
+              [value]="value"
+              multiple         
+              >
+            <mat-option *ngFor="let group of groups" [value]="group">{{group}}</mat-option>
+          </mat-select>
+        </ng-template>
+      </ngx-datatable-column>
+  
+       <ngx-datatable-column name="" minWidth="40" [sortable]="false" [draggable]="false" >
+          <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-row="row" let-value="value">
+          <mat-icon class="keyvault_delete" color="warn" (click)=delete(rowIndex)>delete_forever</mat-icon>
+          </ng-template>  
+       </ngx-datatable-column>
+  
+  </ngx-datatable>
+</div>

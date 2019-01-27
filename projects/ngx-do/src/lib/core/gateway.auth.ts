@@ -8,7 +8,7 @@ export class GatewayAuth extends BaseAuth {
   
   constructor(protected coreAuth:CoreAuth){
     super();
-    coreAuth.registerAuthSerice("do-gateway",this);
+    coreAuth.registerAuthService("do-gateway",this);
   }
 
   public login(user: string = null, pass: string = null, remember: boolean = false): Promise<boolean> {

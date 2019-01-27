@@ -113,6 +113,7 @@ export class BaseAuth implements AuthInterface {
   public get roles(): Array<string> {
     const token = this.coreConfig.decodeJWT(this._token);
     const groups = ((token) ? token['groups'] : ['default']) || ['default'];
+//TODO: include from Auth    
     if (this._groups) { groups.concat(this._groups); }
     const groupMap = this.coreConfig.backendValue('groupMap', {});
     groups.forEach(group => {

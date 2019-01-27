@@ -1,6 +1,6 @@
 import { Component } from '@angular/core';
 import { MatDialog} from '@angular/material';
-import { CRUDComponentDialog } from './crud.component.dialog';
+import { ConfirmDialog } from '../dialogs/confirm.dialog';
 import { CoreBackend } from '../../core/core.backend';
 import { CoreConfig } from '../../core/core.config';
 
@@ -60,9 +60,11 @@ export class CRUDComponent {
    openedMatValue(event, cell, rowIndex) {
     if (!event) { this.editing[rowIndex + '-' + cell] = false; }
   }
+  
 
   deleteCRUD(rowIndex) {
-    const dialogRef = this.dialog.open(CRUDComponentDialog);
+    let dialogRef = this.dialog.open(ConfirmDialog, 
+        {data: {text:"You want to remove the rights"}});
 
     dialogRef.afterClosed().subscribe(result => {
       if (result) {

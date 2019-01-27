@@ -19,9 +19,9 @@ import { LogoutComponent} from './logout/logout.component';
 import { LoginComponent} from './login/login.component';
 import { SignupComponent} from './signup/signup.component';
 import { IFrameComponent} from './iframe/iframe.component';
+import { KeyvaultComponent } from './keyvault/keyvault.component';
 import { CRUDComponent } from './crud/crud.component';
-import { CRUDComponentDialog } from './crud/crud.component.dialog';
-
+import { ConfirmDialog } from './dialogs/confirm.dialog';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
 import { PerfectScrollbarModule, PERFECT_SCROLLBAR_CONFIG , PerfectScrollbarConfigInterface } from 'ngx-perfect-scrollbar';
 const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
@@ -45,7 +45,8 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
         SignupComponent,
         IFrameComponent,
         CRUDComponent,
-        CRUDComponentDialog,
+        ConfirmDialog,
+        KeyvaultComponent,
     ],
     imports: [
         NgxDatatableModule,
@@ -90,10 +91,11 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
         UserMenuComponent,
         IFrameComponent,
         CRUDComponent,
-        CRUDComponentDialog,
+        ConfirmDialog,
+        KeyvaultComponent,
     ],
     entryComponents : [
-     CRUDComponentDialog,
+     ConfirmDialog,
     ],
 
     providers: [
