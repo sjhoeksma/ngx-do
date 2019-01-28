@@ -12,7 +12,7 @@ export class BaseAuth implements AuthInterface {
   protected _user: string;
   protected _token: string;
   protected _accessToken: string;
-  protected _groups: Array<string>;
+  private _groups : Array<string> = null;
   public login(user: string = null, pass: string = null, remember: boolean = false): Promise<boolean> {
     this._user = user;
     this._token = null;
@@ -69,13 +69,13 @@ export class BaseAuth implements AuthInterface {
   }
 
   set authToken(token: string) {
+    this._groups=null;
     if (!token) {
       this.coreConfig.setItem(BaseAuth.sessionKey);
       this.coreConfig.setItem(BaseAuth.accessKey);
       this._token = null;
       this._user = null;
       this._accessToken = null;
-      this._groups = null;
       this.setDefaultHeader();
     } else {
       const decoded = this.coreConfig.decodeJWT(token);
@@ -111,15 +111,18 @@ export class BaseAuth implements AuthInterface {
   }
 
   public get roles(): Array<string> {
-    const token = this.coreConfig.decodeJWT(this._token);
-    const groups = ((token) ? token['groups'] : ['default']) || ['default'];
-// TODO: include from Auth
-    if (this._groups) { groups.concat(this._groups); }
-    const groupMap = this.coreConfig.backendValue('groupMap', {});
-    groups.forEach(group => {
-      if (groupMap[group]) { groups.push(groupMap[group]); }
-    });
-    return groups;
+    if (!this._groups){
+      const token = this.coreConfig.decodeJWT(this._token);
+      const groups = ((token) ? token['groups'] : ['default']) || ['default'];
+      const groupMap = this.coreConfig.backendValue('groupMap', {});
+      Object.keys(groupMap).forEach(group => {
+        if (groups.index(group)>=0) {
+          groups.push(groupMap[group]); 
+        }
+      });
+      this._groups=groups;
+    }
+    return this._groups;
   }
 
   public hasRole(role: any): Promise<boolean>  {
