@@ -122,7 +122,6 @@ export class MsalAuth extends BaseAuth {
 
   public logout(byUser: boolean = false): Promise<boolean>  {
     this._accessToken = null;
-    this._groups = null;
     //Remove WorkArround
     if (byUser && this.coreConfig.backendValue('fullLogout', false)) {
       super.logout(byUser); // No Routing
@@ -153,10 +152,9 @@ export class MsalAuth extends BaseAuth {
               signup: this.coreConfig.backendValue('signup', false),
               type:  this.coreConfig.backendValue('type', 'msal')}
               , '', {} , head).toPromise().then( (res) => {
-           this.authToken = token;
-          // Extract the groups from the proxy
-           const decoded = this.coreConfig.decodeJWT(res.access_token);
-           if (decoded) { this._groups = decoded['groups']; }
+            const data = res.plain();
+            this.authToken = data.access_token;
+           //this.authToken = token;
            if (this.workAround) { this.copyMsal(true); }
           return resolve(this._token);
         }).catch((ex) => {
