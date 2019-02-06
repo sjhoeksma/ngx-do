@@ -30,20 +30,6 @@ export class CoreAuth implements CanActivate , AuthInterface {
   constructor(protected coreConfig: CoreConfig, protected router: Router,
                 private activatedRoute: ActivatedRoute,
                protected rest: Restangular, protected coreEvent: CoreEvent) {
-    /*
-    this.authService.isReady.then((ready)=>{ // Init the authService selected by default
-      // Set the error handler for 403
-      this.rest.provider.addErrorInterceptor((response, subject, responseHandler) => {
-        if (this.loggedIn && response.status === 403) {
-          this.refreshToken().then(token => {
-            return response.repeatRequest(response.request);
-          });
-          return false; // error handled
-        }
-        return true; // error not handled
-      });
-    });
-    */
   }
 
   public get authService(): AuthInterface { // Create authentication service on the fly

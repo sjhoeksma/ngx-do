@@ -13,6 +13,7 @@ export class BaseAuth implements AuthInterface {
   protected _token: string;
   protected _accessToken: string;
   private _groups : Array<string> = null;
+  protected _validTill;
   public login(user: string = null, pass: string = null, remember: boolean = false): Promise<boolean> {
     this._user = user;
     this._token = null;
@@ -76,11 +77,13 @@ export class BaseAuth implements AuthInterface {
       this._token = null;
       this._user = null;
       this._accessToken = null;
+      this._validTill=0;
       this.setDefaultHeader();
     } else {
       const decoded = this.coreConfig.decodeJWT(token);
       // Check if token is not expired
-      if (decoded && (!decoded['exp'] || decoded['exp'] > (new Date().getTime() / 1000))) {
+      this._validTill=decoded['exp'] ? decoded['exp'] * 1000 : 0;
+      if (decoded && (!this._validTill || this._validTill> new Date().getTime())) {
           this._user = decoded['preferred_username'] || decoded['name'] ||
                      decoded['email'] || this._user;
           this.coreConfig.setItem(BaseAuth.sessionKey, token);
@@ -93,6 +96,8 @@ export class BaseAuth implements AuthInterface {
   }
 
   get loggedIn(): boolean {
+    if (this._token && this._validTill && this._validTill<=new Date().getTime()) 
+      this.logout();
     return this._token != null;
   }
 
