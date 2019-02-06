@@ -16,6 +16,7 @@ import { NgxDoCoreModule,
 import { NgxDoPagesModule } from 'ngx-do-pages'
 import { NgxDoWipModule } from 'ngx-do-wip';
 import { NgxDoAiModule } from 'ngx-do-ai';
+import { NgxDoMsalModule, MsalAuth } from 'ngx-do-msal';
 import { NgxDoSurveyModule } from 'ngx-do-survey'
 import { AppComponent } from './app.component';
 import { BackendService } from './backend/backend.service';
@@ -57,6 +58,7 @@ export function RestangularConfigFactory (RestangularProvider) {
         NgxDoPagesModule,
         NgxDoWipModule,
         NgxDoSurveyModule,
+        NgxDoMsalModule,
         NgxDoAiModule,
         AppRoutesModule,
     ],
@@ -73,5 +75,5 @@ export function RestangularConfigFactory (RestangularProvider) {
    ]
 })
 export class AppModule { 
- constructor(private gateway: GatewayAuth){}
+ constructor(private gateway: GatewayAuth,private msal:MsalAuth){}
 }
