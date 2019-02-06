@@ -39,7 +39,7 @@ export class AuthGroupsComponent {
 
   updateMatValue(event, cell, rowIndex) {
     this.editing[rowIndex + '-' + cell] = false;
-    this.rows[rowIndex][cell] = event.value;
+    this.rows[rowIndex][cell] = event.value || ['default'];
     this.rows = [...this.rows];
     this.rows[rowIndex].save();
   }
