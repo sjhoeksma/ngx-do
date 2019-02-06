@@ -94,8 +94,7 @@ export class MsalAuth extends BaseAuth {
          this.msal.processCallBack.call(this.msal, hash);
        } else {
             // Refresh the internal stored hash hash
-           this.refreshToken().then((accessToken) => {
-            this._accessToken = this.coreConfig.getItem(BaseAuth.accessKey);
+           this.refreshToken().then(accessToken => {
             resolve(this.loggedIn);
           }, () => {resolve(this.loggedIn); });
         }
@@ -172,32 +171,30 @@ export class MsalAuth extends BaseAuth {
 
   public refreshToken():  Promise<string> {
     const key = 'msal.idtoken';
-    if (navigator.onLine) {
+    const storage = this.workAround || !this.coreConfig.remember ? sessionStorage : localStorage;
+    const storageToken = !this.workAround && this.coreConfig.remember ?
+                localStorage.getItem(key) || sessionStorage.getItem(key)
+                : sessionStorage.getItem(key);
+    if (navigator.onLine && storageToken) {
       return new Promise((resolve, reject) => {
         this.msal.acquireTokenSilent(this.coreConfig.backendEnv['consentScopes'])
           .then((accessToken) => {
-             this._accessToken = accessToken;
-             this.validateToken(!this.workAround && this.coreConfig.remember ?
-                localStorage.getItem(key) || sessionStorage.getItem(key)
-                : sessionStorage.getItem(key)
-               ).then(resolve, reject);
+             this.accessToken = accessToken;
+             this.validateToken(storageToken).then(resolve, reject);
           }, ex => {
             // Only show real errors, not warnings
             if (ex.toString().indexOf('AADSTS700051') >= 0) {
               console.warn('Token refresh not enabled for this application');
                // Check if the accessToken is stored in a session
-              const storage = this.workAround || !this.coreConfig.remember ? sessionStorage : localStorage;
               Object.keys(storage).forEach(key => {
                 if (key.indexOf('{"authority"') === 0) {
-                  try {
+                  try {   
                    this.accessToken = JSON.parse(storage.getItem(key)).accessToken;
-                   storage.removeItem(key);
                   } catch (ex) {}
                 }
               });
             } else if (ex.toString().indexOf('AADSTS50076') >= 0) {
               console.warn('Token refresh requires MFA');
-
               this.authToken = null;
               return resolve(this._token);
             } else {
@@ -218,12 +215,29 @@ export class MsalAuth extends BaseAuth {
   }
 
   public userData(): Promise<object> {
-    if (!this._accessToken) { return Promise.resolve({}); }
+    if (!this.accessToken) { return Promise.resolve({}); }
     return new Promise((resolve, reject) => {
       this.rest.oneUrl('msal_user', 'https://graph.microsoft.com/v1.0/me')
-        .get(null, {Authorization: 'Bearer ' + this._accessToken })
-        .subscribe(data => {resolve(data); }, error => {
-        console.error('Failed to retrieve user data', error);
+        .get(null, {Authorization: 'Bearer ' + this.accessToken })
+        .subscribe(data => {
+          let user = data.plain();
+          new Promise((resolve2, reject2) => {
+             this.rest.oneUrl('msal_image', 'https://graph.microsoft.com/v1.0/me/photo/$value')
+             .get(null, {Authorization: 'Bearer ' + this.accessToken })
+             .subscribe(img => {
+                console.log("img",img.plain()); 
+                var data = new Uint8Array(img.plain());
+                var raw = String.fromCharCode.apply(null, data);
+                var base64 = btoa(raw);
+                user.avatar_url = "data:image;base64," + base64;   
+                resolve(user);
+             }, error => {
+               //console.warn('Failed to retrieve user image', error);
+               resolve(user);  
+             })
+          })
+        }, error => {
+        //console.warn('Failed to retrieve user data', error);
         resolve({});
       });
     });
