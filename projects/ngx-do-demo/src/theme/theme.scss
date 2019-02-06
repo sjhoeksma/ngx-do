@@ -245,3 +245,9 @@ body{
     opacity: 1; // in FireFox 
     filter: alpha(opacity=100); // in IE 
 }
+
+
+//Bug fix to remove overflow error in sidemenu
+.drawer .mat-drawer-inner-container,.sidenav .mat-drawer-inner-container {
+  overflow: unset;
+}
