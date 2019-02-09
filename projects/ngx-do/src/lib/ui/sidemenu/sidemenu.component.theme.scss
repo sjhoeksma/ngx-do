@@ -1,3 +1,7 @@
+//Bug fix to remove overflow error in sidemenu
+.drawer .mat-drawer-inner-container,.sidenav .mat-drawer-inner-container {
+  overflow: unset;
+}
 
 @mixin sidemenu($theme) {
   

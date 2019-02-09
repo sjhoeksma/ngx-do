@@ -2,7 +2,6 @@ const fs = require('fs');
 var Request = require('request');
 const bodyParser = require('body-parser')
 const express = require('express')
-const jsonServer = require('json-server')
 const jwt = require('jsonwebtoken')
 const path = require('path')
 const jph = require('json-parse-helpfulerror')
@@ -19,6 +18,7 @@ const crypto = require('crypto'); const algorithm = 'aes-256-ctr';
 const util = require('util');
 const rfs    = require('rotating-file-stream');
 var session = require('express-session');
+var dbDriver;
 
 var myOptions = Object.assign({
   port : 3000, //The port number to use
@@ -67,7 +67,8 @@ var myOptions = Object.assign({
     , agreeTos: false  //Needs to be set by user to true
     , communityMember: false // Communitymember gets notified of important updates
   },
-  dbDriver : 'json-server' //The database server to use , 'json-server', 'mongodb', 'tingodb'
+  dbDriver : 'jsonserver' //The database server to use , 'jsonserver', 'mongodb', 'tingodb'
+  //dbDriver : 'tingodb' //The database server to use , 'jsonserver', 'mongodb', 'tingodb'
 });
 
 var readError = false, app,rootServer
@@ -179,6 +180,7 @@ function decodeToken(req){
 }
 
 function encrypt(text){
+  if (text === undefined) return null;
   var cipher = crypto.createCipher(algorithm,myOptions.secretKey)
   var crypted = cipher.update(text,'utf8','hex')
   crypted += cipher.final('hex');
@@ -186,6 +188,7 @@ function encrypt(text){
 }
 
 function decrypt(text){
+  if (text === undefined) return null;
   var decipher = crypto.decipher(algorithm,myOptions.secretKey);
   var dec = decipher.update(text,'hex','utf8');
   dec += decipher.final('utf8');
@@ -193,6 +196,7 @@ function decrypt(text){
 }
 
 function hash(text){
+   if (text === undefined) return null;
   var hmac = crypto.createHmac('sha256',myOptions.secretKey);
   return hmac.update(text).digest('hex');
 }
@@ -449,16 +453,8 @@ function concatJson(userOptions, callback) {
 
 //Create the api-proxy server, with memory and persistent to file based json-server
 function createServer(server,corePlugins,plugins){
-  const routes = myOptions.routes ? JSON.parse(fs.readFileSync(myOptions.routes, 'UTF-8')) : null;//Load the routes from json
-  let router;
-  if (myOptions.dbDriver=='json-server'){
-     router = jsonServer.router(path.join(process.cwd(),myOptions.dataDir,myOptions.dbName)) //Load the database
-     server.db = router.db   //Add a reference to our router database to the server
-     if (routes) server.use(jsonServer.rewriter(routes)) //Set the custom routes
-//TODO: Remove the db router
-  }
-  
- 
+  let router = dbDriver.router(server);
+
   server.use(session({ 
     secret: myOptions.secretKey, 
     resave: true,
@@ -485,9 +481,6 @@ function createServer(server,corePlugins,plugins){
   }
   server.use(expressValidator());
   
-          
-  //Create the json-server
-  server.use(jsonServer.defaults({logger:myOptions.logLevel>1}));
   
   //Allow CORS control for all
   if (myOptions.allowOrigin){
@@ -760,7 +753,7 @@ function start(rebuild=0,callback=null,startOptions={}){
       }
     });
 
-    app = (myOptions.dbDriver=='json-server' ? jsonServer : express).create() //Create the app server
+    app = dbDriver.create(myOptions) //Create the app server
 
     //Check if we should create a greenlock wrapper
     if (myOptions.greenLockEnabled) {
@@ -825,7 +818,6 @@ module.exports = {
   start : function(options,callback){    
     myOptions = Object.assign(myOptions,options,argv);
     if (myOptions.generateKey){
-      
       var h = crypto.createHash('sha256');
       var key = h.update(myOptions.generateKey).digest('hex');
       var store = hash(key);
@@ -853,11 +845,15 @@ module.exports = {
         process.stdout.write(s);
       }
     }
-    if (myOptions.logLevel>0) console.log("ngx-do-api-gateway "+require('./package.json').version);
+    if (myOptions.logLevel>0) console.log("ngx-do-api-gateway("+myOptions.dbDriver+"):",
+            require('./package.json').version);
     
     myOptions.greenLockEnabled=(strToBool(myOptions.greenLock.agreeTos) 
         && myOptions.greenLock.approveDomains.length>0 
         && myOptions.greenLock.email);
+    
+    //Load the dbDriver
+    dbDriver = require(path.join(__dirname,'./dbdrivers',myOptions.dbDriver +'.js'));
     if (!myOptions.greenLockEnabled && strToBool(myOptions.watch)) watch();
     start(strToBool(myOptions.rebuild) ? 1 : 0,callback);
   },

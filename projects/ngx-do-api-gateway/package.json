@@ -1,6 +1,6 @@
 {
   "name": "ngx-do-api-gateway",
-  "version": "0.3.5",
+  "version": "0.3.6",
   "license": "MIT",
   "main": "ngx-do-api-gateway.js",
   "repository": {
@@ -17,7 +17,7 @@
   },
   "scripts": {
     "start": "node index.js",
-    "build": "npm run inc_patch && rm -rf ../../dist/ngx-do-api-gateway && mkdir -p ../../dist/ngx-do-api-gateway && cp ./{package.json,package-lock.json,index.js,ngx-do-api-gateway.js,ngx-do-api-gateway-routes.json,README.md} ../../dist/ngx-do-api-gateway && cp -R ./core ../../dist/ngx-do-api-gateway ",
+    "build": "npm run inc_patch && rm -rf ../../dist/ngx-do-api-gateway && mkdir -p ../../dist/ngx-do-api-gateway && cp ./{package.json,package-lock.json,index.js,ngx-do-api-gateway.js,ngx-do-api-gateway-routes.json,README.md} ../../dist/ngx-do-api-gateway && cp -R ./core ../../dist/ngx-do-api-gateway && cp -R ./dbdrivers ../../dist/ngx-do-api-gateway ",
     "inc_patch": "npm version patch -f"
   },
   "private": false,
