@@ -594,12 +594,10 @@ function createServer(server,corePlugins,plugins){
     
   //Set updated and created at
   server.use((req, res, next) => {
-    if (req.method === 'POST') {
-      if (!req.body.id) req.body.id=uuidv4();
-      req.body.createdAt = Date.now();
-      req.body.createdBy = authId(req);
-    }
     if (req.method === 'UPDATE' || req.method === 'POST' || req.method === 'PUT') {
+      if (!req.body.id) req.body.id=uuidv4();
+      if (!req.body.createdAt) req.body.createdAt = Date.now();
+      if (!req.body.createdBy) req.body.createdBy = authId(req);
       req.body.updatedAt = Date.now()
       req.body.updatedBy = authId(req) ;
     }

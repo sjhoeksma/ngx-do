@@ -1,6 +1,6 @@
 {
   "name": "ngx-do-api-gateway",
-  "version": "0.3.6",
+  "version": "0.3.7",
   "license": "MIT",
   "main": "ngx-do-api-gateway.js",
   "repository": {
