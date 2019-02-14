@@ -57,7 +57,7 @@ export class SurveyComponent implements OnDestroy, OnInit   {
 
     private updateJson(data: any) {
       const $this = this;
-      const d = data['data'];
+      const d = Object.assign(data['defaults'] || {},data['data']);
       delete data['data'];
       this.surveyJSmarkdown(data);
       this.survey = new Survey.Model(data);
