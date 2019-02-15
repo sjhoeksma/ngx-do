@@ -31,6 +31,7 @@ My work list on activities to work on.
 1. Spinner to widgets, also add to main page of demo so you can use overall
 1. User info is loaded 3 times on startup, also it loads before auth
 1. Implement in memory db: http://www.tingodb.com/
+1. Lege user request op task table maar user heeft geen data geeft 500 erro
 
 
 ## Rebuild of package structure
