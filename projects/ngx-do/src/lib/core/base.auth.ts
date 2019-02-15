@@ -1,6 +1,7 @@
 import { CoreConfig } from './core.config';
 import { AuthInterface } from './core.auth';
 import {Restangular } from 'ngx-restangular';
+import { CookieService } from 'ngx-cookie-service';
 
 export class BaseAuth implements AuthInterface {
   public static sessionKey = 'session_key';
@@ -14,6 +15,8 @@ export class BaseAuth implements AuthInterface {
   protected _accessToken: string;
   private _groups : Array<string> = null;
   protected _validTill;
+  constructor (protected cookies:CookieService){}
+  
   public login(user: string = null, pass: string = null, remember: boolean = false): Promise<boolean> {
     this._user = user;
     this._token = null;
@@ -41,6 +44,7 @@ export class BaseAuth implements AuthInterface {
   }
 
   public logout(byUser: boolean = false): Promise<boolean>  {
+    this.cookies.deleteAll();
     this.authToken = null;
     this.coreConfig.clearStorage(byUser);
     return Promise.resolve(!this.loggedIn);
@@ -52,8 +56,11 @@ export class BaseAuth implements AuthInterface {
 
   public setDefaultHeader() {
     const head: object = {};
-    if ( this._token) { head['Authorization'] = `Bearer ${this._token}`; }
+    if ( this._token) { 
+      head['Authorization'] = `Bearer ${this._token}`; 
+    }
      this.rest.provider.setDefaultHeaders(head);
+     this.rest.provider.setDefaultHttpFields({withCredentials:true});
   }
 
   get accessToken(): string {

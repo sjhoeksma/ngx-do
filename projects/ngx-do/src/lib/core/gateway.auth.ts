@@ -2,12 +2,13 @@ import { Injectable} from '@angular/core';
 import * as CryptoJS from 'crypto-js';
 import { BaseAuth} from './base.auth';
 import { CoreAuth} from './core.auth';
+import { CookieService } from 'ngx-cookie-service';
 
 @Injectable({providedIn: 'root'})
 export class GatewayAuth extends BaseAuth {
 
-  constructor(protected coreAuth: CoreAuth) {
-    super();
+  constructor(protected cookies:CookieService,protected coreAuth: CoreAuth) {
+    super(cookies);
     coreAuth.registerAuthService('do-gateway', this);
   }
 
@@ -30,6 +31,12 @@ export class GatewayAuth extends BaseAuth {
         });
     });
   }
+  
+  public logout(byUser: boolean = false): Promise<boolean>  {
+    this.rest.one('auth').customDELETE().toPromise().then(obj=>{this.cookies.deleteAll()});
+    return super.logout(byUser);
+  }
+
 
   public signup(user: string = null, pass: string = null, remember: boolean = false): Promise<boolean> {
     return new Promise<boolean>((resolve, reject) => {

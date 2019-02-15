@@ -5,7 +5,7 @@ import { Observable } from 'rxjs';
 import { CoreConfig } from './core.config';
 import { CoreEvent } from './core.event';
 import { BaseAuth } from './base.auth';
-
+import { CookieService } from 'ngx-cookie-service';
 // TODO: Add Register function to create clear
 
 
@@ -29,7 +29,7 @@ export interface AuthInterface {
 export class CoreAuth implements CanActivate , AuthInterface {
   constructor(protected coreConfig: CoreConfig, protected router: Router,
                 private activatedRoute: ActivatedRoute,
-               protected rest: Restangular, protected coreEvent: CoreEvent) {
+               protected rest: Restangular, protected coreEvent: CoreEvent,protected cookies:CookieService) {
   }
 
   public get authService(): AuthInterface { // Create authentication service on the fly
@@ -39,7 +39,7 @@ export class CoreAuth implements CanActivate , AuthInterface {
       if (!this._authService) {
         console.error('You still need to create an AuthService for',
                        this.coreConfig.backendEnv['type']);
-         this._authService = new BaseAuth();
+         this._authService = new BaseAuth(this.cookies);
       }
       this.isReady = this._authService.connect(this.coreConfig, this.rest);
 

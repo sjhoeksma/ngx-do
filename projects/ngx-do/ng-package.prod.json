@@ -10,7 +10,9 @@
       "screenfull" : "Screenfull",
       "ngx-restangular":"Restangular",
       "@swimlane/ngx-datatable":"NgxDatatable",
-      "ngx-perfect-scrollbar": "PerfectScrollbar" 
+      "ngx-perfect-scrollbar": "PerfectScrollbar",
+      "ngx-cookie-service": "ngxCookieService",
+      "ngx-cookie-service/cookie-service/cookie.service" :"ngxCookieService"
     }
   },
   "whitelistedNonPeerDependencies": [
