@@ -2,13 +2,14 @@ import { Injectable} from '@angular/core';
 import {Restangular } from 'ngx-restangular';
 import * as Msal from 'msal';
 import { CoreConfig ,BaseAuth, CoreAuth} from 'ngx-do';
+import { CookieService } from 'ngx-cookie-service';
 
 @Injectable({providedIn: 'root'})
 export class MsalAuth extends BaseAuth {
   protected msal: any;
 
-  constructor(protected coreAuth:CoreAuth){
-    super();
+  constructor(protected cookies:CookieService,protected coreAuth:CoreAuth){
+    super(cookies);
     coreAuth.registerAuthService("msal",this);
   }
   
@@ -120,6 +121,7 @@ export class MsalAuth extends BaseAuth {
   }
 
   public logout(byUser: boolean = false): Promise<boolean>  {
+    this.rest.one('auth').customDELETE().toPromise().then(obj=>{this.cookies.deleteAll()});
     this._accessToken = null;
     //Remove WorkArround
     if (byUser && this.coreConfig.backendValue('fullLogout', false)) {

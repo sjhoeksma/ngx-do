@@ -7,8 +7,10 @@
     "style":"scss",
     "umdModuleIds": {
       "crypto-js": "CryptoJS",
-      "ngx-do": "ngxDo"
-      "msal" : "Msal"
+      "ngx-do": "ngxDo",
+      "msal" : "Msal",
+      "ngx-cookie-service": "ngxCookieService",
+      "ngx-cookie-service/cookie-service/cookie.service" :"ngxCookieService"
     }
   },
   "whitelistedNonPeerDependencies": [

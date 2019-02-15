@@ -1,6 +1,6 @@
 {
   "name": "ngx-do-msal",
-  "version": "0.3.8",
+  "version": "0.3.9",
   "license": "MIT",
   "scripts": {
     "scss_bundle": "node ../../node_modules/bundle-scss/dist/bin/bundle-scss --config",

@@ -8,7 +8,9 @@
     "umdModuleIds": {
       "crypto-js": "CryptoJS",
       "ngx-do": "ngxDo",
-      "msal" : "Msal"
+      "msal" : "Msal",
+      "ngx-cookie-service": "ngxCookieService",
+      "ngx-cookie-service/cookie-service/cookie.service" :"ngxCookieService"
     }
   },
   "whitelistedNonPeerDependencies": [
