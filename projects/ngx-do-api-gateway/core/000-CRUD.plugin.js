@@ -52,7 +52,7 @@ if (proxy.options.crudTables || proxy.options.systemCrudTables) plugin.use((req,
       let email =  decode['email'];
       index = db.auth ? db.auth.findIndex(auth => auth.login == email) : -1;
       if (index>=0){ //Add Filter just my own records, or the once if have the rights
-        let allowed = [db.auth[index].id];
+        let allowed = ['^' + db.auth[index].id +'$'];
         let myGroups = db.auth[index].groups || ['default'];
         //Check is user is allowed to used api
         if (proxy.options.crudByApi){ //We have a crud for table of api
@@ -99,16 +99,17 @@ if (proxy.options.crudTables || proxy.options.systemCrudTables) plugin.use((req,
           if (rec.crud) {
             rec.crud.forEach(function(crud){
               if (crud.table==table && (crud.user==email || proxy.containsValue(crud.user,myGroups))) {
-                if (req.method=="GET" && crud.CRUD.indexOf('r')>=0) allowed.push(rec.id)
-                else if (req.method=="PUT" && crud.CRUD.indexOf('u')>=0) allowed.push(rec.id)
-                else if (req.method=="POST" && crud.CRUD.indexOf('c')>=0) allowed.push(rec.id)
-                else if (req.method=="DELETE" && crud.CRUD.indexOf('d')>=0) allowed.push(rec.id)
+                if (req.method=="GET" && crud.CRUD.indexOf('r')>=0) allowed.push('^'+rec.id +'$')
+                else if (req.method=="PUT" && crud.CRUD.indexOf('u')>=0) allowed.push('^'+rec.id +'$')
+                else if (req.method=="POST" && crud.CRUD.indexOf('c')>=0) allowed.push('^'+rec.id +'$')
+                else if (req.method=="DELETE" && crud.CRUD.indexOf('d')>=0) allowed.push('^'+rec.id +'$')
               } 
             })
           }
         })
 
         //Check if we are seatching for singular
+        console.log("By",allowed);
         if (path.length>2){
            req.query = Object.assign(req.query,{createdBy_like:allowed,id:path[2]});
            req.signular=true;
@@ -118,7 +119,7 @@ if (proxy.options.crudTables || proxy.options.systemCrudTables) plugin.use((req,
            req.query = Object.assign(req.query,{createdBy_like:allowed});
         }
         if (proxy.options.logLevel>2) console.log("CRUD",req.method,req.url+'?'+
-                Object.keys(req.query).map(function(key) {return key + '=' + req.query[key];}).join('&'));
+                Object.keys(req.query).map(function(key) {return key + '=' + req.query[key]}).join('&'));
       }
     } else {
       let status = 403;

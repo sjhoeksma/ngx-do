@@ -16,6 +16,7 @@ const gaze = require('gaze');
 const uuidv4 = require('uuid/v4');
 const crypto = require('crypto'); const algorithm = 'aes-256-ctr';
 const util = require('util');
+const cors = require('cors');
 const rfs    = require('rotating-file-stream');
 var session = require('express-session');
 var dbDriver;
@@ -41,14 +42,14 @@ var myOptions = Object.assign({
   limit:10, //We limit to 10 connections per second
   audience: null, //The audience to be used when decoding an azure token
   signup:true, //Is sigup of user allowed
-  allowOrigin: '*', //The CORS allow origin settings
+  noCors: false, //Disable cors
   whitelist:[], //Local domain is whitelisted
   rebuild: false, //When set to true database will be rebuild during restart
   'rebuild-db': true, //Is rebuild-db API allowed to be called by admin
   authEnabled: true, //When set to false, auth is disabled
   adminList: [], //List with users which have by default admin rights
   encryptSystem: false, //Should we encrypt,decrypt system values
-  allowAccessToken: ['admin'], //List with roles allowed to use access_token
+  allowAccessToken: ['.*'], //List with roles allowed to use access_token
   crudTables: [], //Array with crud Protected tables, or null when disabled
   crudBypass: [], //Which groups are allowed to by pass crud
   crudByTable: null, //Crud object with tables and there with groups/users having general rights
@@ -134,7 +135,7 @@ function decodeToken(req){
      token[1]=req.query['_!token']; 
    }
    //When there is no token check if we have a session cookie
-   if (token == null  && req.session.access_token) {
+   if (token === null  && req.session.access_token) {
      if (hasRole(myOptions.allowAccessToken,req,jwt.decode(req.session.access_token))){
        token=[];
        token[0]='Bearer';
@@ -455,20 +456,28 @@ function concatJson(userOptions, callback) {
 function createServer(server,corePlugins,plugins){
   let router = dbDriver.router(server);
 
-  server.use(session({ 
+  server.set('trust proxy', true) // trust first proxy
+  server.use(session(
+    { 
+    path: '/',
     secret: myOptions.secretKey, 
     resave: true,
+    proxy: true,
     saveUninitialized: false,
     unset: 'destroy',
     genid: function(req) {
-      return uuidv4() // use UUIDs for session IDs
+      return uuidv4(); // use UUIDs for session IDs
     },
-    cookie: { maxAge: 6000*60*8 }}));
-  server.use(function (req, res, next) {
+    cookie: { 
+      maxAge: 6000*60*8,
+    }}
+    ));
+  server.use('/',function (req, res, next) {
    //Check if token was passsed as Query
    if (req.query['_!token']!=null){
      req.session.access_token=req.query['_!token'];
-   }  
+   }
+   if (myOptions.logLevel>3) console.log("Session",req.session);
    next()
   })
   server.use(bodyParser.urlencoded({extended: true}))
@@ -483,13 +492,8 @@ function createServer(server,corePlugins,plugins){
   
   
   //Allow CORS control for all
-  if (myOptions.allowOrigin){
-    server.use(function(req, res, next) {
-      res.set("Access-Control-Allow-Origin", myOptions.allowOrigin);
-      res.set("Access-Control-Allow-Methods", "GET, POST, PATCH, PUT, DELETE, OPTIONS");
-      res.set("Access-Control-Allow-Headers", "Origin, X-Requested-With, Content-Type, Accept");
-      next();
-    });
+  if (!myOptions.noCors){
+    server.use(cors({ origin: true, credentials: true }));
   }
 
   
@@ -540,6 +544,7 @@ function createServer(server,corePlugins,plugins){
           message = 'Error access_token is revoked'
         }
         req.session.access_token=null;
+        req.session.client_token=null;
         res.status(status).json({status, message})
       } else {
           const status=200;
