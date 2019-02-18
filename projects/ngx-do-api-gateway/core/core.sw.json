@@ -1,0 +1,29 @@
+{
+  "definitions": {
+    "_Core": {
+      "description": "Items added automaticly to all objects",
+      "properties": {
+        "createdAt": {
+          "type": "integer",
+          "description" : "Timestamp when record is created",
+          "default": null
+        },
+        "createdBy": {
+          "type": "string",
+          "description" : "UserId used to create this record",
+          "default": null
+        },
+        "updatedAt": {
+          "type": "integer",
+          "description" : "Timestamp when record is updated",
+          "default": null
+        },
+        "updatedBy": {
+          "type": "string",
+          "description" : "UserId used when updating the record",
+          "default": null
+        }
+      }
+    }
+  }
+}

@@ -18,13 +18,19 @@ const crypto = require('crypto'); const algorithm = 'aes-256-ctr';
 const util = require('util');
 const cors = require('cors');
 const rfs    = require('rotating-file-stream');
-var session = require('express-session');
+const session = require('express-session');
+
 var dbDriver;
 
 var myOptions = Object.assign({
+  version: require('./package.json').version,
+  name: require('./package.json').name,
+  license: require('./package.json').license,
+  description: require('./package.json').description,
   port : 3000, //The port number to use
   dbName : 'ngx-do-api-gateway.db.json', //The file name where json data is stored
   watchedDir:  './api',
+  swagger: '/swagger',  //When set the core swagger plugin will be loaded on this path
   dataDir: './', //The directory where the data will be stored
   watch: true, //Should we watch for database changes
   routes: 'ngx-do-api-gateway-routes.json',
@@ -211,9 +217,9 @@ function getFromKeyVault(req,key,defaultValue=null){
      index = db.keyvault ? db.keyvault.findIndex(keyvault => keyvault.id == key) : -1;
      if (index>=0){
        if (myOptions.encryptSystem){
-          ret = decrypt(db.keyvault[index].key);
+          ret = decrypt(db.keyvault[index].value);
        } else {
-         ret = db.keyvault[index].key;
+         ret = db.keyvault[index].value;
        } 
      }
   }
@@ -266,7 +272,7 @@ function isPUBLIC(s){
   return !isURL(s) && s.indexOf(f)==0;
 }
 
-function pluginList(filepath,callback){
+function fileList(filepath,filter,callback){
    var ret =[];
    var filesEncountered = 0,
    filesProcessed = 0;
@@ -303,7 +309,7 @@ function pluginList(filepath,callback){
             })
         } else {
           if (stats.isFile()) {
-            if (isPLUGIN(filepath)) {
+            if (filter(filepath)) {
                 if (myOptions.logLevel>1) console.log("Processing",filepath);
                 ret.push(filepath);
             }
@@ -453,12 +459,22 @@ function concatJson(userOptions, callback) {
 }
 
 //Create the api-proxy server, with memory and persistent to file based json-server
-function createServer(server,corePlugins,plugins){
+function createServer(server,corePlugins,plugins,callback){
   let router = dbDriver.router(server);
-
+  myOptions.asyncCount=1; //The service is one plugin loading rest the count
+  myOptions.asyncPlugin = function(ready){
+    if (!ready){
+      myOptions.asyncCount++;
+    } else {
+      myOptions.asyncCount--;
+      if (myOptions.asyncCount==0){
+        server.use(router);
+        callback && callback(server);
+      }
+    }
+  }
   server.set('trust proxy', true) // trust first proxy
-  server.use(session(
-    { 
+  server.use(session({ 
     path: '/',
     secret: myOptions.secretKey, 
     resave: true,
@@ -470,8 +486,7 @@ function createServer(server,corePlugins,plugins){
     },
     cookie: { 
       maxAge: 6000*60*8,
-    }}
-    ));
+    }}));
   server.use('/',function (req, res, next) {
    //Check if token was passsed as Query
    if (req.query['_!token']!=null){
@@ -517,9 +532,9 @@ function createServer(server,corePlugins,plugins){
        var now = Date.now();
        //User will have no valid login if only type is passed (external SSO like azure)
        db.auth.push( {id:id,login:email,hash:(password ? hash(password) : type),
-                      groups:['default'],createdBy:id,updatedBy:id,
+                      groups:['default'],createdBy:id.toString(),updatedBy:id.toString(),
                       createdAt:now,updatedAt:now});
-       db.users.push({id:id,email:email,name:decode['name'],createdBy:id,updatedBy:id,
+       db.users.push({id:id,email:email,name:decode['name'],createdBy:id.toString(),updatedBy:id.toString(),
                       createdAt:now,updatedAt:now});
        index = db.auth ? db.auth.findIndex(auth => auth.login == email) : -2;
        if (myOptions.logLevel>1) console.log("Added user",email);
@@ -602,9 +617,9 @@ function createServer(server,corePlugins,plugins){
     if (req.method === 'UPDATE' || req.method === 'POST' || req.method === 'PUT') {
       if (!req.body.id) req.body.id=uuidv4();
       if (!req.body.createdAt) req.body.createdAt = Date.now();
-      if (!req.body.createdBy) req.body.createdBy = authId(req);
+      if (!req.body.createdBy) req.body.createdBy = authId(req).toString();
       req.body.updatedAt = Date.now()
-      req.body.updatedBy = authId(req) ;
+      req.body.updatedBy = authId(req).toString();
     }
     next()
   })
@@ -655,6 +670,7 @@ function createServer(server,corePlugins,plugins){
   corePlugins.forEach(function(file){
       let plugin = require(file);
       if (plugin.length) server.use(plugin);
+      else if (plugin.asyncPlugin) plugin.asyncPlugin();
       if (myOptions.logLevel>1) console.log('Adding core plugin',file);
   }); 
   
@@ -665,12 +681,18 @@ function createServer(server,corePlugins,plugins){
     if (!isPUBLIC(file)){
       let plugin = require(file);
       if (plugin.length) server.use(plugin);
+      else if (plugin.asyncPlugin) plugin.asyncPlugin();
       if (myOptions.logLevel>1) console.log('Adding private plugin',file);
     }
   });
   
-  server.use(router);
-  return server;
+  server.use((err, req, res, next) => {
+    res.status(500);
+    res.json(err);
+    return;
+  });
+  
+  myOptions.asyncPlugin(true);
 }
 
 function build(restart,callback){
@@ -678,8 +700,8 @@ function build(restart,callback){
     console.log('Working Dir',path.join(process.cwd(), myOptions.watchedDir));
     console.log('Data Dir',path.join(process.cwd(), myOptions.dataDir));
   }
-  pluginList(path.join(__dirname,'./core'),function(corePlugins){
-    pluginList(path.join(process.cwd(), myOptions.watchedDir),function(plugins){
+  fileList(path.join(__dirname,'./core'),isPLUGIN,function(corePlugins){
+    fileList(path.join(process.cwd(), myOptions.watchedDir),isPLUGIN,function(plugins){
      concatJson({ //DB
         src:  path.join(process.cwd(), myOptions.watchedDir),
         dest: path.join(process.cwd(),myOptions.dataDir,myOptions.dbName),
@@ -759,6 +781,8 @@ function start(rebuild=0,callback=null,startOptions={}){
     app = dbDriver.create(myOptions) //Create the app server
 
     //Check if we should create a greenlock wrapper
+    const port = process.env.PORT || myOptions.port;
+
     if (myOptions.greenLockEnabled) {
         rootServer=require('greenlock-express').create(Object.assign({
             // Let's Encrypt v2 is ACME draft 11
@@ -782,18 +806,15 @@ function start(rebuild=0,callback=null,startOptions={}){
           //, debug: true
 
           },myOptions.greenLock));
-      rootServer=rootServer.listen(80, 443,function(){
-        createServer(app,corePlugins,plugins);
-        console.log('ngx-do-api-gateway, Started secure on port: 443' , chalk.green(443))
-        callback && callback();
+      rootServer=rootServer.listen(port, 443,function(){
+        createServer(app,corePlugins,plugins,callback);
+        console.log('ngx-do-api-gateway, Started secure on port: 443' , chalk.green(443))  
       });
     } else {
       rootServer && rootServer.destroy()
-      const port = process.env.PORT || myOptions.port;
       rootServer=app.listen(port, () => {
-        createServer(app,corePlugins,plugins);
+        createServer(app,corePlugins,plugins,callback);
         console.log('ngx-do-api-gateway, Started on port:' , chalk.green(port));
-        callback && callback();
       })
       enableDestroy(rootServer)
     }
@@ -810,7 +831,7 @@ function watch(){
         console.log(filepath + ' was ' + event);
       //If the file is a JSON (database,validation) restart the database
       if (isJSON(filepath)) {
-        start(1); //Reload data
+        start(myOptions.restartMode===undefined ? 1 : myOptions.restartMode); //Reload data
       }
     });
 
@@ -879,6 +900,13 @@ module.exports = {
   get options(){return myOptions},
   get db(){return app.db},
   containsValue: containsValue,
+  asyncPlugin: function(ready){myOptions.asyncPlugin(ready)},
+  isURL: isURL,
+  isJSON : isJSON,
+  isJS: isJS,
+  isPLUGIN:isPLUGIN,
+  isPUBLIC:isPUBLIC,
+  fileList:fileList,
   roles: roles
 }
 

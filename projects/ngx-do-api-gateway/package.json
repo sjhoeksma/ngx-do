@@ -1,5 +1,6 @@
 {
   "name": "ngx-do-api-gateway",
+  "description": "Quick prototyping by using an secure api-gateway and mockup sever all in one",
   "version": "0.3.8",
   "license": "MIT",
   "main": "ngx-do-api-gateway.js",
@@ -42,6 +43,7 @@
     "request": "^2.88.0",
     "rotating-file-stream": "^1.3.9",
     "server-destroy": "^1.0.1",
+    "swagger-ui-express": "^4.0.2",
     "tingodb": "^0.6.1",
     "uuid": "^3.3.2"
   }

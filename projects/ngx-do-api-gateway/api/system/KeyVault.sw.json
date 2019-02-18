@@ -1,0 +1,82 @@
+{
+  "tags" : [{
+    "name": "KeyVault",
+    "description": "API for users in the system"
+  }],
+  "paths": {
+    "/keyvault": {
+      "get": {
+        "tags": [
+          "KeyVault"
+        ],
+        "summary": "Get all keys for the groups you belong to",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/KeyVault"
+            }
+          }
+        }
+      }
+    },
+    "/keyvault/{key}": {
+      "parameters": [
+        {
+          "name": "key",
+          "in": "path",
+          "required": true,
+          "description": "ID of key that we want to find",
+          "type": "string"
+        }
+      ],
+      "get": {
+        "tags": [
+          "KeyVault"
+        ],
+        "summary": "Get keyvault with given ID",
+        "responses": {
+          "200": {
+            "description": "KeyVault is found",
+            "schema": {
+              "$ref": "#/definitions/KeyVault"
+            }
+          }
+        }
+      }
+    }
+  },
+  
+  "definitions": {
+    "KeyVault": {
+      "description": "A keyvault object",
+      "required": [
+        "email"
+      ],
+       "allOf": [ {
+          "type": "object",
+          "required": [
+          ],
+          "properties": {
+            "id": {
+              "type": "string",
+              "uniqueItems": true,
+              "description": "The id of the key in the keyvault",
+            },
+            "value": {
+              "type": "string",
+              "description": "The value of a key"
+            },
+            "groups": {
+              "type": "array",
+              "description": "Array of string with groups",
+              "items": {
+                "type": "string"
+              }
+            }
+          }
+        },{"$ref": "#/definitions/_Core"}
+      ]
+    }
+  }
+}
