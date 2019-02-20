@@ -86,6 +86,7 @@
     "showdown": "^1.9.0",
     "survey-angular": "^1.0.64",
     "surveyjs-editor": "^1.0.64",
+    "swagger-express-validator": "^0.1.1",
     "uuid": "^3.3.2",
     "vued3tree": "^3.6.1",
     "zone.js": "~0.8.28"
