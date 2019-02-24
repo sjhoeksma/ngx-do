@@ -75,7 +75,7 @@
               }
             }
           }
-        },{"$ref": "#/definitions/_Core"}
+        },{"$ref": "#/definitions/ngx-do-api"}
       ]
     }
   }

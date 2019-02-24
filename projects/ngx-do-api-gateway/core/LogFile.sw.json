@@ -1,0 +1,21 @@
+{
+  "tags" : [{
+    "name": "LogFile",
+    "description": "API to get LogFile"
+  }],
+  "paths": {
+    "/LogFile": {
+      "get": {
+        "tags": [
+          "LogFile"
+        ],
+        "summary": "Get all Loginfo",
+        "responses": {
+          "200": {
+            "description": "Raw Logfile",         
+          }
+        }
+      }
+    },
+  },  
+}

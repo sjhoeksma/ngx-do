@@ -1,6 +1,6 @@
 {
   "definitions": {
-    "_Core": {
+    "ngx-do-api": {
       "description": "Items added automaticly to all objects",
       "properties": {
         "createdAt": {

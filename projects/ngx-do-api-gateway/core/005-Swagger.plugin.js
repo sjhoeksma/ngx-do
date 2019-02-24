@@ -3,6 +3,7 @@ const proxy = require('../ngx-do-api-gateway');
 const util = require('util');
 const plugin = proxy.app;
 const path = require('path')
+const deepmerge = require('deepmerge');
 const jsonic = require('jsonic')
 const swaggerUi = require('swagger-ui-express');
 const swaggerValidator = require('./lib/swagger-validator.js');
@@ -17,6 +18,15 @@ const swaggerBase = {
       "name": proxy.options.license
     }
   },
+  /*
+  "securityDefinitions":{
+    "auth-token":{
+      type: "apiKey",
+      name: "bearer",
+      in: "query"
+    }
+  },
+  */
   "tags": [],
   "paths":{},
   "definitions":{},
@@ -44,6 +54,9 @@ var extend = function () {
 
 	// Merge the object into the extended object
 	var merge = function (obj) {
+    //Check if object is array
+    
+    //This is object
 		for (var prop in obj) {
 			if (obj.hasOwnProperty(prop)) {
 				// If property is an object, merge properties
@@ -99,25 +112,26 @@ module.exports = {
             if (count==0){
               var schema = Object.assign({},swaggerBase);
               files.forEach(obj=>{
-                  schema = extend(true,schema,obj);
+                  schema = deepmerge(schema,obj);
               });
               plugin.use(proxy.options.swagger, swaggerUi.serve, swaggerUi.setup(schema));
               if (proxy.options.logLevel>1) console.log("Swagger active on",proxy.options.swagger);  
               const opts = {
                 schema: schema,
                 validateRequest: true,
-                validateResponse: true,
-                /*
+                validateResponse: false,
+                
                 requestValidationFn: (req, data, errors,res,next) => {
                   const message=`failed request validation: ${req.method} ${req.originalUrl}\n ${util.inspect(errors)}`;
                   const status=400;
                   res.status(status).json({status, errors});
                   return true;
                 },
+                
                 responseValidationFn: (req, data, errors,res,next,encoding) => {
                   console.log(`failed response validation: ${req.method} ${req.originalUrl}\n ${util.inspect(errors)}`)
                 },
-                */
+                
               };
               plugin.use(swaggerValidator(opts));
               proxy.asyncPlugin(true); //Tell we are ready

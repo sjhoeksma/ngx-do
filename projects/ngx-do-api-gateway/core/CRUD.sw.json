@@ -1,0 +1,130 @@
+{
+  "tags" : [{
+    "name": "CRUD",
+    "description": "API for adding CRUDs (Create Read Update Delete) to auth in the system"
+  }],
+  "paths": {
+    "/CRUD": {
+      "post": {
+        "tags": [
+          "CRUD"
+        ],
+        "description": "Create new CRUD in system",
+        "parameters": [
+          {
+            "name": "CRUD",
+            "in": "body",
+            "description": "CRUD that we want to create",
+            "schema": {
+                "$ref": "#/definitions/CRUD"
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Existing CRUD returned",
+            "schema": {
+              "$ref": "#/definitions/CRUD"
+            }
+          },
+          "201": {
+            "description": "New CRUD is created",
+            "schema": {
+              "$ref": "#/definitions/CRUD"
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "CRUD"
+        ],
+        "summary": "Get your CRUD in system",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/CRUD"
+            }
+          }
+        }
+      }
+    },
+    "/CRUD/{CRUDId}": {
+      "parameters": [
+        {
+          "name": "CRUDId",
+          "in": "path",
+          "required": true,
+          "description": "ID of CRUD that we want to find",
+          "type": "string"
+        }
+      ],
+      "get": {
+        "tags": [
+          "CRUD"
+        ],
+        "summary": "Get CRUD with given ID",
+        "responses": {
+          "200": {
+            "description": "CRUD is found",
+            "schema": {
+              "$ref": "#/definitions/CRUD"
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Update CRUD with give ID",
+        "tags": [
+          "CRUD"
+        ],
+        "parameters": [
+          {
+            "name": "CRUD",
+            "in": "body",
+            "description": "CRUD with new values of properties",
+            "schema": {
+              "$ref": "#/definitions/CRUD"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "CRUD is updated",
+            "schema": {
+              "$ref": "#/definitions/CRUD"
+            }
+          }
+        }
+      }
+    }
+  },
+  
+  "definitions": {
+    "CRUD": {
+      "description": "A CRUD object",
+       "allOf": [ {
+          "type": "object",
+          "required": [
+            "crud"
+          ],
+          "properties": {
+            "crud": {
+              "type": "string",
+              "description": "A string with CRUD letters"
+            },
+            "table": {
+              "type": "string",
+              "description": "Table of Group String"
+            },
+           
+          }
+        },{"$ref": "#/definitions/ngx-do-api"}
+      ]
+    }
+  }
+}

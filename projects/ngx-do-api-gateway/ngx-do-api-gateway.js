@@ -425,7 +425,6 @@ function concatJson(userOptions, callback) {
                     result[key] = tmp[key]
                   }
               } catch (err) {
-                console.log(string);
                 error=err;
                 console.log("Error in content",err,content);
               }
@@ -686,11 +685,13 @@ function createServer(server,corePlugins,plugins,callback){
     }
   });
   
+  /*
   server.use((err, req, res, next) => {
     res.status(500);
     res.json(err);
     return;
   });
+  */
   
   myOptions.asyncPlugin(true);
 }

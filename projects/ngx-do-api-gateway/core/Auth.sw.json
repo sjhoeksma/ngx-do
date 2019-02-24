@@ -1,0 +1,121 @@
+{
+  "tags" : [{
+    "name": "Auth",
+    "description": "The internal Auth database"
+  }],
+  "paths": {
+    "/auth": {
+      "get" : {
+         "tags": [
+          "Auth"
+        ],  
+        "parameters":  [{
+          "in": "query",
+          "name": "email",
+          "description": "Email of user that we want to validate",
+          "type": "string"
+        }],
+        "summary": "Validate if user is logged in",
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/AuthMessage"
+            }
+          }
+        },
+      },
+      "post": {
+        "tags": [
+          "Auth"
+        ],
+        "parameters":  [{
+          "in": "body",
+          schema:{
+            "$ref": "#/definitions/AuthLogin"
+          }
+        }],
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Login a user",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/AuthToken"
+            }
+          }
+        },
+      },
+    "delete": {
+        "tags": [
+          "Auth"
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "summary": "Removes the authenticated user cookies from server",
+        "responses": {
+          "200": {
+            "description": "OK",
+          }
+        }
+    },
+   },
+  },
+    
+  
+  "definitions": {
+    "AuthLogin": {
+      "description": "Object Required to login",
+      "required": [
+        "email"
+      ],
+      "properties": {
+        "email": {
+          "type": "string",
+          "uniqueItems": true,
+          "description": "The Email used to logins",
+        },
+        "password": {
+          "type": "string",
+          "description": "The password hash"
+        },
+        "signup": {
+          "type": "boolean",
+          "description": "Should we signup",
+        },
+        "type": {
+          "type": "string",
+          "description": "Type of driver used to signup",
+        }
+      }
+    },
+    "AuthMessage": {
+      "description": "Message object ",
+      "properties": {
+        "status": {
+          "type": "integer",
+          "description": "The status code",
+        },
+        "message": {
+          "type": "string",
+          "description": "The message returned"
+        }
+      }
+    },
+    "AuthToken": {
+      "description": "Token object ",
+      "properties": {
+        "access_token": {
+          "type": "string",
+          "description": "The access token returned"
+        }
+      }
+    }
+  }
+}

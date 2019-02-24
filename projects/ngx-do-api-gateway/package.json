@@ -1,7 +1,7 @@
 {
   "name": "ngx-do-api-gateway",
   "description": "Quick prototyping by using an secure api-gateway and mockup sever all in one",
-  "version": "0.3.9",
+  "version": "0.3.11",
   "license": "MIT",
   "main": "ngx-do-api-gateway.js",
   "repository": {
@@ -26,6 +26,7 @@
     "azure-ad-jwt": "^1.1.0",
     "core-js": "^2.5.7",
     "ddos": "git+https://github.com/sjhoeksma/node-ddos.git",
+    "deepmerge": "^3.2.0",
     "express-http-proxy": "^1.4.0",
     "express-session": "^1.15.6",
     "express-validator": "^5.3.0",

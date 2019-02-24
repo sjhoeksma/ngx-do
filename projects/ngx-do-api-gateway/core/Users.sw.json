@@ -146,10 +146,10 @@
             },
             "orgGroup": {
               "type": "string",
-              "description": " Within demo, this is used to route request to a specific group"
+              "description": "The organisation group the user is belonging to"
             }
           }
-        },{"$ref": "#/definitions/_Core"}
+        },{"$ref": "#/definitions/ngx-do-api"}
       ]
     },
     "Users": {

@@ -1,0 +1,153 @@
+{
+  "tags" : [{
+    "name": "Groups",
+    "description": "API for groups in the system"
+  }],
+  "paths": {
+    "/groups": {
+      "post": {
+        "tags": [
+          "Groups"
+        ],
+        "description": "Create new group in system",
+        "parameters": [
+          {
+            "name": "group",
+            "in": "body",
+            "description": "Group that we want to create",
+            "schema": {
+                "$ref": "#/definitions/Group"
+            }
+          }
+        ],
+        "produces": [
+          "application/json"
+        ],
+        "responses": {
+          "200": {
+            "description": "Existing group returned",
+            "schema": {
+              "$ref": "#/definitions/Group"
+            }
+          },
+          "201": {
+            "description": "New group is created",
+            "schema": {
+              "$ref": "#/definitions/Group"
+            }
+          }
+        }
+      },
+      "get": {
+        "tags": [
+          "Groups"
+        ],
+        "summary": "Get all groups in system",
+        "responses": {
+          "200": {
+            "description": "OK",
+            "schema": {
+              "$ref": "#/definitions/Groups"
+            }
+          }
+        }
+      }
+    },
+    "/groups/{groupId}": {
+      "parameters": [
+        {
+          "name": "groupId",
+          "in": "path",
+          "required": true,
+          "description": "ID of group that we want to find",
+          "type": "string"
+        }
+      ],
+      "get": {
+        "tags": [
+          "Groups"
+        ],
+        "summary": "Get group with given ID",
+        "responses": {
+          "200": {
+            "description": "Group is found",
+            "schema": {
+              "$ref": "#/definitions/Group"
+            }
+          }
+        }
+      },
+      "delete": {
+        "summary": "Delete group with given ID",
+        "tags": [
+          "Groups"
+        ],
+        "responses": {
+          "200": {
+            "description": "Group is deleted",
+            "schema": {
+              "$ref": "#/definitions/Group"
+            }
+          }
+        }
+      },
+      "put": {
+        "summary": "Update group with give ID",
+        "tags": [
+          "Groups"
+        ],
+        "parameters": [
+          {
+            "name": "group",
+            "in": "body",
+            "description": "Group with new values of properties",
+            "schema": {
+              "$ref": "#/definitions/Group"
+            }
+          }
+        ],
+        "responses": {
+          "200": {
+            "description": "Group is updated",
+            "schema": {
+              "$ref": "#/definitions/Group"
+            }
+          }
+        }
+      }
+    }
+  },
+  
+  "definitions": {
+    "Group": {
+      "description": "A group object",
+      "required": [
+        "group"
+      ],
+       "allOf": [ {
+          "type": "object",
+          "required": [
+            "group"
+          ],
+          "properties": {
+            "group": {
+              "type": "string",
+              "uniqueItems": true,
+              "description": "The name of security group"
+            },
+            "description": {
+              "type": "string",
+              "description": "Description of the group"
+            },
+           
+          }
+        },{"$ref": "#/definitions/ngx-do-api"}
+      ]
+    },
+    "Groups": {
+      "type": "array",
+      "description": "Array of groups object",
+      "$ref": "#/definitions/Group"
+    }
+  }
+}
