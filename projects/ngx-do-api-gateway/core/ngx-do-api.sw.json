@@ -3,13 +3,18 @@
     "ngx-do-api": {
       "description": "Items added automaticly to all objects",
       "properties": {
+        "id": {
+          "type": ["integer","string"],
+          "description" : "Timestamp when record is created",
+          "default": null
+        },
         "createdAt": {
           "type": "integer",
           "description" : "Timestamp when record is created",
           "default": null
         },
         "createdBy": {
-          "type": "string",
+          "type": ["string","integer"],
           "description" : "UserId used to create this record",
           "default": null
         },
@@ -19,7 +24,7 @@
           "default": null
         },
         "updatedBy": {
-          "type": "string",
+          "type": ["string","integer"],
           "description" : "UserId used when updating the record",
           "default": null
         }

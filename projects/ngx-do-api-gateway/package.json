@@ -1,7 +1,7 @@
 {
   "name": "ngx-do-api-gateway",
   "description": "Quick prototyping by using an secure api-gateway and mockup sever all in one",
-  "version": "0.3.11",
+  "version": "0.3.12",
   "license": "MIT",
   "main": "ngx-do-api-gateway.js",
   "repository": {
