@@ -908,6 +908,20 @@ module.exports = {
   isPLUGIN:isPLUGIN,
   isPUBLIC:isPUBLIC,
   fileList:fileList,
-  roles: roles
+  roles: roles,
+  jsonParse: function(contentString){
+    if (!contentString || contentString==="") return {} 
+    var string = contentString.replace(/^({\s*})*|({\s*})*$/g, "")
+    string = string.replace(/}\s*({\s*})*\s*{/g, ",")
+    string = string.replace(/}\s*{/g, ",")
+    string = string.replace(/\/\*[\s\S]*?\*\/|([^\\:]|^)\/\/.*$/gm, '$1') //Strip comments
+    string = string.replace(/\r?\n/g, "") //Allow multiple lines
+    try {
+      return jsonic(string);
+    } catch (err) {
+      console.log("Error parsing swagger",err);
+      return {}
+    }
+  }
 }
 
