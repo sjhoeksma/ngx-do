@@ -121,9 +121,6 @@
   "definitions": {
     "Group": {
       "description": "A group object",
-      "required": [
-        "group"
-      ],
        "allOf": [ {
           "type": "object",
           "required": [
