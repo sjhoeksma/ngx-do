@@ -1,4 +1,4 @@
-<div class="ngx-do-usergroups">
+<div class="ngx-do-userroles">
 <ngx-datatable 
       #mydatatable
       class="material"
@@ -11,7 +11,7 @@
       >
       <ngx-datatable-column name="user" [draggable]="false" >
         <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
-          <div class="usergroups_field"
+          <div class="userroles_field"
             (dblclick)="editing[rowIndex + '-user']= !(value)"
             *ngIf="!editing[rowIndex + '-user']">
             {{(value ? value : "dbClick to edit")}}
@@ -27,22 +27,22 @@
         </ng-template>
       </ngx-datatable-column>
   
-      <ngx-datatable-column name="groups" [draggable]="false" >
+      <ngx-datatable-column name="roles" [draggable]="false" >
         <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">  
-          <div class="usergroups_field"
-            (dblclick)="editing[rowIndex + '-groups'] = true"
-            *ngIf="!editing[rowIndex + '-groups']">
+          <div class="userroles_field"
+            (dblclick)="editing[rowIndex + '-roles'] = true"
+            *ngIf="!editing[rowIndex + '-roles']">
             {{(value ? value : "dbClick to edit")}}
           </div>
            <mat-select 
-               placeholder="select group"           
-               *ngIf="editing[rowIndex + '-groups']"
-              (selectionChange)="updateMatValue($event, 'groups', rowIndex)"
-              (openedChange)="openedMatValue($event,'groups',rowIndex)"
+               placeholder="select role"           
+               *ngIf="editing[rowIndex + '-roles']"
+              (selectionChange)="updateMatValue($event, 'roles', rowIndex)"
+              (openedChange)="openedMatValue($event,'roles',rowIndex)"
               [value]="value"
               multiple         
               >
-            <mat-option *ngFor="let group of groups" [value]="group">{{group}}</mat-option>
+            <mat-option *ngFor="let role of roles" [value]="role">{{role}}</mat-option>
           </mat-select>
         </ng-template>
       </ngx-datatable-column>

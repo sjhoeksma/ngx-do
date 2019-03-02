@@ -10,7 +10,7 @@ import { CookieService } from 'ngx-cookie-service';
 
 
 export interface AuthInterface {
-  roles: Array<string>; // The roles set in the JWT token and mapped based on <env>groupMap
+  roles: Array<string>; // The roles set in the JWT token and mapped based on <env>roleMap
   authToken: string; // JWT access token
   accessToken: string; // Encrypted access token
   loggedIn:  boolean; // Is user logged in

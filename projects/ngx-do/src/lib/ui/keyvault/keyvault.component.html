@@ -28,40 +28,40 @@
         </ng-template>
       </ngx-datatable-column>
   
-        <ngx-datatable-column prop="key" name="value" [draggable]="false" >
+        <ngx-datatable-column prop="value" name="value" [draggable]="false" >
         <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
           <div class="keyvault_field"
-            (dblclick)="editing[rowIndex + '-key']= !(value)"
-            *ngIf="!editing[rowIndex + '-key']">
+            (dblclick)="editing[rowIndex + '-value']= !(value)"
+            *ngIf="!editing[rowIndex + '-value']">
             {{(value ? value : "dbClick to edit")}}
           </div>
            <input
             matInput
             autofocus
-            (blur)="updateValue($event, 'key', rowIndex)"
-            *ngIf="editing[rowIndex+ '-key']"
+            (blur)="updateValue($event, 'value', rowIndex)"
+            *ngIf="editing[rowIndex+ '-value']"
             type="text"
             [value]="value"
           />
         </ng-template>
       </ngx-datatable-column>
   
-      <ngx-datatable-column name="groups" [draggable]="false" >
+      <ngx-datatable-column name="roles" [draggable]="false" >
         <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">  
           <div class="keyvault_field"
-            (dblclick)="editing[rowIndex + '-groups'] = true"
-            *ngIf="!editing[rowIndex + '-groups']">
+            (dblclick)="editing[rowIndex + '-roles'] = true"
+            *ngIf="!editing[rowIndex + '-roles']">
             {{(value ? value : "dbClick to edit")}}
           </div>
            <mat-select 
-               placeholder="select group"           
-               *ngIf="editing[rowIndex + '-groups']"
-              (selectionChange)="updateMatValue($event, 'groups', rowIndex)"
-              (openedChange)="openedMatValue($event,'groups',rowIndex)"
+               placeholder="select role"           
+               *ngIf="editing[rowIndex + '-roles']"
+              (selectionChange)="updateMatValue($event, 'roles', rowIndex)"
+              (openedChange)="openedMatValue($event,'roles',rowIndex)"
               [value]="value"
               multiple         
               >
-            <mat-option *ngFor="let group of groups" [value]="group">{{group}}</mat-option>
+            <mat-option *ngFor="let role of roles" [value]="role">{{role}}</mat-option>
           </mat-select>
         </ng-template>
       </ngx-datatable-column>

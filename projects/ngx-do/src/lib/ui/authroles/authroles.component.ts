@@ -6,25 +6,25 @@ import { CoreConfig } from '../../core/core.config';
 
 
 @Component({
-  selector: 'ngx-do-authgroups',
-  templateUrl: './authgroups.component.html',
-  styleUrls: ['./authgroups.component.scss']
+  selector: 'ngx-do-authroles',
+  templateUrl: './authroles.component.html',
+  styleUrls: ['./authroles.component.scss']
 })
-export class AuthGroupsComponent {
+export class AuthRolesComponent {
 
   editing = {};
   rows = [];
-  groups = [];
+  roles = [];
 
   constructor(public dialog: MatDialog, private coreBackend: CoreBackend) {
-     this.coreBackend.getList('groups').subscribe(data => {
+     this.coreBackend.getList('roles').subscribe(data => {
       const grps = [];
       data.forEach(function(obj) {
-         grps.push(obj.group);
+         grps.push(obj.role);
       });
-      this.groups = grps;
+      this.roles = grps;
     });
-    this.coreBackend.getList('authgroups').subscribe(data => {
+    this.coreBackend.getList('authroles').subscribe(data => {
       this.rows = data;
     });
 

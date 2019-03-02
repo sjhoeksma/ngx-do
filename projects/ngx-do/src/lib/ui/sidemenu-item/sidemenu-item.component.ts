@@ -26,8 +26,8 @@ export class SidemenuItemComponent implements OnInit {
           const links = link.split('/').splice(0, 1);
           routes.forEach(function(route) {
             if (route['path'] === links[0] || route['path'] === '/' + links[0] ) {
-              if (route['data'] && route['data']['expextedRole']) {
-                role = route['data']['expextedRole'];
+              if (route['data'] && route['data']['expectedRole']) {
+                role = route['data']['expectedRole'];
               }
             }
             const childLink = links.splice(0, 1); // Remove the parent

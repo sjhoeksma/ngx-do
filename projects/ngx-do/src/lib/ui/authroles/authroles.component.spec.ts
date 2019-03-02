@@ -1,11 +1,11 @@
 import { async, ComponentFixture, TestBed } from '@angular/core/testing';
 import { APP_BASE_HREF } from '@angular/common';
 import { NgxDoCoreModule} from '../../core/core.module';
-import { AuthGroupsComponent } from './authgroups.component';
+import { AuthRolesComponent } from './authroles.component';
 
-describe('AuthGroupsComponent', () => {
-  let component: AuthGroupsComponent;
-  let fixture: ComponentFixture<AuthGroupsComponent>;
+describe('AuthRolesComponent', () => {
+  let component: AuthRolesComponent;
+  let fixture: ComponentFixture<AuthRolesComponent>;
 
   beforeEach(async(() => {
     TestBed.configureTestingModule({
@@ -20,7 +20,7 @@ describe('AuthGroupsComponent', () => {
   }));
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(AuthGroupsComponent);
+    fixture = TestBed.createComponent(AuthRolesComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

@@ -20,7 +20,7 @@ import { LoginComponent} from './login/login.component';
 import { SignupComponent} from './signup/signup.component';
 import { IFrameComponent} from './iframe/iframe.component';
 import { KeyVaultComponent } from './keyvault/keyvault.component';
-import { AuthGroupsComponent } from './authgroups/authgroups.component';
+import { AuthRolesComponent } from './authroles/authroles.component';
 import { CRUDComponent } from './crud/crud.component';
 import { ConfirmDialog } from './dialogs/confirm.dialog';
 import { NgxDatatableModule } from '@swimlane/ngx-datatable';
@@ -48,7 +48,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
         CRUDComponent,
         ConfirmDialog,
         KeyVaultComponent,
-        AuthGroupsComponent
+        AuthRolesComponent
     ],
     imports: [
         NgxDatatableModule,
@@ -95,7 +95,7 @@ const DEFAULT_PERFECT_SCROLLBAR_CONFIG: PerfectScrollbarConfigInterface = {
         CRUDComponent,
         ConfirmDialog,
         KeyVaultComponent,
-        AuthGroupsComponent
+        AuthRolesComponent
     ],
     entryComponents : [
      ConfirmDialog,

@@ -13,7 +13,7 @@ export class BaseAuth implements AuthInterface {
   protected _user: string;
   protected _token: string;
   protected _accessToken: string;
-  private _groups : Array<string> = null;
+  private _roles : Array<string> = null;
   protected _validTill;
   constructor (protected cookies:CookieService){}
   
@@ -77,7 +77,7 @@ export class BaseAuth implements AuthInterface {
   }
 
   set authToken(token: string) {
-    this._groups=null;
+    this._roles=null;
     if (!token) {
       this.coreConfig.setItem(BaseAuth.sessionKey);
       this.coreConfig.setItem(BaseAuth.accessKey);
@@ -123,18 +123,18 @@ export class BaseAuth implements AuthInterface {
   }
 
   public get roles(): Array<string> {
-    if (!this._groups){
+    if (!this._roles){
       const token = this.coreConfig.decodeJWT(this._token);
-      const groups = ((token) ? token['groups'] : ['default']) || ['default'];
-      const groupMap = this.coreConfig.backendValue('groupMap', {});
-      Object.keys(groupMap).forEach(group => {
-        if (groups.index(group)>=0) {
-          groups.push(groupMap[group]); 
+      const roles = ((token) ? token['roles'] || token['groups'] : ['default']) || ['default'];
+      const roleMap = this.coreConfig.backendValue('roleMap', {});
+      Object.keys(roleMap).forEach(role => {
+        if (roles.index(role)>=0) {
+          roles.push(roleMap[role]); 
         }
       });
-      this._groups=groups;
+      this._roles=roles;
     }
-    return this._groups;
+    return this._roles;
   }
 
   public hasRole(role: any): Promise<boolean>  {

@@ -10,7 +10,7 @@
       [rowHeight]="'auto'"
       [rows]="rows"
       >
-      <ngx-datatable-column prop="user" name="User or Group" [draggable]="false" >
+      <ngx-datatable-column prop="user" name="User or Role" [draggable]="false" >
         <ng-template ngx-datatable-cell-template let-rowIndex="rowIndex" let-value="value" let-row="row">
           <div class="crud_field"
             (dblclick)="editing[rowIndex + '-user']= !(value)"

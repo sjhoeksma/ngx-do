@@ -11,16 +11,16 @@ import { Restangular } from 'ngx-restangular';
 export class KeyVaultComponent {
   editing = {};
   rows = [];
-  groups = [];
+  roles = [];
   keyvault;
 
   constructor(public dialog: MatDialog, private restangular: Restangular) {
-    this.restangular.all('groups').getList().subscribe(data => {
+    this.restangular.all('roles').getList().subscribe(data => {
       const grps = [];
       data.forEach(function(obj) {
-         grps.push(obj.group);
+         grps.push(obj.role);
       });
-      this.groups = grps;
+      this.roles = grps;
     });
     this.keyvault = this.restangular.all('keyvault');
     this.keyvault.getList().subscribe(data => {
@@ -77,8 +77,8 @@ export class KeyVaultComponent {
   }
 
   addRow() {
-    if (this.rows.length === 0 || this.rows[this.rows.length - 1].key) {
-      this.rows = [...this.rows, {id: null, key: '', groups: ['default']}];
+    if (this.rows.length === 0 || this.rows[this.rows.length - 1].value) {
+      this.rows = [...this.rows, {id: null, value: '', roles: ['default']}];
     }
   }
 }

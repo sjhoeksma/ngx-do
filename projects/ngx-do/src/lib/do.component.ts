@@ -53,7 +53,10 @@ export class DoComponent implements OnInit {
   @HostListener('window:keydown', ['$event'])
   onWakeup(event: any): void {
     clearTimeout(this.idleTimer);
-    if (this.locked) { this.locked = false; }
+    if (this.locked) { 
+      this.coreAuth.onUnlock();
+      this.locked = false; 
+    }
     this.idleTimer = setTimeout(() => {
        this.locked = true;
        this.coreAuth.onLock();
