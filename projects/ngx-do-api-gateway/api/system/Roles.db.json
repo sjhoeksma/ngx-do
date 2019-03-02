@@ -1,0 +1,11 @@
+{
+  roles:[
+    { id: 1 ,role: 'admin', description: 'Role with no restrictions'},
+    { id: 2 ,role: 'default', description: 'Role without any additional rights'},
+    { id: 3 ,role: 'order', description: 'Role of user who can order stuff'},
+    { id: 4 ,role: 'approve', description: 'Role who can approve'},
+    { id: 5, role: 'backend', description: 'Backend role for processing'},
+    { id: 6, role: 'catalogue', description: 'Role with rights to manage catalogue'},
+    { id: 7, role: 'node_red', description: 'Role allowed to do node_red modeling'}
+  ]
+}

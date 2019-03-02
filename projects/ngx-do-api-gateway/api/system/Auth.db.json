@@ -4,32 +4,32 @@
        "id": 0,   
        "login"  : "backend@do.proxy",
        "hash" : "bcbe6f84dd2ffd4a051cdc84feb8f1c28c0ea55a61402e6a8826eb3a07cbcd46",
-       "groups": ["admin"],
+       "roles": ["admin"],
        "createdBy":0
     },
      { 
        "id": 1,   
        "login"  : "admin@demo.com",
        "hash" : "bcbe6f84dd2ffd4a051cdc84feb8f1c28c0ea55a61402e6a8826eb3a07cbcd46",
-       "groups": ["default","admin","approve_it","node-red"],
+       "roles": ["default","admin","approve_it","node-red"],
        "createdBy":1
     },{ 
        "id": 2,   
        "login"  : "user@demo.com",
        "hash" : "bcbe6f84dd2ffd4a051cdc84feb8f1c28c0ea55a61402e6a8826eb3a07cbcd46",
-       "groups": ["default"],
+       "roles": ["default"],
        "createdBy":2
     },{ 
        "id": 3,   
        "login"  : "cto@demo.com",
        "hash" : "bcbe6f84dd2ffd4a051cdc84feb8f1c28c0ea55a61402e6a8826eb3a07cbcd46",
-       "groups": ["default","approve_it","order"],
+       "roles": ["default","approve_it","order"],
       "createdBy":3
     },{ 
        "id": 4,   
        "login"  : "dev@demo.com",
        "hash" : "bcbe6f84dd2ffd4a051cdc84feb8f1c28c0ea55a61402e6a8826eb3a07cbcd46",
-       "groups": ["default","order"],
+       "roles": ["default","order"],
        "createdBy":4
     },
   ]

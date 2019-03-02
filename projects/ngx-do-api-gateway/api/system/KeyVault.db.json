@@ -3,7 +3,7 @@
     {
       id: 'dialogflow',
       value: '5eb276d06e514ce8a450592c2666a38a',
-      groups: ['default']
+      roles: ['default']
     },
   ]
 }

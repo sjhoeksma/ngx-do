@@ -53,13 +53,13 @@ if (proxy.options.crudTables || proxy.options.systemCrudTables) plugin.use((req,
       index = db.auth ? db.auth.findIndex(auth => auth.login == email) : -1;
       if (index>=0){ //Add Filter just my own records, or the once if have the rights
         let allowed = ['^' + db.auth[index].id +'$'];
-        let myGroups = db.auth[index].groups || ['default'];
+        let myRoles = db.auth[index].roles || ['default'];
         //Check is user is allowed to used api
         if (proxy.options.crudByApi){ //We have a crud for table of api
           let apiAllowed=-1;
           proxy.options.crudByApi.forEach(function(crud){
               if (crud.table==table && apiAllowed==-1) apiAllowed=0
-              if (crud.table==table && (crud.user==email || proxy.containsValue(crud.user,myGroups))) {
+              if (crud.table==table && (crud.user==email || proxy.containsValue(crud.user,myRoles))) {
                 if ((req.method=="GET" && crud.CRUD.indexOf('r')>=0)|| 
                     (req.method=="PUT" && crud.CRUD.indexOf('u')>=0) || 
                     (req.method=="POST" && crud.CRUD.indexOf('c')>=0) ||
@@ -78,7 +78,7 @@ if (proxy.options.crudTables || proxy.options.systemCrudTables) plugin.use((req,
         if (crudByTable){
           let tableAllowed = false;
           crudByTable.forEach(function(crud){
-              if (crud.table==table && (crud.user==email || proxy.containsValue(crud.user,myGroups))) {
+              if (crud.table==table && (crud.user==email || proxy.containsValue(crud.user,myRoles))) {
                 if ((req.method=="GET" && crud.CRUD.indexOf('r')>=0)|| 
                     (req.method=="PUT" && crud.CRUD.indexOf('u')>=0) || 
                     (req.method=="POST" && crud.CRUD.indexOf('c')>=0) ||
@@ -86,7 +86,7 @@ if (proxy.options.crudTables || proxy.options.systemCrudTables) plugin.use((req,
               } 
             })
           if (tableAllowed) {
-            if (proxy.options.logLevel>2) console.log("CRUD table",table,myGroups,req.method,req.url);
+            if (proxy.options.logLevel>2) console.log("CRUD table",table,myRoles,req.method,req.url);
             next();
             return;
           }
@@ -98,7 +98,7 @@ if (proxy.options.crudTables || proxy.options.systemCrudTables) plugin.use((req,
         db.auth.forEach(function(rec){
           if (rec.crud) {
             rec.crud.forEach(function(crud){
-              if (crud.table==table && (crud.user==email || proxy.containsValue(crud.user,myGroups))) {
+              if (crud.table==table && (crud.user==email || proxy.containsValue(crud.user,myRoles))) {
                 if (req.method=="GET" && crud.CRUD.indexOf('r')>=0) allowed.push('^'+rec.id +'$')
                 else if (req.method=="PUT" && crud.CRUD.indexOf('u')>=0) allowed.push('^'+rec.id +'$')
                 else if (req.method=="POST" && crud.CRUD.indexOf('c')>=0) allowed.push('^'+rec.id +'$')

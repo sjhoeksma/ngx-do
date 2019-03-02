@@ -1,116 +1,113 @@
 {
   "tags" : [{
-    "name": "Groups",
-    "description": "API for groups in the system"
+    "name": "Roles",
+    "description": "API for Roles in the system"
   }],
   "paths": {
-    "/groups": {
+    "/Roles": {
       "post": {
         "tags": [
-          "Groups"
+          "Roles"
         ],
-        "description": "Create new group in system",
+        "description": "Create new Role in system",
         "parameters": [
           {
-            "name": "group",
+            "name": "Role",
             "in": "body",
-            "description": "Group that we want to create",
+            "description": "Role that we want to create",
             "schema": {
-                "$ref": "#/definitions/Group"
+                "$ref": "#/definitions/Role"
             }
           }
         ],
-        "produces": [
-          "application/json"
-        ],
         "responses": {
           "200": {
-            "description": "Existing group returned",
+            "description": "Existing Role returned",
             "schema": {
-              "$ref": "#/definitions/Group"
+              "$ref": "#/definitions/Role"
             }
           },
           "201": {
-            "description": "New group is created",
+            "description": "New Role is created",
             "schema": {
-              "$ref": "#/definitions/Group"
+              "$ref": "#/definitions/Role"
             }
           }
         }
       },
       "get": {
         "tags": [
-          "Groups"
+          "Roles"
         ],
-        "summary": "Get all groups in system",
+        "summary": "Get all Roles in system",
         "responses": {
           "200": {
             "description": "OK",
             "schema": {
-              "$ref": "#/definitions/Groups"
+              "$ref": "#/definitions/Roles"
             }
           }
         }
       }
     },
-    "/groups/{groupId}": {
+    "/Roles/{RoleId}": {
       "parameters": [
         {
-          "name": "groupId",
+          "name": "RoleId",
           "in": "path",
           "required": true,
-          "description": "ID of group that we want to find",
+          "description": "ID of Role that we want to find",
           "type": "string"
         }
       ],
       "get": {
         "tags": [
-          "Groups"
+          "Roles"
         ],
-        "summary": "Get group with given ID",
+        "summary": "Get Role with given ID",
         "responses": {
           "200": {
-            "description": "Group is found",
+            "description": "Role is found",
             "schema": {
-              "$ref": "#/definitions/Group"
+              "$ref": "#/definitions/Role"
             }
           }
         }
       },
       "delete": {
-        "summary": "Delete group with given ID",
+        "summary": "Delete Role with given ID",
         "tags": [
-          "Groups"
+          "Roles"
         ],
         "responses": {
           "200": {
-            "description": "Group is deleted",
+            "description": "Role is deleted",
             "schema": {
-              "$ref": "#/definitions/Group"
+              "$ref": "#/definitions/Role"
             }
           }
         }
       },
       "put": {
-        "summary": "Update group with give ID",
+        "summary": "Update Role with give ID",
         "tags": [
-          "Groups"
+          "Roles"
         ],
         "parameters": [
           {
-            "name": "group",
+            "name": "Role",
             "in": "body",
-            "description": "Group with new values of properties",
+            "description": "Role with new values of properties",
             "schema": {
-              "$ref": "#/definitions/Group"
+              "$ref": "#/definitions/Role"
             }
           }
         ],
         "responses": {
           "200": {
-            "description": "Group is updated",
+            "description": "Role is updated",
             "schema": {
-              "$ref": "#/definitions/Group"
+              "$ref": "#/definitions/Role"
             }
           }
         }
@@ -119,32 +116,32 @@
   },
   
   "definitions": {
-    "Group": {
-      "description": "A group object",
+    "Role": {
+      "description": "A Role object",
        "allOf": [ {
           "type": "object",
           "required": [
-            "group"
+            "Role"
           ],
           "properties": {
-            "group": {
+            "Role": {
               "type": "string",
               "uniqueItems": true,
-              "description": "The name of security group"
+              "description": "The name of security Role"
             },
             "description": {
               "type": "string",
-              "description": "Description of the group"
+              "description": "Description of the Role"
             },
            
           }
         },{"$ref": "#/definitions/ngx-do-api"}
       ]
     },
-    "Groups": {
+    "Roles": {
       "type": "array",
-      "description": "Array of groups object",
-      "$ref": "#/definitions/Group"
+      "description": "Array of Roles object",
+      "$ref": "#/definitions/Role"
     }
   }
 }

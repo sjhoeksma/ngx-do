@@ -35,7 +35,7 @@ export class AppComponent implements OnInit {
               protected backend: BackendService) {
     this.selectedMenu=this._selectedMenu.bind(this);
     this.backend.getKeyVault('dialogflow').subscribe(rec => {
-      this.aiToken = rec['key'];
+      this.aiToken = rec['value'];
     });
     this.coreConfig.menus = AppMenu; // addMenu(goMenus);
   }

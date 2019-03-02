@@ -3,7 +3,7 @@ export const environment = {
   version: require('../../../../package.json').version,
   name: require('../../../../package.json').name,
   remember: true, // By default we remember user
-  title: 'DoDemo',
+  title: 'Demo',
   authentication : true, // Should we do authentication
   backendList: ['azure', 'localhost', 'remote'], // List of available back-ends configurations
   backend : 'remote', // The default backend

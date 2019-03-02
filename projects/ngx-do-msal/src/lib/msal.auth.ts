@@ -192,6 +192,7 @@ export class MsalAuth extends BaseAuth {
                 if (key.indexOf('{"authority"') === 0) {
                   try {   
                    this.accessToken = JSON.parse(storage.getItem(key)).accessToken;
+                   delete storage[key];
                   } catch (ex) {}
                 }
               });

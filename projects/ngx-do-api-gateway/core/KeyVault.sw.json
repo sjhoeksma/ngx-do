@@ -67,9 +67,9 @@
               "type": "string",
               "description": "The value of a key"
             },
-            "groups": {
+            "roles": {
               "type": "array",
-              "description": "Array of string with groups",
+              "description": "Array of string with roles that have access",
               "items": {
                 "type": "string"
               }

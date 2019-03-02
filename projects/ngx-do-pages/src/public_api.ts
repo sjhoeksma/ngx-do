@@ -13,5 +13,5 @@ export * from './lib/security/security.component';
 export * from './lib/profile/profile.component';
 export * from './lib/profile-card/profile-card.component';
 export * from './lib/keyvault/keyvault.component';
-export * from './lib/usergroups/usergroups.component';
+export * from './lib/userroles/userroles.component';
 

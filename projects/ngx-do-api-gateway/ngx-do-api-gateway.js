@@ -57,14 +57,14 @@ var myOptions = Object.assign({
   encryptSystem: false, //Should we encrypt,decrypt system values
   allowAccessToken: ['.*'], //List with roles allowed to use access_token
   crudTables: [], //Array with crud Protected tables, or null when disabled
-  crudBypass: [], //Which groups are allowed to by pass crud
-  crudByTable: null, //Crud object with tables and there with groups/users having general rights
-  systemCrudByPass: ['admin'], //System group to bypass crud
-  systemCrudTables: ['groups','users'], //System tables
+  crudBypass: [], //Which roles are allowed to by pass crud
+  crudByTable: null, //Crud object with tables and there with roles/users having general rights
+  systemCrudByPass: ['admin'], //System roles to bypass crud
+  systemCrudTables: ['roles','users'], //System tables
   systemCrudByTable: [
-      {user:'default',table:'groups',CRUD:'r'},
+      {user:'default',table:'roles',CRUD:'r'},
   ],
-  crudByApi: null, //Crud object api and there cruds with groups/users having general rights
+  crudByApi: null, //Crud object api and there cruds with roles/users having general rights
   'demo-data': true, //Should demo data api be loaded
   logFile: null, //When set with name the console log will be written here
   greenLock:{
@@ -90,20 +90,20 @@ function roles(req,decoded){
   let decode = decoded || decodeToken(req);
   let index;
   let ret = false;
-  var groups = ['default'];
+  var rls = ['default'];
   if (decode && isNaN(decode)){
     const db = app.db.getState() //Get the last active database
     index = db.auth ? db.auth.findIndex(auth => auth.login == decode['email']) : -1;
     if (index>=0) {
       //create a JWT token with ID, email and roles
-      groups = db.auth[index].groups || groups;
+      rls = db.auth[index].roles || rls;
       if (myOptions.adminList.indexOf(decode['email'])>=0 
-          && groups.indexOf('admin')<0) {
-        groups.push('admin');
+          && rls.indexOf('admin')<0) {
+        rls.push('admin');
       }
     }
   }
-  return groups; 
+  return rls; 
 }
 
 function containsValue(value,arr){
@@ -117,11 +117,11 @@ function hasRole(role,req,decoded){
   if (role==null) return true;
   let index;
   let ret = false;
-  var groups = roles(req,decoded);
-  if (typeof role == "string") return containsValue(role,groups);
+  var rls = roles(req,decoded);
+  if (typeof role == "string") return containsValue(role,rls);
   if (Array.isArray(role)){
      role.forEach(function(el){
-        if (containsValue(el,groups)) ret=true;
+        if (containsValue(el,rls)) ret=true;
       }); 
   }
   return ret;
@@ -229,7 +229,7 @@ function getFromKeyVault(req,key,defaultValue=null){
 function authId(req){
   let decode = decodeToken(req);
   let index;
-  let ret = null;
+  let ret = "";
   if (decode && isNaN(decode)){
      const db = app.db.getState() //Get the last active database
     index = db.auth ? db.auth.findIndex(auth => auth.login == decode['email']) : -1;
@@ -531,7 +531,7 @@ function createServer(server,corePlugins,plugins,callback){
        var now = Date.now();
        //User will have no valid login if only type is passed (external SSO like azure)
        db.auth.push( {id:id,login:email,hash:(password ? hash(password) : type),
-                      groups:['default'],createdBy:id.toString(),updatedBy:id.toString(),
+                      roles:['default'],createdBy:id.toString(),updatedBy:id.toString(),
                       createdAt:now,updatedAt:now});
        db.users.push({id:id,email:email,name:decode['name'],createdBy:id.toString(),updatedBy:id.toString(),
                       createdAt:now,updatedAt:now});
@@ -587,14 +587,14 @@ function createServer(server,corePlugins,plugins,callback){
         return; 
       }
       //create a JWT token with ID, email and roles
-      let groups = (decode.groups || []).concat(db.auth[index].groups || ['default']).filter(
+      let roles = (decode.roles || []).concat(db.auth[index].roles || ['default']).filter(
         function(value, index, self) { 
             return self.indexOf(value) === index;
       });
-      if (myOptions.adminList.indexOf(email)>=0 && groups.indexOf('admin')<0) 
-        groups.push('admin');
+      if (myOptions.adminList.indexOf(email)>=0 && roles.indexOf('admin')<0) 
+        roles.push('admin');
       const id = db.auth[index].id;
-      const access_token = createToken({id,email, groups })
+      const access_token = createToken({id,email, roles })
       req.session.access_token = access_token;
       req.session.client_token = req.headers.client_authorization;
       res.status(200).json({access_token})

@@ -11,27 +11,19 @@ My work list on activities to work on.
 1. Fix problem if proxy not available
 1. Audience for jwttoken azure should be web side 
 1. Encrypt doProxy auth data with jwt key
-1. Add option to register a function which will be called be fore a restart (plugins)
-1. Session of ngx-proxy should be stored in db (now single node)
 1. Avatar as function
 1. Implement audit trail on all crud elements
 1. Types in stead of []
 1. Add is_null to JSON_SERVER
 1. Do not redirect to login if token is not valid on login of masl
 1. Create trafic light dash, not spinning
-1. Add option to use real database
 1. Add plugin allowing Admin to import export data
 1. Create page allowing Admin to assign roles and reset passwords of users
-1. Create page for admin to assign role to a user
 1. Extends Keyvault API to add options to inidcated encrypted data when not encrypted, use example using res.read
-1. Implement a proper in merory SQL
-1. AddMonitoring of App: use example form insight: https://github.com/angulartics/angulartics2 / https://codeburst.io/using-google-analytics-with-angular-25c93bffaa18 https://geeklearning.io/monitor-your-angular-app-with-application-insights/
-1. ApiManager plugin on /api based on swagger
-1. Run basic auth when not authorized using 
+1. AddMonitoring of App: use example form insight: https://github.com/angulartics/angulartics2 / https://codeburst.io/using-google-analytics-with-angular-25c93bffaa18 https://geeklearning.io/monitor-your-angular-app-with-application-insights/  
 1. Spinner to widgets, also add to main page of demo so you can use overall
 1. User info is loaded 3 times on startup, also it loads before auth
-1. Implement in memory db: http://www.tingodb.com/
-1. Lege user request op task table maar user heeft geen data geeft 500 erro
+1. Implement in memory db: http://www.tingodb.com/, to use as memory SQL
 
 
 ## Rebuild of package structure

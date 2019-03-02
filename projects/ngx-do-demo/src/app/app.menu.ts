@@ -153,8 +153,8 @@ export const AppMenu: Array<object> = [
             'open': false,
         }, {
             'name': 'KeyVault',
-            'link': 'widgets/survey-editor',
-            'icon': 'text_fields',
+            'link': 'pages/keyvault',
+            'icon': 'phonelink_lock',
             'chip': false,
             'open': false,
         },
@@ -173,8 +173,8 @@ export const AppMenu: Array<object> = [
             'chip': false,
             'open': false,
         }, {
-            'name': 'UserGroups',
-            'link': 'pages/usergroups',
+            'name': 'UserRoles',
+            'link': 'pages/userroles',
             'icon': 'verified_user',
             'chip': false,
             'open': false,

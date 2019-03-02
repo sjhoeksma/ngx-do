@@ -18,21 +18,9 @@ const swaggerBase = {
       "name": proxy.options.license
     }
   },
-  /*
-  "securityDefinitions":{
-    "auth-token":{
-      type: "apiKey",
-      name: "bearer",
-      in: "query"
-    }
-  },
-  */
   "tags": [],
   "paths":{},
   "definitions":{},
-  "schemes": [
-    "http","https"
-  ],
   "consumes": [
     "application/json"
   ],
