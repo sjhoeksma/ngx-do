@@ -18,25 +18,15 @@
                           <input type="email" id="email" class="input" placeholder="Please enter your email"
                                  formControlName="email" required matInput>
                         </mat-form-field>
-                        <div *ngIf="formErrors.email" class="help is-danger">
-                            {{ formErrors.email }}
-                        </div>
                         <mat-form-field class="full-width">
                             <input type="password" id="password" class="input" placeholder="Enter your password"
                             formControlName="password" required matInput>
                         </mat-form-field>
-                        <div *ngIf="formErrors.password" class="help is-danger">
-                            {{ formErrors.password }}
-                        </div>
                         <mat-form-field class="full-width">
                             <input type="password" id="password2" class="input" placeholder="Re-enter your password"
                             formControlName="password2" required matInput>
                         </mat-form-field>
-                        <div *ngIf="formErrors.password2" class="help is-danger">
-                            {{ formErrors.password2 }}
-                        </div>
-                      
-                          <mat-checkbox color="primary" formControlName="remember">Remember me</mat-checkbox>
+                        <mat-checkbox color="primary" formControlName="remember">Remember me</mat-checkbox>
                       
                         <button mat-raised-button color="primary" type="submit" [disabled]="!userForm.valid" >signup</button>
                     </form>

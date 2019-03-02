@@ -42,32 +42,6 @@ export class SignupComponent implements OnInit {
 
   userForm: FormGroup;
   shake = false;
-  formErrors = {
-    'email': '',
-    'password': '',
-    'password2': '',
-    'remember': ''
-  };
-  validationMessages = {
-    'email': {
-      'required': 'Please enter your email',
-      'email': 'please enter your vaild email'
-    },
-    'password': {
-      'required': 'please enter your password',
-      'pattern': 'The password must contain numbers, letters and special character',
-      'minlength': 'Please enter more than 4 characters',
-      'maxlength': 'Please enter less than 25 characters',
-    },
-    'password2': {
-      'required': 'please re-enter your password',
-      'pattern': 'The password must contain numbers, letters and special character',
-      'minlength': 'Please enter more than 4 characters',
-      'maxlength': 'Please enter less than 25 characters',
-    },
-    'remember': {}
-  };
-
 
   ngOnInit() {
     this.coreAuth.logout(true);
@@ -93,30 +67,6 @@ export class SignupComponent implements OnInit {
     },  {
       validator: RegistrationValidator.validate.bind(this)
     });
-
-    // this.userForm.valueChanges.subscribe(data => this.onValueChanged(data));
-    // this.onValueChanged();
-  }
-
-  onValueChanged(data?: any) {
-     if (!this.userForm) {
-       return;
-     }
-     const form = this.userForm;
-     for (const field in this.formErrors) {
-       if (Object.prototype.hasOwnProperty.call(this.formErrors, field)) {
-         this.formErrors[field] = '';
-         const control = form.get(field);
-         if (control && control.dirty && !control.valid) {
-           const messages = this.validationMessages[field];
-           for (const key in control.errors) {
-             if (Object.prototype.hasOwnProperty.call(control.errors, key)) {
-               this.formErrors[field] += messages[key] + ' ';
-             }
-           }
-         }
-       }
-     }
   }
 
   backendAllowed(item: object): boolean {
@@ -139,9 +89,9 @@ export class SignupComponent implements OnInit {
       });
   }
 
-  // Change event of backend type
-  backendChange(event: any) {
-
+  //Signup will not do anything onbackend change
+  backendChange(backend: any) {
+   
   }
 
 }
